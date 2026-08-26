@@ -84,8 +84,12 @@
        com zoom contínuo — os frames 103–120 nem são baixados. */
     var FRAMES = 102;
     /* celular em pé usa o recorte vertical (406x720, 1:1 com a tela);
-       desktop e tablets/landscape usam o set 1280 */
-    var portrait = !isDesktop && window.innerHeight > window.innerWidth && window.innerWidth < 600;
+       desktop e tablets/landscape usam o set 1280.
+       clientWidth/Height (não innerWidth): medem o viewport de layout,
+       estáveis com barra de rolagem e barra de endereço dinâmica. */
+    var vpW = document.documentElement.clientWidth;
+    var vpH = document.documentElement.clientHeight;
+    var portrait = !isDesktop && vpH > vpW && vpW < 600;
     var seqDir = 'img/hero-seq/' + (portrait ? 'm' : '1280') + '/';
     var canvas = hero.querySelector('.hero-canvas');
     var cctx = canvas ? canvas.getContext('2d') : null;
@@ -102,6 +106,10 @@
     if (cctx) {
       try { cctx.filter = 'blur(2px)'; blurOk = cctx.filter.indexOf('blur') > -1; cctx.filter = 'none'; } catch (e) {}
     }
+    /* celular: cada redesenho com ctx.filter blur custa dezenas de ms nas
+       GPUs móveis — bem no primeiro gesto de scroll. A vinheta escura
+       sozinha já faz a abertura; o blur fica só no desktop. */
+    if (!isDesktop) blurOk = false;
     if (!blurOk) blurAmt = 0;
 
     function frameSrc(i) {
@@ -176,13 +184,17 @@
     /* carrega em duas ondas: os primeiros 24 (o preloader espera por eles)
        e o resto em fila com concorrência limitada */
     (function loadFrames() {
-      var next = 0, INFLIGHT = 6;
+      /* mobile: 4 em voo (não 6) — a banda que sobra vai para as imagens
+         das seções que o lazy nativo está buscando ao mesmo tempo */
+      var next = 0, INFLIGHT = isDesktop ? 6 : 4;
       function pump() {
         while (INFLIGHT > 0 && next < FRAMES) {
           (function (i) {
             INFLIGHT--;
             var im = new Image();
             im.decoding = 'async';
+            /* cauda da sequência cede prioridade de rede ao que está na tela */
+            if ('fetchPriority' in im) im.fetchPriority = i < 32 ? 'auto' : 'low';
             var done = function (ok) {
               if (ok && im.naturalWidth) { frames[i] = im; frameOk[i] = true;
                 if (Math.round(lastTarget) === i || curFrame < 0) drawFrame(lastTarget);

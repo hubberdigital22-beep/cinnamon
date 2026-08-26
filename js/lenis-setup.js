@@ -18,6 +18,9 @@
 
   var mqReduce  = window.matchMedia('(prefers-reduced-motion: reduce)');
   var mqDesktop = window.matchMedia('(min-width: 1024px)');
+  /* touch = scroll 100% nativo (sem Lenis): no dedo o Lenis não suaviza
+     nada — só adiciona um raf e re-medições ao pipeline do scroll */
+  var isTouch   = window.matchMedia('(hover: none), (pointer: coarse)').matches;
 
   /* gancho de CSS: empilha as cenas do hero, exibe cursor etc. */
   root.classList.add('has-js');
@@ -28,6 +31,7 @@
   window.CINNAMON = {
     reducedMotion: mqReduce.matches,
     isDesktop: mqDesktop.matches,
+    isTouch: isTouch,
     lenis: null,
     splitWords: null,
     setChapter: null,
@@ -35,6 +39,12 @@
   };
 
   gsap.registerPlugin(ScrollTrigger);
+
+  /* Chrome mobile esconde/mostra a barra de endereço no COMEÇO de cada
+     rolagem — isso dispara resize e, sem esta flag, um refresh completo
+     (layout + re-medição dos pins) no meio do gesto: o soluço clássico
+     do scroll mobile. Só resize de largura/orientação re-mede. */
+  ScrollTrigger.config({ ignoreMobileResize: true });
 
   /* o preloader real (contador + saída em máscara) vive em sections.js */
 
@@ -61,14 +71,14 @@
   });
   gsap.ticker.lagSmoothing(0);
 
-  if (!mqReduce.matches) startLenis();
+  if (!mqReduce.matches && !isTouch) startLenis();
 
   /* troca ao vivo da preferência de movimento */
   mqReduce.addEventListener('change', function (e) {
     window.CINNAMON.reducedMotion = e.matches;
     root.classList.toggle('is-reduced', e.matches);
     if (e.matches) stopLenis();
-    else startLenis();
+    else if (!isTouch) startLenis();
     ScrollTrigger.refresh();
   });
 
@@ -108,9 +118,16 @@
     }).observe(document.body);
   }
 
-  /* ---------- refresh com debounce no resize (~200ms) ---------- */
+  /* ---------- refresh com debounce no resize (~200ms) ----------
+     No touch, resize SÓ de altura é a barra de endereço indo e vindo —
+     re-medir aí desloca os pins no meio da rolagem. Largura mudou =
+     rotação/split-screen de verdade: aí sim. */
   var resizeTimer = null;
+  var lastW = document.documentElement.clientWidth;
   window.addEventListener('resize', function () {
+    var w = document.documentElement.clientWidth;
+    if (isTouch && w === lastW) return;
+    lastW = w;
     if (resizeTimer) clearTimeout(resizeTimer);
     resizeTimer = setTimeout(function () {
       resizeTimer = null;

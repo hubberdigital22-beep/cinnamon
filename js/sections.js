@@ -86,6 +86,28 @@
       return;
     }
 
+    /* O preloader só faz sentido cobrindo a página ANTES de ela aparecer.
+       Se o JS chegou atrasado (rede lenta: o hero já está visível faz
+       tempo), se é revisita na mesma sessão (reload no meio da navegação)
+       ou se o usuário já rolou — cobrir de escuro e teleportar ao topo é
+       pior do que não ter preloader (era a "tela preta" do QA mobile). */
+    var skip = false;
+    try { if (sessionStorage.getItem('cinnamon-intro')) skip = true; } catch (e) {}
+    if (!skip && window.scrollY > document.documentElement.clientHeight * 0.5) skip = true;
+    if (!skip && window.performance && performance.getEntriesByType) {
+      var paint = performance.getEntriesByType('paint')[0];
+      if (paint && performance.now() - paint.startTime > 700) skip = true;
+    }
+    if (skip) {
+      pre.style.display = 'none';
+      return;
+    }
+    try { sessionStorage.setItem('cinnamon-intro', '1'); } catch (e) {}
+
+    /* celular espera menos: metade dos frames e teto de 2.6s — a chegada
+       continua coreografada, mas ninguém fica olhando barra de progresso */
+    var preDesktop = window.matchMedia('(min-width: 1024px)').matches;
+
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     window.scrollTo(0, 0);
 
@@ -120,22 +142,27 @@
       if (count) count.textContent = 'Compondo a chegada — ' + Math.round(display.v * 100) + '%';
     }
 
-    /* preload REAL: capa estática + os primeiros 24 frames da sequência
-       do hero (o hero.js baixa os 120; o contador espera só a abertura).
-       Mesmo breakpoint do gsap.matchMedia do hero. */
+    /* preload REAL: capa estática + a abertura da sequência do hero
+       (o hero.js baixa todos; o contador espera só o começo).
+       Mesmo breakpoint do gsap.matchMedia do hero — e a MESMA capa
+       que o <picture> escolheu (960 no celular). */
     var seqDir = 'img/hero-seq/' + (
-      (!window.matchMedia('(min-width: 1024px)').matches &&
-       window.innerHeight > window.innerWidth && window.innerWidth < 600) ? 'm' : '1280') + '/';
-    var ASSETS = ['img/ext-baixo-960.webp 960w, img/ext-baixo-1920.webp 1600w'];
-    for (var fi = 1; fi <= 24; fi++) {
+      (!preDesktop &&
+       document.documentElement.clientHeight > document.documentElement.clientWidth &&
+       document.documentElement.clientWidth < 600) ? 'm' : '1280') + '/';
+    var ASSETS = [window.matchMedia('(max-width: 768px)').matches
+      ? 'img/ext-baixo-960.webp'
+      : 'img/ext-baixo-1920.webp'];
+    var WAIT_FRAMES = preDesktop ? 24 : 12;
+    for (var fi = 1; fi <= WAIT_FRAMES; fi++) {
       ASSETS.push(seqDir + 'f_' + ('00' + fi).slice(-3) + '.webp');
     }
     var total = ASSETS.length;
     var loaded = 0;
     var finished = false;
     var t0 = Date.now();
-    var MIN_MS = 1100;                          /* respiro mínimo p/ o wordmark */
-    var failsafe = setTimeout(finish, 4000);    /* teto duro de 4s */
+    var MIN_MS = preDesktop ? 1100 : 900;       /* respiro mínimo p/ o wordmark */
+    var failsafe = setTimeout(finish, preDesktop ? 4000 : 2600); /* teto duro */
 
     /* rede de segurança independente de rAF: se a aba carregar em 2º plano,
        a timeline de saída não avança e o scroll ficaria travado para sempre.
@@ -222,7 +249,15 @@
     var cleanups = [];
 
     function onEnter(trigger, fn, start) {
-      ScrollTrigger.create({ trigger: trigger, start: start || 'top 80%', once: true, onEnter: fn });
+      var s = start || 'top 80%';
+      /* mobile: o flick cobre 2–3 telas num gesto — revelar em 80% deixa
+         o usuário rolando por conteúdo ainda invisível. Perto da borda
+         (92%) o reveal dispara assim que o elemento aponta na tela. */
+      if (!isDesktop && s !== 'top bottom') {
+        var m = /^top (\d+(?:\.\d+)?)%$/.exec(s);
+        if (m && parseFloat(m[1]) < 92) s = 'top 92%';
+      }
+      ScrollTrigger.create({ trigger: trigger, start: s, once: true, onEnter: fn });
     }
 
     /* count-up: só o nó de texto (preserva <sup>/.unidade),
@@ -420,6 +455,22 @@
       if (track) {
         gsap.set(track, { overflowX: 'visible', scrollSnapType: 'none', willChange: 'transform' });
 
+        /* as imagens andam por TRANSFORM no pin — o lazy nativo só as
+           buscaria quando já entrassem na tela, aparecendo "de repente"
+           (flagrado no QA mobile). Uma tela antes do pin, todas viram
+           eager e chegam prontas para o scrub. */
+        var gLazy = qa('img[loading="lazy"]', track);
+        if (gLazy.length) {
+          ScrollTrigger.create({
+            trigger: galeria,
+            start: 'top 300%',
+            once: true,
+            onEnter: function () {
+              gLazy.forEach(function (im) { im.loading = 'eager'; });
+            }
+          });
+        }
+
         /* a imagem é dimensionada pela ALTURA que sobra depois do menu,
            do título e da legenda — assim título e descrição cabem sempre.
            O título usa clamp com vw, então só medindo dá para acertar. */
@@ -433,7 +484,7 @@
             parseFloat(csSec.paddingTop) + parseFloat(csSec.paddingBottom) +
             (head ? head.getBoundingClientRect().height + parseFloat(getComputedStyle(head).marginBottom) : 0) +
             (cap ? cap.getBoundingClientRect().height + parseFloat(getComputedStyle(cap).marginTop) : 0);
-          var livre = window.innerHeight - usado - 12; /* folga */
+          var livre = document.documentElement.clientHeight - usado - 12; /* folga */
           /* a altura também é limitada pela largura máxima do card
              (3:2), senão em telas baixas e estreitas o frame estoura */
           var vw = document.documentElement.clientWidth;
@@ -467,8 +518,10 @@
           }
         });
         /* zoom contínuo NAS IMGS (dentro do overflow:hidden do frame):
-           não invade o gap entre itens; o hover do CSS agora é no frame. */
-        var gImgs = qa('.galeria__frame img', track);
+           não invade o gap entre itens; o hover do CSS agora é no frame.
+           Só no desktop: no celular são 6 camadas extras animando junto
+           com o pin — efeito sutil, custo alto nas GPUs móveis. */
+        var gImgs = isDesktop ? qa('.galeria__frame img', track) : [];
         if (gImgs.length) {
           gsap.fromTo(gImgs, { scale: 1.12 }, {
             scale: 1, ease: 'none',
@@ -496,6 +549,18 @@
            wrap seamless em -50%/0. Lento: 75s/90s por volta. */
         var mq1 = gsap.fromTo(rows[0], { xPercent: 0 }, { xPercent: -50, duration: 75, ease: 'none', repeat: -1 });
         var mq2 = gsap.fromTo(rows[1], { xPercent: -50 }, { xPercent: 0, duration: 90, ease: 'none', repeat: -1 });
+        /* fora da tela o marquee dorme — duas fileiras gigantes animando
+           a sessão inteira era frame roubado do scroll (pior no celular) */
+        mq1.pause(); mq2.pause();
+        ScrollTrigger.create({
+          trigger: marquee,
+          start: 'top bottom',
+          end: 'bottom top',
+          onToggle: function (self) {
+            if (self.isActive) { mq1.play(); mq2.play(); }
+            else { mq1.pause(); mq2.pause(); }
+          }
+        });
         var mqPause = function () {
           gsap.to([mq1, mq2], { timeScale: 0, duration: 0.5, ease: 'power2.out', overwrite: true });
         };
@@ -514,12 +579,15 @@
     var bloco = q('.bloco-claro');
     if (bloco) {
       /* morph do fundo do body ao entrar/sair do bloco claro (§8) —
-         exceção única de propriedade não-transform, prevista na spec */
+         exceção única de propriedade não-transform, prevista na spec.
+         Animar background do body repinta a viewport a cada frame:
+         no celular o morph é mais curto (metade dos repaints). */
+      var MORPH = isDesktop ? 0.8 : 0.4;
       var toLight = function () {
-        gsap.to(document.body, { backgroundColor: CREAM2, duration: 0.8, ease: 'power2.out', overwrite: 'auto' });
+        gsap.to(document.body, { backgroundColor: CREAM2, duration: MORPH, ease: 'power2.out', overwrite: 'auto' });
       };
       var toDark = function () {
-        gsap.to(document.body, { backgroundColor: DARK, duration: 0.8, ease: 'power2.out', overwrite: 'auto' });
+        gsap.to(document.body, { backgroundColor: DARK, duration: MORPH, ease: 'power2.out', overwrite: 'auto' });
       };
       ScrollTrigger.create({
         trigger: bloco,
