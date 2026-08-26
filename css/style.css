@@ -693,12 +693,20 @@ html.has-js:not(.is-reduced) .hero-scene{ position:absolute; inset:0; min-height
   transition:transform var(--dur) var(--ease-out);
 }
 .torre__faixa figure:hover .frame img{ transform:scale(1.04); }
-.torre__f1{ grid-column:1 / span 8; }
-.torre__f1 .frame{ aspect-ratio:16 / 10; }
-.torre__f2{ grid-column:9 / span 4; align-self:end; }
-.torre__f2 .frame{ aspect-ratio:4 / 5; }
-.torre__f3{ grid-column:3 / span 10; margin-top:var(--gutter); }
-.torre__f3 .frame{ aspect-ratio:21 / 9; }
+/* mosaico cheio: 2 linhas de altura uniforme, larguras 7/5 e 5/7
+   espelhadas — sem coluna vazia, imagens grandes. O corte de cada
+   render é dirigido por object-position (o assunto fica no quadro). */
+.torre__f1{ grid-column:1 / span 7; }
+.torre__f2{ grid-column:8 / span 5; }
+.torre__f3{ grid-column:1 / span 5; }
+.torre__f4{ grid-column:6 / span 7; }
+.torre__f3,
+.torre__f4{ margin-top:var(--gutter); }
+.torre__faixa .frame{ height:clamp(320px, 34vw, 560px); }
+.torre__f1 .frame img{ object-position:50% 72%; } /* chegada: rua e pessoas */
+.torre__f2 .frame img{ object-position:50% 58%; } /* letreiro e lounge */
+.torre__f3 .frame img{ object-position:34% 50%; } /* piscina à esquerda */
+.torre__f4 .frame img{ object-position:6% 50%; } /* letreiro colado à esquerda no render */
 .torre__faixa figcaption{
   margin-top:1rem;
   font-size:.62rem;
@@ -708,8 +716,8 @@ html.has-js:not(.is-reduced) .hero-scene{ position:absolute; inset:0; min-height
   color:var(--cream-60); /* contraste AA */
 }
 @media (max-width:768px){
-  .torre__f1,.torre__f2,.torre__f3{ grid-column:1 / -1; margin-top:0; }
-  .torre__f2 .frame{ aspect-ratio:4 / 5; }
+  .torre__f1,.torre__f2,.torre__f3,.torre__f4{ grid-column:1 / -1; margin-top:0; }
+  .torre__faixa .frame{ height:clamp(240px, 62vw, 440px); }
 }
 
 /* ---------- 12 · SEÇÃO 04 — PLANTA ---------- */

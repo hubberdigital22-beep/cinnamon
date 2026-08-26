@@ -367,7 +367,9 @@
     cardIn(cards[0], 1.6);
     cardOut(cards[0], 4.0);
     cardIn(cards[1], 6.8);
-    cardOut(cards[1], 10.2);
+    /* o tour interno é longo (living → quarto → office, até ~15.2):
+       o card acompanha quase até o corte do banheiro */
+    cardOut(cards[1], 13.6);
 
     /* O BANHEIRO — o vídeo congela no corredor (f_102) e a foto banho-01
        assume no lugar do corte interno do vídeo, com o zoom levando o

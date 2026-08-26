@@ -3,11 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- desenvolvimento: impede o browser de servir HTML velho (com CSS/JS antigos) -->
-  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
-
   <title>Cinnamon Studio · Condotel na Orla de Palmas – TO</title>
   <meta name="description" content="Seu espaço. Seu ritmo. Studios inteligentes de 29,92 m² para quem vive em movimento — condotel na Orla de Palmas – TO.">
   <meta name="theme-color" content="#22231f">
@@ -17,12 +12,12 @@
   <meta property="og:type" content="website">
   <meta property="og:title" content="Cinnamon Studio · Condotel na Orla de Palmas – TO">
   <meta property="og:description" content="Seu espaço. Seu ritmo. Studios inteligentes de 29,92 m² para quem vive em movimento.">
-  <meta property="og:image" content="https://cinnamonstudio.com.br/img/torre-frontal-1920.webp">
+  <meta property="og:image" content="https://cinnamonstudio.com.br/img/ext-frontal-1920.webp">
   <meta property="og:locale" content="pt_BR">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Cinnamon Studio · Condotel na Orla de Palmas – TO">
   <meta name="twitter:description" content="Seu espaço. Seu ritmo. Studios inteligentes de 29,92 m² para quem vive em movimento.">
-  <meta name="twitter:image" content="https://cinnamonstudio.com.br/img/torre-frontal-1920.webp">
+  <meta name="twitter:image" content="https://cinnamonstudio.com.br/img/ext-frontal-1920.webp">
 
   <!-- favicon: monograma C fino, tan sobre dark -->
   <link rel="icon" type="image/svg+xml" href="<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' fill='%2322231f'/><path fill='%23b7a48e' d='M47.22159090909091 49.16477272727273V45.81818181818182C46.03409090909091 46.62784090909091 40.96022727272727 48.89488636363637 35.83238636363636 48.89488636363637C25.414772727272727 48.89488636363637 20.232954545454547 43.55113636363636 20.232954545454547 31.83806818181818C20.232954545454547 21.582386363636363 25.630681818181817 16.40056818181818 35.83238636363636 16.40056818181818C40.90625 16.40056818181818 45.76420454545454 18.721590909090907 46.89772727272727 19.36931818181818V16.13068181818182C46.08806818181818 15.752840909090907 42.03977272727273 13.647727272727273 35.34659090909091 13.647727272727273C25.14488636363636 13.647727272727273 16.77840909090909 18.883522727272727 16.77840909090909 31.83806818181818C16.77840909090909 45.60227272727273 23.147727272727273 51.64772727272727 35.34659090909091 51.64772727272727C41.55397727272727 51.64772727272727 46.30397727272727 49.65056818181818 47.22159090909091 49.16477272727273Z'/></svg>">
@@ -33,11 +28,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
 
   <!-- preload: capa estática do hero + primeiro frame da sequência scrollada -->
-  <link rel="preload" as="image" imagesrcset="img/torre-angulo-01-960.webp 960w, img/torre-angulo-01-1920.webp 1456w" imagesizes="100vw">
+  <link rel="preload" as="image" imagesrcset="img/ext-baixo-960.webp 960w, img/ext-baixo-1920.webp 1600w" imagesizes="100vw">
   <link rel="preload" as="image" href="img/hero-seq/1280/f_001.webp" media="(min-width: 1024px)">
   <link rel="preload" as="image" href="img/hero-seq/800/f_001.webp" media="(max-width: 1023.98px)">
 
-  <link rel="stylesheet" href="css/style.css?v=20260826c">
+  <link rel="stylesheet" href="css/style.css?v=20260826g">
 
   <!-- AJUSTAR: dados abertos do JSON-LD — endereço completo, incorporadora,
        telefone e URL definitiva devem ser confirmados antes de publicar -->
@@ -149,15 +144,15 @@
     <section id="hero" class="hero" aria-label="A chegada — apresentação do Cinnamon Studio">
 
       <!-- CENA I · A TORRE — visível desde o load; o scroll mergulha na fachada -->
-      <figure class="hero-scene" data-scene="1" style="background-image:url('data:image/webp;base64,UklGRqYAAABXRUJQVlA4IJoAAAAwBQCdASoYABEAPu1krVAppSQisBgIATAdiWoAnTLVQpgJZvTiiOy4YEBj0UDQiZWk+AD+FHFhUgUvbbM8wilzT+8B/fqKUYNptnwej6n4QH7DMbsQe51/9sd3wEseymrpLl82qx4ClhTtKAT7F4HjOfnY36S97FJXg4J9uG8t1FCeISvUOZcXVH8BI1axuqIrTEaD73bfQAAA')">
+      <figure class="hero-scene" data-scene="1" style="background-image:url('data:image/webp;base64,UklGRqwAAABXRUJQVlA4IKAAAADQBACdASoYABgAPu1qq1EppaOiqAqpMB2JZQC90BEiSU5lN049xEMgBmN/e+rUMAD+r20nb7z1XyVD5EzsaL0UpvZzWyHk63mKwb43BW8lMrjq2UolmTPMTL8Byep0X3IUYD7mKXQLSPOapnFh3m+NJyDoPYD5XykoXfxVNpN8zPI2HyyeT+nfYpVE7VzquPN/YeEI/H/JNaCAtQFgoAAA')">
         <div class="hero-scene__media">
           <img
-            src="img/torre-angulo-01-1920.webp"
-            srcset="img/torre-angulo-01-960.webp 960w, img/torre-angulo-01-1920.webp 1456w"
+            src="img/ext-baixo-1920.webp"
+            srcset="img/ext-baixo-960.webp 960w, img/ext-baixo-1920.webp 1600w"
             sizes="100vw"
-            width="1456" height="1053"
+            width="1600" height="1600"
             fetchpriority="high"
-            alt="Torre do Cinnamon Studio vista de baixo, com sacadas curvas de madeira em toda a fachada contra o céu aberto de Palmas.">
+            alt="Torre do Cinnamon Studio vista da calçada ao entardecer, com o letreiro iluminado no embasamento e as varandas de madeira acesas.">
           <!-- sequência de 120 frames do vídeo oficial, desenhada aqui pelo
                scroll (js/hero.js). Sem JS ou em reduced-motion fica a foto acima. -->
           <canvas class="hero-canvas" aria-hidden="true"></canvas>
@@ -287,12 +282,12 @@
       <figure class="torre__hero">
         <div class="torre__media">
           <img
-            src="img/torre-frontal-1920.webp"
-            srcset="img/torre-frontal-960.webp 960w, img/torre-frontal-1920.webp 1213w"
+            src="img/ext-poente-1920.webp"
+            srcset="img/ext-poente-960.webp 960w, img/ext-poente-1920.webp 1600w"
             sizes="100vw"
-            width="1213" height="1056"
+            width="1600" height="1600"
             loading="lazy" decoding="async"
-            alt="Vista frontal da torre do Cinnamon Studio à beira do lago, com volumes verticais de madeira escura e sacadas envidraçadas.">
+            alt="Torre completa do Cinnamon Studio ao pôr do sol, com o céu alaranjado e as varandas de madeira iluminadas refletidas no lago.">
         </div>
         <div class="torre__scrim" aria-hidden="true"></div>
         <figcaption class="torre__card container">
@@ -306,38 +301,50 @@
         <figure class="torre__f1">
           <div class="frame">
             <img
-              src="img/torre-06-1920.webp"
-              srcset="img/torre-06-960.webp 960w, img/torre-06-1920.webp 1600w"
-              sizes="(min-width: 769px) 60vw, 92vw"
-              width="1600" height="897"
+              src="img/ext-noite-1920.webp"
+              srcset="img/ext-noite-960.webp 960w, img/ext-noite-1920.webp 1600w"
+              sizes="(min-width: 769px) 56vw, 92vw"
+              width="1600" height="1600"
               loading="lazy" decoding="async"
-              alt="Esquina do embasamento da torre, com letreiro Cinnamon Studio sobre painel de madeira e pano de vidro no térreo.">
+              alt="Chegada noturna ao Cinnamon Studio: hóspedes e carros sob o letreiro iluminado, com o piso molhado refletindo as luzes.">
           </div>
           <figcaption>O embasamento, na escala da rua</figcaption>
         </figure>
         <figure class="torre__f2">
           <div class="frame">
             <img
-              src="img/torre-07-1920.webp"
-              srcset="img/torre-07-960.webp 960w, img/torre-07-1920.webp 1600w"
-              sizes="(min-width: 769px) 30vw, 92vw"
-              width="1600" height="674"
+              src="img/ext-esquina-1920.webp"
+              srcset="img/ext-esquina-960.webp 960w, img/ext-esquina-1920.webp 1600w"
+              sizes="(min-width: 769px) 40vw, 92vw"
+              width="1600" height="1195"
               loading="lazy" decoding="async"
-              alt="Acesso do térreo com marquise de madeira ripada e esquadrias de vidro de piso a teto.">
+              alt="Esquina do embasamento com o letreiro Cinnamon Studio iluminado, lounge envidraçado e deck da piscina ao anoitecer.">
           </div>
-          <figcaption>O acesso, sob a marquise de madeira</figcaption>
+          <figcaption>A esquina do lounge, ao anoitecer</figcaption>
         </figure>
         <figure class="torre__f3">
           <div class="frame">
             <img
-              src="img/torre-02-1920.webp"
-              srcset="img/torre-02-960.webp 960w, img/torre-02-1920.webp 1600w"
-              sizes="(min-width: 769px) 80vw, 92vw"
-              width="1600" height="898"
+              src="img/ext-terreo-1920.webp"
+              srcset="img/ext-terreo-960.webp 960w, img/ext-terreo-1920.webp 1600w"
+              sizes="(min-width: 769px) 40vw, 92vw"
+              width="1600" height="893"
               loading="lazy" decoding="async"
-              alt="Base da torre em perspectiva, com sequência de sacadas de madeira, letreiro da marca e deck com guarda-corpo de vidro.">
+              alt="Térreo do Cinnamon Studio visto da rua, com a piscina de borda de vidro e o paisagismo junto à calçada.">
           </div>
           <figcaption>O térreo, aberto para a orla</figcaption>
+        </figure>
+        <figure class="torre__f4">
+          <div class="frame">
+            <img
+              src="img/ext-acesso-1920.webp"
+              srcset="img/ext-acesso-960.webp 960w, img/ext-acesso-1920.webp 1600w"
+              sizes="(min-width: 769px) 56vw, 92vw"
+              width="1600" height="895"
+              loading="lazy" decoding="async"
+              alt="Acesso principal sob a marquise de madeira, com pé-direito duplo de vidro e o letreiro na parede de pedra.">
+          </div>
+          <figcaption>O acesso, sob a marquise de madeira</figcaption>
         </figure>
       </div>
     </section>
@@ -642,12 +649,12 @@
       <figure class="local__hero">
         <div class="local__media">
           <img
-            src="img/torre-04-1920.webp"
-            srcset="img/torre-04-960.webp 960w, img/torre-04-1920.webp 1600w"
+            src="img/ext-orla-1920.webp"
+            srcset="img/ext-orla-960.webp 960w, img/ext-orla-1920.webp 1600w"
             sizes="100vw"
-            width="1600" height="625"
+            width="1600" height="1600"
             loading="lazy" decoding="async"
-            alt="Entrada do Cinnamon Studio com palmeiras, marquise de madeira e o lago de Palmas ao fundo, no fim da tarde.">
+            alt="Fachada frontal do Cinnamon Studio na hora azul, com palmeiras na entrada e o letreiro aceso no alto da torre.">
         </div>
         <div class="local__scrim" aria-hidden="true"></div>
         <figcaption class="local__card container">
@@ -735,10 +742,10 @@
   <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
-  <script defer src="js/lenis-setup.js?v=20260826c"></script>
-  <script defer src="js/ui.js?v=20260826c"></script>
-  <script defer src="js/hero.js?v=20260826c"></script>
-  <script defer src="js/sections.js?v=20260826c"></script>
+  <script defer src="js/lenis-setup.js?v=20260826g"></script>
+  <script defer src="js/ui.js?v=20260826g"></script>
+  <script defer src="js/hero.js?v=20260826g"></script>
+  <script defer src="js/sections.js?v=20260826g"></script>
 
 </body>
 </html>

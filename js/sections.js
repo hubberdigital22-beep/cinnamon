@@ -126,7 +126,7 @@
     var seqDir = 'img/hero-seq/' + (
       (!window.matchMedia('(min-width: 1024px)').matches &&
        window.innerHeight > window.innerWidth && window.innerWidth < 600) ? 'm' : '1280') + '/';
-    var ASSETS = ['img/torre-angulo-01-960.webp 960w, img/torre-angulo-01-1920.webp 1456w'];
+    var ASSETS = ['img/ext-baixo-960.webp 960w, img/ext-baixo-1920.webp 1600w'];
     for (var fi = 1; fi <= 24; fi++) {
       ASSETS.push(seqDir + 'f_' + ('00' + fi).slice(-3) + '.webp');
     }
