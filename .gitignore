@@ -1,0 +1,21 @@
+# Originais do cliente (.ai, .pdf, .rar, PNGs 4k) — ~344 MB.
+# Ficam só no disco local: o site consome as versões já processadas em img/.
+# Para regenerar img/ a partir deles: ./scripts/prepare-assets.sh all
+Assets/
+
+# arquivos obsoletos marcados para remoção manual
+_to_delete/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+
+# editores
+.vscode/
+.idea/
+*.swp
+
+# node (usado só para ferramentas pontuais, nunca em runtime)
+node_modules/

@@ -1,0 +1,1238 @@
+/* ============================================================
+   CINNAMON STUDIO — style.css
+   Fase 2 · estrutura e pele. A página deve estar bonita e
+   legível SEM JavaScript. Nenhum elemento nasce escondido
+   aqui: estados iniciais de animação são aplicados só pelo
+   JS (fases 3–4) via gsap.set / classe html.has-js.
+   ============================================================ */
+
+/* ---------- 1 · TOKENS ---------- */
+:root{
+  --dark:     #22231f;
+  --dark-2:   #171816;
+  --dark-3:   #2c2d28;
+  --cream:    #f3eee5;
+  --cream-2:  #f0eadc;
+  --tan:      #b7a48e;
+  --tan-soft: rgba(183,164,142,.28);
+  --cream-60: rgba(243,238,229,.62);
+  --cream-40: rgba(243,238,229,.40);
+  --dark-60:  rgba(34,35,31,.66);   /* corpo de texto no bloco claro */
+  --dark-soft: rgba(34,35,31,.22);  /* hairline no bloco claro */
+
+  --ease-out: cubic-bezier(.16,1,.3,1);
+  --dur-fast: .6s;
+  --dur: .9s;
+  --dur-slow: 1.4s;
+
+  --gutter: 24px;
+  --margin: clamp(24px, 6vw, 120px);
+  --section-pad: clamp(120px, 22vh, 260px);
+}
+
+/* ---------- 2 · RESET / BASE ---------- */
+*,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+
+html{
+  scroll-behavior:smooth;
+  -webkit-text-size-adjust:100%;
+}
+
+body{
+  background:var(--dark);
+  color:var(--cream-60);
+  font-family:"Montserrat", ui-sans-serif, system-ui, sans-serif;
+  font-weight:300;
+  font-size:1.06rem;
+  line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+img{ display:block; max-width:100%; height:auto; }
+figure{ margin:0; }
+ul,ol{ list-style:none; }
+a{ color:inherit; text-decoration:none; }
+
+::selection{ background:var(--tan); color:var(--dark); }
+
+:focus-visible{
+  outline:2px solid var(--tan);
+  outline-offset:4px;
+}
+
+/* border-radius proibido — só círculos explícitos (.is-circle etc.) */
+
+/* ---------- 3 · TIPOGRAFIA ---------- */
+.eyebrow{
+  font-size:.68rem;
+  font-weight:500;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  color:var(--tan);
+}
+
+.display{
+  font-weight:300;
+  font-size:clamp(2.6rem, 8vw, 8rem);
+  line-height:.98;
+  letter-spacing:-.005em;
+  color:var(--cream);
+}
+
+/* títulos de seção em fluxo — mesmo desenho, escala contida */
+.display-2{
+  font-weight:300;
+  font-size:clamp(2.2rem, 5.6vw, 5.4rem);
+  line-height:1.04;
+  letter-spacing:-.005em;
+  color:var(--cream);
+}
+
+.display-3{
+  font-weight:300;
+  font-size:clamp(1.6rem, 3.4vw, 2.8rem);
+  line-height:1.15;
+  letter-spacing:-.005em;
+  color:var(--cream);
+}
+
+.num{
+  font-weight:200;
+  letter-spacing:-.02em;
+  color:var(--cream);
+}
+
+.caption{
+  font-weight:300;
+  font-size:clamp(1rem, 1.4vw, 1.12rem);
+  line-height:1.75;
+  color:var(--cream-60);
+  max-width:46ch;
+}
+
+/* Wordmark — logo oficial em curvas (Aeonis LT Pro Light Extended + Roses
+   Bolero), extraído da identidade visual. Não é mais texto: o tamanho vem
+   da largura, e a cor de currentColor. Proporção travada em 4.9278:1 pelo
+   viewBox, então não há CLS.
+   O logo oficial é MONOCROMÁTICO — as seis variantes da identidade mudam de
+   cor por inteiro. Por isso "STUDIO" não é mais tan. */
+.wordmark{
+  display:inline-block;
+  line-height:0;
+  color:var(--cream);
+}
+.wordmark__art{
+  display:block;
+  width:100%;
+  height:auto;
+  fill:currentColor;
+}
+/* sprite do logo: presente no DOM para o <use>, invisível na página */
+.logo-sprite{
+  position:absolute;
+  width:0;
+  height:0;
+  overflow:hidden;
+}
+/* texto real do wordmark para leitores de tela e SEO */
+.sr-only{
+  position:absolute;
+  width:1px; height:1px;
+  margin:-1px; padding:0;
+  overflow:hidden;
+  clip-path:inset(50%);
+  white-space:nowrap;
+  border:0;
+}
+
+/* ---------- 4 · LAYOUT ---------- */
+.container{
+  width:100%;
+  max-width:calc(1440px + 2 * var(--margin));
+  margin-inline:auto;
+  padding-inline:var(--margin);
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(12, 1fr);
+  gap:var(--gutter);
+}
+
+.section{
+  position:relative;
+  padding-block:var(--section-pad);
+}
+/* seções encadeadas no mesmo fundo dividem UM respiro só (o padding
+   inferior da anterior) — sem vão duplo entre as sessões.
+   #studio fica de fora: a seção da torre termina em fullbleed sem
+   padding próprio, então o respiro do seam vem do topo do #studio. */
+#arquitetura{ padding-top:0; }
+
+.section-head{
+  margin-bottom:clamp(48px, 8vh, 96px);
+}
+.section-head .display-2{ margin-top:1.4rem; }
+
+.hairline{
+  display:block;
+  width:100%;
+  height:1px;
+  border:0;
+  background:var(--tan-soft);
+  transform-origin:left center; /* JS anima scaleX 0 → 1 */
+}
+
+/* fase 3 · split-text manual (window.CINNAMON.splitWords) —
+   máscara por palavra para o masked word reveal do hero e das seções.
+   O padding/margin compensa descendentes (g, p) sem abrir espaço no layout. */
+.word-mask{
+  display:inline-block;
+  overflow:hidden;
+  vertical-align:top;
+  padding-bottom:.12em;
+  margin-bottom:-.12em;
+}
+.word-mask .word{
+  display:inline-block;
+}
+
+/* ---------- 5 · OVERLAYS FIXOS ---------- */
+
+/* grain de filme — sempre presente */
+.grain{
+  position:fixed;
+  inset:0;
+  z-index:80;
+  pointer-events:none;
+  opacity:.045;
+  /* sem mix-blend-mode: blend sobre camada fixa força re-composição da página
+     inteira a cada frame de scroll (imagens "somem" em janelas grandes);
+     em .045 de opacidade o resultado visual é o mesmo */
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-repeat:repeat;
+  transform:translateZ(0); /* camada própria no compositor */
+}
+
+/* cursor customizado — só existe com JS + ponteiro fino.
+   A interpolação (lerp) é da fase 3; aqui só a pele. */
+.cursor-dot,
+.cursor-ring{
+  display:none;
+  position:fixed;
+  top:0; left:0;
+  z-index:100;
+  pointer-events:none;
+  border-radius:50%; /* círculo — exceção permitida */
+  transform:translate(-50%,-50%);
+}
+.cursor-dot{
+  width:6px; height:6px;
+  background:var(--tan);
+}
+.cursor-ring{
+  width:32px; height:32px;
+  border:1px solid var(--tan-soft);
+  transition:opacity .35s var(--ease-out);
+}
+/* expansão do anel: scale() via GSAP em ui.js — regra "só transform/opacity" */
+.cursor-dot.is-hidden{ opacity:0; }
+@media (hover:hover) and (pointer:fine) and (min-width:1024px){
+  /* fase 3: em reduced-motion o cursor custom não é inicializado — não exibir */
+  html.has-js:not(.is-reduced) .cursor-dot,
+  html.has-js:not(.is-reduced) .cursor-ring{ display:block; }
+}
+
+/* rail de progresso — desktop; o nó/label são atualizados na fase 3.
+   mix-blend-mode:difference (área minúscula, custo desprezível): os traços
+   em creme invertem sobre qualquer fundo — claros no dark, escuros no bloco
+   creme — e o rail nunca some. */
+.rail{
+  display:none;
+  position:fixed;
+  right:clamp(18px, 2.4vw, 44px);
+  top:50%;
+  transform:translateY(-50%);
+  z-index:60;
+  align-items:center;
+  flex-direction:column;
+  gap:18px;
+  mix-blend-mode:difference;
+}
+.rail__line{
+  position:relative;
+  width:1px;
+  height:40vh;
+  background:rgba(243,238,229,.32);
+}
+.rail__fill{
+  position:absolute;
+  top:0; left:0;
+  width:1px;
+  height:100%;
+  background:var(--cream);
+  transform:scaleY(0);          /* fase 3: cresce com o scroll — só transform */
+  transform-origin:top center;
+}
+.rail__node{
+  position:absolute;
+  top:0;
+  left:50%;
+  width:7px; height:7px;
+  border-radius:50%; /* círculo */
+  background:var(--cream);
+  transform:translate(-50%,-50%);
+}
+.rail__label{
+  writing-mode:vertical-rl;
+  font-size:.62rem;
+  font-weight:500;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  color:var(--cream); /* difference: vira escuro sobre o bloco claro */
+}
+@media (min-width:1024px){
+  .rail{ display:flex; }
+}
+
+/* ---------- 6 · HEADER ---------- */
+.site-header{
+  position:fixed;
+  inset:0 0 auto 0;
+  z-index:70;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:clamp(10px, 1.5vw, 18px) var(--margin); /* barra enxuta */
+  pointer-events:none; /* só os filhos clicam */
+  /* véu do menu. Base sólida: backdrop-filter num header fixo re-borra a
+     área sob ele a CADA frame de scroll — no mobile isso trava a rolagem.
+     O blur entra só onde há folga de GPU (ponteiro fino / telas grandes). */
+  background:rgba(34,35,31,.82);
+  border-bottom:1px solid rgba(183,164,142,.14);
+}
+@media (min-width:1024px) and (hover:hover) and (pointer:fine){
+  .site-header{
+    background:rgba(34,35,31,.38);
+    -webkit-backdrop-filter:blur(9px);
+    backdrop-filter:blur(9px);
+  }
+}
+.site-header > *{ pointer-events:auto; }
+
+.site-header .wordmark{ width:clamp(92px, 8.5vw, 118px); }
+
+.header-cta{
+  font-size:.68rem;
+  font-weight:500;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  color:var(--cream);
+  padding-bottom:.55em;
+  border-bottom:1px solid var(--tan-soft);
+  transition:color .4s var(--ease-out), border-color .4s var(--ease-out);
+}
+.header-cta:hover{ color:var(--tan); border-color:var(--tan); }
+@media (max-width:767px){
+  .header-cta{ font-size:.6rem; letter-spacing:.22em; } /* sempre visível */
+}
+
+/* WhatsApp flutuante — mobile/touch */
+/* (o CTA "Entre em contato" é único e vive no header, em todas as larguras) */
+
+/* ---------- 7 · PRELOADER ----------
+   Sem JS ele NÃO aparece (display:none) — a página nunca
+   fica presa atrás dele. A fase 4 liga com html.has-js. */
+.preloader{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:90;
+  background:var(--dark);
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:28px;
+}
+html.has-js .preloader{ display:flex; }
+.preloader .wordmark{ width:clamp(184px, 30vw, 268px); }
+.preloader__bar{
+  width:240px;
+  height:1px;
+  background:var(--tan-soft);
+  position:relative;
+  overflow:hidden;
+}
+.preloader__bar-fill{
+  position:absolute;
+  inset:0;
+  background:var(--tan);
+  transform:scaleX(0);
+  transform-origin:left center;
+}
+.preloader__count{
+  font-size:.68rem;
+  font-weight:500;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  color:var(--cream-60); /* contraste AA */
+}
+
+/* ---------- 8 · MOTIVO CÍRCULO ---------- */
+.ring{
+  position:absolute;
+  color:var(--tan-soft);
+  pointer-events:none;
+  z-index:0;
+}
+.ring--hero{
+  width:min(82vw, 900px);
+  height:min(82vw, 900px);
+  top:50%;
+  right:-18vw;
+  transform:translateY(-58%);
+  opacity:.75;
+}
+.ring--finale{
+  width:min(70vw, 760px);
+  height:min(70vw, 760px);
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  opacity:.6;
+}
+
+/* ---------- 9 · HERO — “A CHEGADA” ----------
+   Sem JS: quatro telas empilhadas, cada uma 100svh, legíveis.
+   Fase 3 (html.has-js): pin + crossfade — cenas viram camadas. */
+.hero{
+  position:relative;
+  background:var(--dark-2);
+}
+
+.hero-scene{
+  position:relative;
+  min-height:100svh;
+  display:flex;
+  align-items:flex-end;
+  overflow:hidden;
+  background-size:cover;      /* LQIP inline no HTML fica AQUI (camada que não escala): */
+  background-position:center; /* pintar na media re-rasterizava a cena inteira no Ken Burns */
+}
+
+/* gancho para a fase 3: cenas empilhadas em camadas dentro do pin.
+   Em reduced-motion (html.is-reduced, fase 3) o empilhamento NÃO se aplica:
+   as quatro cenas ficam em fluxo, estáticas e legíveis, sem pin. */
+html.has-js:not(.is-reduced) .hero{ height:100svh; overflow:hidden; }
+/* sem JS (ou reduced) a intro e o chapter-card da torre coexistiriam
+   na mesma tela — o card fica só na narrativa scrollada */
+html:not(.has-js) .hero-scene[data-scene="1"] .chapter-card,
+html.is-reduced .hero-scene[data-scene="1"] .chapter-card{ display:none; }
+html.has-js:not(.is-reduced) .hero-scene{ position:absolute; inset:0; min-height:0; }
+
+.hero-scene__media{
+  position:absolute;
+  inset:0;
+  overflow:hidden; /* não pinta nada: o scale do Ken Burns vira só transform no compositor */
+}
+.hero-scene__media img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transform:translateZ(0); /* textura própria na GPU — sem re-raster durante o scale */
+}
+/* véu de abertura da chegada: a 1ª tela nasce quase coberta de dark —
+   o prédio aparece em silhueta quente no centro, sem o azul do céu
+   disputando com o layout. O scroll dissolve o véu e revela a cor
+   real do vídeo (hero.js). */
+.hero-vinheta{
+  position:absolute;
+  inset:0;
+  z-index:2;
+  pointer-events:none;
+  background:radial-gradient(ellipse 115% 92% at 58% 40%,
+    rgba(23,24,22,.78) 0%,
+    rgba(23,24,22,.9) 52%,
+    rgba(23,24,22,.985) 100%);
+}
+
+/* sequência de frames do vídeo, desenhada pelo scroll (hero.js).
+   Transparente até o JS desenhar — a foto de fallback fica embaixo. */
+.hero-canvas{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  display:block;
+  pointer-events:none;
+}
+
+.hero-scene__scrim{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    to top,
+    rgba(23,24,22,.92) 0%,
+    rgba(23,24,22,.55) 30%,
+    rgba(23,24,22,.12) 62%,
+    rgba(23,24,22,0) 85%
+  );
+}
+
+/* (a cena do céu foi substituída: o prédio abre a página) */
+
+/* --- intro sobre a cena da torre --- */
+.hero-intro{
+  position:absolute;
+  left:0; right:0; bottom:0;
+  z-index:3;
+  padding-bottom:clamp(96px, 16vh, 180px);
+}
+.hero-intro .wordmark{
+  width:min(78vw, 700px);
+}
+.hero-slogan{
+  margin-top:clamp(28px, 4.5vh, 52px);
+  font-weight:300;
+  font-size:clamp(1.05rem, 2.1vw, 1.55rem);
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--cream);
+}
+.hero-assinatura{
+  margin-top:1.1rem;
+  max-width:44ch;
+}
+.hero-selo{
+  margin-top:clamp(28px, 4vh, 44px);
+  display:inline-block;
+  padding-top:1.1em;
+  border-top:1px solid var(--tan-soft);
+}
+
+/* hint “ROLE” */
+.scroll-hint{
+  position:absolute;
+  left:50%;
+  bottom:clamp(20px, 3.5vh, 40px);
+  transform:translateX(-50%);
+  z-index:2;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:12px;
+  font-size:.62rem;
+  font-weight:500;
+  letter-spacing:.34em;
+  text-transform:uppercase;
+  color:var(--cream-40);
+}
+.scroll-hint__line{
+  width:1px;
+  height:44px;
+  background:var(--tan-soft);
+  position:relative;
+  overflow:hidden;
+}
+.scroll-hint__line::after{ /* pulso desce — CSS puro, some em reduced-motion */
+  content:"";
+  position:absolute;
+  top:-40%;
+  left:0;
+  width:1px;
+  height:40%;
+  background:var(--tan);
+  animation:hintdrop 2.2s var(--ease-out) infinite;
+}
+@keyframes hintdrop{
+  0%{ transform:translateY(0); }
+  100%{ transform:translateY(260%); }
+}
+
+/* --- chapter-cards (cenas II–IV) --- */
+.chapter-card{
+  position:relative;
+  z-index:2;
+  width:100%;
+  padding-bottom:clamp(72px, 13vh, 150px);
+  max-width:none;
+}
+.chapter-card__inner{
+  max-width:640px;
+}
+.chapter-card .display{
+  font-size:clamp(2.4rem, 6.4vw, 6.2rem);
+  margin-top:1.2rem;
+}
+.chapter-card .hairline{
+  width:min(240px, 40%);
+  margin-block:1.6rem 1.4rem;
+}
+
+/* ---------- 10 · SEÇÃO 02 — O PROJETO ---------- */
+.projeto__lead{
+  max-width:58ch;
+  margin-top:2rem;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  gap:var(--gutter);
+  margin-top:clamp(64px, 10vh, 120px);
+  border-top:1px solid var(--tan-soft);
+}
+.stat{
+  padding-top:clamp(28px, 4vh, 44px);
+}
+.stat__num{
+  display:block;
+  font-weight:200;
+  font-size:clamp(2.6rem, 5vw, 4.8rem);
+  line-height:1;
+  letter-spacing:-.02em;
+  color:var(--cream);
+  white-space:nowrap;
+}
+.stat__num sup{
+  font-size:.34em;
+  font-weight:300;
+  color:var(--tan);
+  letter-spacing:0;
+  vertical-align:.9em;
+  margin-left:.18em;
+}
+.stat__label{
+  display:block;
+  margin-top:1rem;
+  font-size:.68rem;
+  font-weight:500;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  color:var(--cream-60); /* contraste AA */
+}
+@media (max-width:900px){
+  .stats{ grid-template-columns:repeat(2, 1fr); row-gap:clamp(40px, 6vh, 64px); }
+}
+@media (max-width:420px){
+  .stats{ grid-template-columns:1fr; }
+}
+
+/* ---------- 11 · SEÇÃO 03 — A TORRE ---------- */
+.torre{ padding-bottom:0; }
+
+.torre__hero{
+  position:relative;
+  min-height:min(92svh, 980px);
+  display:flex;
+  align-items:flex-end;
+  overflow:hidden;
+  margin-top:clamp(48px, 8vh, 96px);
+}
+.torre__media{
+  position:absolute;
+  inset:-12% 0; /* folga vertical para o parallax da fase 4 */
+  background-color:#2c2d28;
+}
+.torre__media img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.torre__scrim{
+  position:absolute;
+  inset:0;
+  /* a foto da torre tem céu e vidro claros; o scrim precisa cobrir toda a
+     faixa do card, não só o rodapé, senão o texto perde contraste */
+  background:linear-gradient(
+    to top,
+    rgba(23,24,22,.94) 0%,
+    rgba(23,24,22,.86) 30%,
+    rgba(23,24,22,.62) 55%,
+    rgba(23,24,22,.24) 78%,
+    rgba(23,24,22,0) 100%
+  );
+}
+@media (max-width:768px){
+  /* em coluna única o card ocupa o meio da imagem: véu quase sólido */
+  .torre__scrim{
+    background:linear-gradient(
+      to top,
+      rgba(23,24,22,.96) 0%,
+      rgba(23,24,22,.92) 45%,
+      rgba(23,24,22,.78) 72%,
+      rgba(23,24,22,.5) 100%
+    );
+  }
+}
+.torre__card{
+  position:relative;
+  z-index:2;
+  width:100%;
+  padding-block:clamp(56px, 10vh, 120px);
+}
+.torre__card .display-2{ margin-top:1.2rem; max-width:16ch; }
+.torre__card .caption{ margin-top:1.4rem; color:var(--cream); opacity:.88; }
+
+.torre__faixa{
+  display:grid;
+  grid-template-columns:repeat(12, 1fr);
+  gap:var(--gutter);
+  padding-block:clamp(64px, 10vh, 140px);
+}
+.torre__faixa figure{ overflow:hidden; }
+.torre__faixa .frame{
+  overflow:hidden;
+  background-color:var(--dark-3);
+}
+.torre__faixa .frame img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:transform var(--dur) var(--ease-out);
+}
+.torre__faixa figure:hover .frame img{ transform:scale(1.04); }
+.torre__f1{ grid-column:1 / span 8; }
+.torre__f1 .frame{ aspect-ratio:16 / 10; }
+.torre__f2{ grid-column:9 / span 4; align-self:end; }
+.torre__f2 .frame{ aspect-ratio:4 / 5; }
+.torre__f3{ grid-column:3 / span 10; margin-top:var(--gutter); }
+.torre__f3 .frame{ aspect-ratio:21 / 9; }
+.torre__faixa figcaption{
+  margin-top:1rem;
+  font-size:.62rem;
+  font-weight:500;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  color:var(--cream-60); /* contraste AA */
+}
+@media (max-width:768px){
+  .torre__f1,.torre__f2,.torre__f3{ grid-column:1 / -1; margin-top:0; }
+  .torre__f2 .frame{ aspect-ratio:4 / 5; }
+}
+
+/* ---------- 12 · SEÇÃO 04 — PLANTA ---------- */
+.planta__grid{
+  display:grid;
+  grid-template-columns:repeat(12, 1fr);
+  gap:var(--gutter);
+  align-items:start; /* planta nasce no MESMO nível do topo do texto */
+}
+.planta__texto{ grid-column:1 / span 5; }
+.planta__figura{
+  grid-column:6 / span 7;
+  /* sticky: ao chegar ao meio da tela a planta trava enquanto o texto
+     rola; solta no fim da coluna de texto, alinhada com o final dele.
+     O min() cobre telas largas (container trava em 1440). */
+  position:sticky;
+  top:max(90px, calc(50svh - min(14vw, 230px)));
+}
+
+.planta__num{
+  font-weight:200;
+  font-size:clamp(3.4rem, 7.4vw, 7rem);
+  line-height:1;
+  letter-spacing:-.02em;
+  color:var(--cream);
+  margin-top:2rem;
+  white-space:nowrap;
+}
+.planta__num .unidade{
+  font-size:.32em;
+  font-weight:300;
+  color:var(--tan);
+  letter-spacing:.06em;
+  margin-left:.2em;
+}
+.planta__sub{
+  margin-top:1.1rem;
+  color:var(--cream-60);
+}
+.planta__caption{ margin-top:1.4rem; }
+
+.planta__lista{
+  margin-top:clamp(40px, 6vh, 64px);
+}
+.planta__lista li{
+  border-top:1px solid var(--tan-soft);
+  padding-block:1.15em;
+  font-size:.72rem;
+  font-weight:500;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  color:var(--cream);
+  display:flex;
+  align-items:baseline;
+  gap:1.4em;
+}
+.planta__lista li:last-child{ border-bottom:1px solid var(--tan-soft); }
+.planta__lista .idx{
+  font-weight:200;
+  color:var(--tan);
+  letter-spacing:.1em;
+}
+
+.planta__frame{
+  overflow:hidden;
+  background-color:var(--dark-3); /* placeholder de carregamento — dentro da paleta */
+}
+.planta__frame img{
+  width:100%;
+  height:auto;
+  transition:transform var(--dur-slow) var(--ease-out);
+}
+.planta__figura:hover .planta__frame img{ transform:scale(1.03); }
+.planta__legenda{
+  margin-top:1rem;
+  font-size:.66rem;
+  font-weight:400;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--cream-60); /* contraste AA */
+}
+@media (max-width:1024px){
+  .planta__texto{ grid-column:1 / -1; }
+  .planta__figura{ grid-column:1 / -1; margin-top:clamp(40px, 7vh, 72px); position:static; } /* sem sticky em coluna única */
+}
+
+/* ---------- 13 · SEÇÃO 05 — GALERIA ----------
+   Sem JS: scroll horizontal nativo com snap (desktop e mobile).
+   Fase 4 transforma em pin horizontal no desktop. */
+.galeria{
+  background:var(--dark-2);
+  /* pinada em tela cheia com o conteúdo (título + faixa) centrado
+     verticalmente; o padding-top extra desconta o menu fixo */
+  min-height:100svh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding-block:clamp(48px, 7vh, 84px);
+  padding-top:calc(clamp(48px, 7vh, 84px) + 44px);
+}
+
+.galeria__track{
+  display:flex;
+  gap:clamp(28px, 2.6vw, 48px); /* respiro lateral claro entre as imagens */
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  padding-inline:var(--margin);
+  padding-bottom:18px;
+  scrollbar-width:thin;
+  scrollbar-color:var(--tan-soft) transparent;
+}
+.galeria__item{
+  flex:0 0 auto;
+  /* com JS: largura derivada da altura livre medida (--galeria-media-h),
+     para título + imagem + legenda sempre caberem na tela.
+     Sem JS: fallback pelo viewport. */
+  width:min(62vw, 880px, max(320px, calc((100svh - 260px) * 1.5)));
+  scroll-snap-align:center;
+}
+html.has-js .galeria__item{
+  width:calc(var(--galeria-media-h, 400px) * 1.5); /* o JS já limita pela largura */
+}
+html.has-js .galeria__frame{ height:var(--galeria-media-h, auto); }
+.galeria__frame{
+  overflow:hidden;
+  aspect-ratio:3 / 2;
+  background-color:var(--dark-3);
+  transition:transform var(--dur) var(--ease-out); /* hover no frame */
+}
+.galeria__frame img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  /* sem transition aqui: o zoom scrubado (GSAP) é dono do transform da img */
+}
+.galeria__item:hover .galeria__frame{ transform:scale(1.02); }
+.galeria__item figcaption{
+  margin-top:1.1rem;
+  display:flex;
+  align-items:baseline;
+  gap:1.2em;
+  font-size:.66rem;
+  font-weight:500;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  color:var(--cream-60); /* contraste AA */
+}
+.galeria__item figcaption .idx{
+  font-weight:200;
+  color:var(--tan);
+  letter-spacing:.1em;
+}
+@media (max-width:768px){
+  .galeria__item{ width:86vw; }
+}
+
+/* lightbox da galeria: expandir e dar zoom (ui.js) */
+.lightbox{
+  position:fixed;
+  inset:0;
+  z-index:120;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background:rgba(23,24,22,.95);
+}
+.lightbox.is-open{ display:flex; }
+.lightbox__img{
+  max-width:min(94vw, 1600px);
+  max-height:86svh;
+  width:auto;
+  height:auto;
+  cursor:zoom-in;
+  will-change:transform;
+  user-select:none;
+  -webkit-user-drag:none;
+}
+.lightbox.is-zoomed .lightbox__img{ cursor:grab; }
+.lightbox__close{
+  position:absolute;
+  top:clamp(16px, 2.4vh, 28px);
+  right:var(--margin);
+  z-index:2;
+  background:none;
+  border:0;
+  border-bottom:1px solid var(--tan-soft);
+  color:var(--cream);
+  font-family:inherit;
+  font-size:.68rem;
+  font-weight:500;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  padding:.35em 0;
+  cursor:pointer;
+  transition:color .4s var(--ease-out), border-color .4s var(--ease-out);
+}
+.lightbox__close:hover{ color:var(--tan); border-color:var(--tan); }
+.lightbox__legend{
+  position:absolute;
+  bottom:clamp(16px, 3vh, 32px);
+  left:var(--margin);
+  font-size:.66rem;
+  font-weight:500;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  color:var(--cream-60);
+}
+.galeria__frame{ cursor:zoom-in; } /* imagens clicáveis */
+
+/* ---------- 14 · SEÇÃO 06 — MARQUEE + BLOCO CLARO ---------- */
+.potencial{ padding-block:0; } /* marquee e bloco-claro carregam o próprio respiro */
+
+.marquee{
+  overflow:hidden;
+  padding-block:clamp(56px, 9vh, 110px);
+  border-block:1px solid var(--tan-soft);
+}
+.marquee__row{
+  display:flex;
+  gap:0;
+  width:max-content;
+  white-space:nowrap;
+  font-weight:200;
+  font-size:clamp(2.2rem, 6vw, 5.6rem);
+  line-height:1.15;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  color:var(--cream);
+  will-change:transform; /* deslocamento contínuo na fase 4 */
+}
+.marquee__row + .marquee__row{ margin-top:.4em; }
+.marquee__row--outline{
+  color:transparent;
+  -webkit-text-stroke:1px var(--tan);
+}
+.marquee__chunk{ padding-right:.6em; }
+
+.bloco-claro{
+  background:var(--cream-2);
+  color:var(--dark-60);
+  padding-block:var(--section-pad);
+  /* sem margin-top: a fresta transparente mostrava o body — escura antes
+     do morph, sumia quando ele disparava e parecia bug. O bloco emenda
+     direto na hairline inferior do marquee. */
+}
+.bloco-claro .eyebrow{ color:var(--dark); opacity:.8; }
+.bloco-claro .display-2{ color:var(--dark); max-width:14ch; }
+.bloco-claro .hairline{ background:var(--dark-soft); }
+
+.pilares{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:clamp(32px, 4vw, 64px);
+  margin-top:clamp(64px, 10vh, 120px);
+}
+.pilar__num{
+  font-weight:200;
+  font-size:clamp(2rem, 3.4vw, 3.2rem);
+  line-height:1;
+  letter-spacing:-.02em;
+  color:var(--dark);
+}
+.pilar .hairline{ margin-block:1.4rem; }
+.pilar h3{
+  font-weight:500;
+  font-size:.78rem;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  color:var(--dark);
+}
+.pilar p{
+  margin-top:.9rem;
+  font-size:1rem;
+  line-height:1.75;
+}
+@media (max-width:768px){
+  .pilares{ grid-template-columns:1fr; }
+}
+
+/* ---------- 15 · SEÇÃO 07 — ESTRUTURA & SERVIÇOS ---------- */
+.servicos{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:var(--gutter);
+}
+.servico{
+  border:1px solid var(--tan-soft);
+  padding:clamp(28px, 3vw, 44px);
+  min-height:220px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  gap:2.5rem;
+  transition:border-color .4s var(--ease-out), transform .4s var(--ease-out);
+}
+.servico:hover{
+  border-color:var(--tan);
+  transform:translateY(-4px);
+}
+.servico__num{
+  font-weight:200;
+  font-size:1.6rem;
+  letter-spacing:-.02em;
+  color:var(--tan);
+  opacity:.55;
+  transition:opacity .4s var(--ease-out);
+}
+.servico:hover .servico__num{ opacity:1; }
+.servico h3{
+  font-weight:500;
+  font-size:.78rem;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  color:var(--cream);
+}
+.servico p{
+  margin-top:.7rem;
+  font-size:.96rem;
+  color:var(--cream-60);
+}
+.servico__lista{
+  margin:1rem 0 0;
+  padding:0;
+  list-style:none;
+}
+.servico__lista li{
+  position:relative;
+  padding-left:1.15rem;
+  font-size:.94rem;
+  font-weight:300;
+  line-height:1.55;
+  color:var(--cream-60);
+}
+.servico__lista li + li{ margin-top:.42rem; }
+.servico__lista li::before{ /* hairline da marca no lugar de bullet/ícone */
+  content:"";
+  position:absolute;
+  left:0;
+  top:.78em;
+  width:7px;
+  height:1px;
+  background:var(--tan);
+  opacity:.7;
+}
+@media (max-width:1024px){
+  .servicos{ grid-template-columns:repeat(2, 1fr); }
+}
+@media (max-width:600px){
+  .servicos{ grid-template-columns:1fr; }
+}
+
+/* ---------- 16 · SEÇÃO 08 — LOCALIZAÇÃO ---------- */
+.local{ padding-block:0; }
+
+.local__hero{
+  position:relative;
+  min-height:min(88svh, 920px);
+  display:flex;
+  align-items:center;
+  overflow:hidden;
+}
+.local__media{
+  position:absolute;
+  inset:-12% 0;
+  background-color:var(--dark-3); /* placeholder de carregamento — dentro da paleta */
+}
+.local__media img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.local__scrim{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    to right,
+    rgba(23,24,22,.94) 0%,
+    rgba(23,24,22,.72) 42%,
+    rgba(23,24,22,.3) 75%
+  );
+}
+.local__card{
+  position:relative;
+  z-index:2;
+  /* o card herda .container (width:100% + margin auto): sem isto ele
+     encostava nas duas bordas da tela. Agora respeita a margem do site. */
+  width:auto;
+  max-width:min(640px, calc(100% - 2 * var(--margin)));
+  margin-inline:var(--margin);
+  background:rgba(23,24,22,.82);
+  border:1px solid var(--tan-soft);
+  padding:clamp(28px, 4vw, 56px);
+  margin-block:clamp(96px, 16vh, 180px);
+}
+@media (max-width:768px){
+  /* padding menor para "Orla de Palmas – TO" caber na linha única */
+  .local__card{ padding:24px; margin-block:clamp(56px, 12vh, 96px); }
+}
+.local__card .display-3{ margin-top:1.1rem; white-space:nowrap; } /* sempre 1 linha */
+.local__card .caption{ margin-top:1.2rem; }
+
+/* ---------- 17 · SEÇÃO 09 — FINALE + FOOTER ---------- */
+.finale{
+  position:relative;
+  background:var(--dark-2);
+  overflow:hidden;
+  text-align:center;
+  padding-block:var(--section-pad);
+}
+.finale__glow{
+  position:absolute;
+  top:42%;
+  left:50%;
+  width:min(60vw, 680px);
+  height:min(60vw, 680px);
+  transform:translate(-50%,-50%);
+  border-radius:50%; /* círculo */
+  /* glow difuso direto no gradiente — sem filter:blur (custo de rasterização) */
+  background:radial-gradient(circle, rgba(183,164,142,.85) 0%, rgba(183,164,142,.35) 34%, rgba(183,164,142,.1) 58%, rgba(183,164,142,0) 78%);
+  opacity:.18;
+  pointer-events:none;
+}
+.finale__inner{
+  position:relative;
+  z-index:2;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:clamp(28px, 4.5vh, 48px);
+}
+.finale .wordmark{
+  width:min(84vw, 880px);
+}
+.finale__tagline{
+  font-weight:300;
+  font-size:clamp(.95rem, 1.6vw, 1.2rem);
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--cream-60);
+}
+.cta-major{
+  display:inline-block;
+  margin-top:clamp(16px, 3vh, 32px);
+  border:1px solid var(--tan-soft);
+  padding:clamp(20px, 2.6vw, 30px) clamp(40px, 6vw, 84px);
+  font-weight:300;
+  font-size:clamp(1.05rem, 2vw, 1.5rem);
+  letter-spacing:.08em;
+  color:var(--cream);
+  transition:background-color .5s var(--ease-out), color .5s var(--ease-out), border-color .5s var(--ease-out);
+  will-change:transform; /* hover magnético na fase 3 */
+}
+.cta-major:hover{
+  background:var(--tan);
+  border-color:var(--tan);
+  color:var(--dark);
+}
+
+/* footer */
+.site-footer{
+  background:var(--dark-2);
+  border-top:1px solid var(--tan-soft);
+  padding-block:clamp(48px, 7vh, 80px);
+}
+.site-footer__top{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:32px;
+}
+.site-footer .wordmark{ width:110px; }
+.footer-nav{
+  display:flex;
+  flex-wrap:wrap;
+  gap:1.8em;
+}
+.footer-nav a{
+  font-size:.66rem;
+  font-weight:500;
+  letter-spacing:.24em;
+  text-transform:uppercase;
+  color:var(--cream-60);
+  transition:color .4s var(--ease-out);
+}
+.footer-nav a:hover{ color:var(--tan); }
+.site-footer__legal{
+  margin-top:clamp(40px, 6vh, 64px);
+  padding-top:24px;
+  border-top:1px solid var(--tan-soft);
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
+  gap:12px 32px;
+  font-size:.72rem;
+  color:var(--cream-60); /* contraste AA */
+  letter-spacing:.04em;
+}
+
+/* ---------- 18 · RESPONSIVO GERAL ---------- */
+@media (max-width:768px){
+  body{ font-size:1rem; }
+  .chapter-card .display{ font-size:clamp(2.1rem, 9vw, 3.2rem); }
+  .hero-intro .wordmark{ width:min(86vw, 440px); }
+}
+
+@media (max-width:360px){
+  :root{ --margin:20px; }
+}
+
+@media (min-width:2560px){
+  html{ font-size:18px; }
+}
+
+/* ---------- 19 · REDUCED MOTION ---------- */
+@media (prefers-reduced-motion:reduce){
+  html{ scroll-behavior:auto; }
+  *,*::before,*::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+  }
+  .scroll-hint__line::after{ animation:none; }
+  /* fases 3–4: pin, scrub, parallax, marquee e Ken Burns
+     também são desligados via gsap.matchMedia() */
+}
