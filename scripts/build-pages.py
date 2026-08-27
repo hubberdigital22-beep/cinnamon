@@ -46,6 +46,39 @@ NAV_LABEL = {
 
 PAGINAS_COM_FORM = {'landing', 'evento-rio'}  # únicas com <form> real (POST /api/lead)
 
+# O formulário fica DESLIGADO enquanto o Kommo não tiver endpoint e chave.
+# Motivo (27/08/2026): /api/lead só faz print() no log da Function, e o
+# projeto está no plano Hobby, onde esse log não é retido — quem preenchia
+# sumia sem deixar rastro, e a caixa de consentimento prometia um
+# descadastramento impossível de honrar sobre um dado que não existe.
+# Enquanto isso o CTA vai para o WhatsApp da corretora responsável.
+# Para religar: FORM_ATIVO = True, rodar o build e subir.
+FORM_ATIVO = False
+
+
+def desligar_form(markup, titulo, cta, nota=''):
+    """Comenta o <form> e põe o WhatsApp no lugar, preservando id="form"
+    (todas as âncoras /landing#form continuam caindo em pé)."""
+    if FORM_ATIVO:
+        return markup
+    # '--' fecharia o comentário HTML antes da hora
+    preservado = markup.replace('--', '- -').strip()
+    return '''
+<section class="section" id="form"><div class="container">
+  <div class="section-head">
+    <h2 class="display-2">%s</h2>
+  </div>
+  <p class="sec-body">Enquanto o cadastro on-line não entra no ar, o material
+  completo é enviado pelo WhatsApp, direto com a corretora responsável.</p>
+  <p class="sec-cta"><a class="cta-btn" href="%s" rel="noopener">%s</a></p>
+  <p class="fonte">Denyse Xavier · CRECI 6089/TO%s</p>
+</div></section>
+<!-- FORMULÁRIO DESLIGADO em 27/08/2026 — aguardando endpoint e chave do Kommo.
+     O markup abaixo está intacto: religar é trocar FORM_ATIVO para True em
+     scripts/build-pages.py e rodar o build. Não editar por aqui.
+%s
+-->''' % (esc(titulo), esc_attr(WHATSAPP), esc(cta), esc(nota), preservado)
+
 # O logo oficial (curvas) vive inline no index.html — extraímos o sprite de lá
 # na hora do build para as páginas usarem EXATAMENTE o mesmo desenho, sem
 # duplicar as curvas neste arquivo.
@@ -791,7 +824,7 @@ def render_form_landing(blocos, n):
     """Página 01 — form label/campos/consent/sucesso, literais do deck."""
     consent = get_micro(blocos, 'form consent') or ''
     sucesso = get_micro(blocos, 'form sucesso') or ''
-    return '''
+    markup = '''
 <section class="section" id="form"><div class="container">
   <div class="section-head">
     <h2 class="display-2">%s</h2>
@@ -816,13 +849,17 @@ def render_form_landing(blocos, n):
   </form>
 </div></section>''' % (esc(get_micro(blocos, 'form label') or 'Para onde enviamos'),
                         esc(consent), esc(sucesso))
+    return desligar_form(
+        markup,
+        get_micro(blocos, 'form label') or 'Para onde enviamos',
+        'Receber o material completo')
 
 
 def render_form_evento(blocos, n):
     """Página 09 — primeiro campo ramifica corretor/investidor, campos literais do deck."""
     consent = get_micro(blocos, 'form consent') or get_micro(blocos, 'disclaimer rodape') or ''
     primeiro = get_micro(blocos, 'form primeiro campo') or ''
-    return '''
+    markup = '''
 <section class="section" id="form"><div class="container">
   <div class="section-head">
     <h2 class="display-2">Cadastro para o evento</h2>
@@ -848,6 +885,9 @@ def render_form_evento(blocos, n):
     <p class="fonte">%s</p>
   </form>
 </div></section>''' % (esc(primeiro), esc(consent))
+    return desligar_form(
+        markup, 'Cadastro para o evento', 'Garantir meu acesso',
+        ' · o credenciamento de corretor é confirmado por este mesmo canal')
 
 
 PAGE_HEAD_EXTRA = {
