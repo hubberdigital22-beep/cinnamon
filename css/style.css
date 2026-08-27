@@ -1139,6 +1139,11 @@ html.has-js .galeria__frame{ height:var(--galeria-media-h, auto); }
 .local__card .caption{ margin-top:1.2rem; }
 
 /* ---------- 17 · SEÇÃO 09 — FINALE + FOOTER ---------- */
+/* na home o finale vem depois de uma seção full-bleed (.local, padding 0);
+   nas páginas a seção anterior deixa um --section-pad de respiro antes do
+   fechamento. O degrau extra entra aqui para igualar o ritmo. */
+#contato.finale{ padding-top:calc(var(--section-pad) * 2); }
+
 .finale{
   position:relative;
   background:var(--dark-2);

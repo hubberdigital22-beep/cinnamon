@@ -67,27 +67,23 @@ FORM_ATIVO = False
 
 
 def desligar_form(markup, titulo, cta, nota=''):
-    """Comenta o <form> e põe o WhatsApp no lugar, preservando id="form"
-    (todas as âncoras /landing#form continuam caindo em pé)."""
+    """Com FORM_ATIVO=False o <form> vira só o comentário de preservação —
+    nenhuma seção visível. A âncora id="form" NÃO morre: o finale da página
+    a herda (ver o ajuste em r_foot/assembly), então /landing#form e os
+    CTAs internos seguem caindo em pé, agora no fechamento com o botão de
+    WhatsApp. Decisão de 27/08 (print do cliente): sem texto de espera e
+    sem nome da corretora — só a opção de clique, encaixada no finale.
+    Para religar: FORM_ATIVO = True, rodar o build e subir."""
     if FORM_ATIVO:
         return markup
     # '--' fecharia o comentário HTML antes da hora
     preservado = markup.replace('--', '- -').strip()
     return '''
-<section class="section" id="form"><div class="container">
-  <div class="section-head">
-    <h2 class="display-2">%s</h2>
-  </div>
-  <p class="sec-body">Enquanto o cadastro on-line não entra no ar, o material
-  completo é enviado pelo WhatsApp, direto com a corretora responsável.</p>
-  <p class="sec-cta"><a class="cta-btn" href="%s" rel="noopener">%s</a></p>
-  <p class="fonte">Denyse Xavier · CRECI 6089/TO%s</p>
-</div></section>
 <!-- FORMULÁRIO DESLIGADO em 27/08/2026 — aguardando endpoint e chave do Kommo.
      O markup abaixo está intacto: religar é trocar FORM_ATIVO para True em
      scripts/build-pages.py e rodar o build. Não editar por aqui.
 %s
--->''' % (esc(titulo), esc_attr(WHATSAPP), esc(cta), esc(nota), preservado)
+-->''' % preservado
 
 # O logo oficial (curvas) vive inline no index.html — extraímos o sprite de lá
 # na hora do build para as páginas usarem EXATAMENTE o mesmo desenho, sem
@@ -1074,6 +1070,18 @@ def build_page(fname):
             continue  # nunca vai para o HTML publicado
         if b['tipo'] == 'fechamento':
             fechamento_html = r_foot(b, slug)  # finale é sempre o último ato
+            if slug == 'landing' and not FORM_ATIVO:
+                # a seção #form não existe como bloco visível: o finale herda
+                # a âncora (4 páginas apontam /landing#form) e o botão deixa
+                # de rolar para si mesmo — vai direto ao WhatsApp
+                if fechamento_html.count('href="#form"') != 1:
+                    raise SystemExit('finale da landing sem o CTA #form único')
+                fechamento_html = fechamento_html.replace(
+                    '<section class="finale" aria-label="Fechamento">',
+                    '<section class="finale" id="form" aria-label="Fechamento">')
+                fechamento_html = fechamento_html.replace(
+                    'href="#form"',
+                    'href="%s" rel="noopener"' % esc_attr(WHATSAPP))
             continue
 
         if b.get('bloqueado'):
@@ -1289,7 +1297,6 @@ TEMPLATE = '''<!DOCTYPE html>
       <div class="site-footer__legal">
         <p>© 2026 Cinnamon Studio · Palmas – TO</p>
         <p>Incorporação: Smart Studios SPE Ltda · CNPJ 68.632.814/0001-82</p>
-        <p>Intermediação: Denyse Xavier · CRECI 6089/TO</p>
         <p>Q Orla 14 – Graciosa, Avenida Parque, Quadra 01, Lote 01, s/n · CEP 77.026-035 · Palmas/TO</p>
         <!-- AJUSTAR: incluir nº do memorial de incorporação quando registrado -->
         <p>Imagens meramente ilustrativas. Memorial de incorporação não registrado — não há oferta, reserva ou venda de unidades (Lei 4.591/64, art. 32).</p>
