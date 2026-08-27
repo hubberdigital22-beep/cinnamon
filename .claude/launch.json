@@ -4,8 +4,20 @@
     {
       "name": "cinnamon",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "4173"],
+      "runtimeArgs": [
+        "scripts/serve.py",
+        "4173"
+      ],
       "port": 4173
+    },
+    {
+      "name": "cinnamon-dev",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "scripts/serve.py",
+        "4175"
+      ],
+      "port": 4175
     }
   ]
 }

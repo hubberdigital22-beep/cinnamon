@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cinnamon Studio · Palmas</title>
+  <meta name="description" content="Mercado, demanda embarcada, linha do tempo da região.">
+  <meta name="theme-color" content="#22231f">
+  <meta name="robots" content="noindex">
+  <!-- AJUSTAR: remover noindex quando o memorial de incorporação estiver
+       registrado e a comercialização, autorizada (Lei 4.591/64 art. 32). -->
+  <link rel="icon" type="image/svg+xml" href="<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' fill='%2322231f'/><path fill='%23b7a48e' d='M47.22159090909091 49.16477272727273V45.81818181818182C46.03409090909091 46.62784090909091 40.96022727272727 48.89488636363637 35.83238636363636 48.89488636363637C25.414772727272727 48.89488636363637 20.232954545454547 43.55113636363636 20.232954545454547 31.83806818181818C20.232954545454547 21.582386363636363 25.630681818181817 16.40056818181818 35.83238636363636 16.40056818181818C40.90625 16.40056818181818 45.76420454545454 18.721590909090907 46.89772727272727 19.36931818181818V16.13068181818182C46.08806818181818 15.752840909090907 42.03977272727273 13.647727272727273 35.34659090909091 13.647727272727273C25.14488636363636 13.647727272727273 16.77840909090909 18.883522727272727 16.77840909090909 31.83806818181818C16.77840909090909 45.60227272727273 23.147727272727273 51.64772727272727 35.34659090909091 51.64772727272727C41.55397727272727 51.64772727272727 46.30397727272727 49.65056818181818 47.22159090909091 49.16477272727273Z'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css?v=f077e391">
+</head>
+<body class="page">
+
+  <svg class="logo-sprite" aria-hidden="true" focusable="false">
+    <defs>
+      <g id="logo-cinnamon">
+        <g class="logo__main">
+          <path class="logo__ltr" d="M160.42849999999999 536.76774V528.4665600000001C157.48291999999998 530.47491 144.89726 536.09829 132.17771 536.09829C106.33694 536.09829 93.4835 522.8431800000001 93.4835 493.7890500000001C93.4835 468.34995000000004 106.8725 455.49651000000006 132.17771 455.49651000000006C144.76337 455.49651000000006 156.81347 461.25378000000006 159.62516 462.86046000000005V454.8270600000001C157.61681 453.8898300000001 147.57506 448.66812000000004 130.9727 448.66812000000004C105.66749 448.66812000000004 84.91454 461.6554500000001 84.91454 493.7890500000001C84.91454 527.931 100.71356 542.92668 130.9727 542.92668C146.37005 542.92668 158.15237 537.97275 160.42849999999999 536.76774Z"/>
+          <path class="logo__ltr" d="M201.39883999999995 541.32V450.2748H192.82987999999997V541.32Z"/>
+          <path class="logo__ltr" d="M329.93323999999996 541.32V450.2748H322.30150999999995V534.75939L252.54481999999996 450.2748H240.36082999999996V541.32H247.99255999999997V456.9693000000001L317.61535999999995 541.32Z"/>
+          <path class="logo__ltr" d="M458.3337499999999 541.32V450.2748H450.70201999999995V534.75939L380.9453299999999 450.2748H368.7613399999999V541.32H376.3930699999999V456.9693000000001L446.01586999999995 541.32Z"/>
+          <path class="logo__ltr" d="M584.0564599999999 541.32 540.80999 450.2748H530.3665699999999L486.31675999999993 541.32H495.1534999999999L535.18661 455.8981800000001L574.55027 541.32Z"/>
+          <path class="logo__ltr" d="M732.1387999999998 541.32V450.2748H719.6870299999998L672.4238599999999 535.69662L624.7590199999999 450.2748H612.0394699999998V541.32H619.2695299999998V455.49651000000006L666.9343699999998 541.32H676.8422299999999L724.5070699999999 455.49651000000006V541.32Z"/>
+          <path class="logo__ltr" d="M862.1459899999998 493.7890500000001C862.1459899999998 462.19101000000006 843.1336099999997 448.66812000000004 814.8828199999998 448.66812000000004C787.9709299999998 448.66812000000004 767.7535399999998 461.5215600000001 767.7535399999998 493.7890500000001C767.7535399999998 527.7971100000001 783.0169999999998 542.92668 814.8828199999998 542.92668C843.1336099999997 542.92668 862.1459899999998 530.07324 862.1459899999998 493.7890500000001ZM853.5770299999998 493.7890500000001C853.5770299999998 523.5126300000001 839.3846899999998 536.09829 814.8828199999998 536.09829C789.7114999999998 536.09829 776.3224999999998 523.64652 776.3224999999998 493.7890500000001C776.3224999999998 467.81439000000006 790.2470599999998 455.49651000000006 814.8828199999998 455.49651000000006C839.1169099999997 455.49651000000006 853.5770299999998 467.68050000000005 853.5770299999998 493.7890500000001Z"/>
+          <path class="logo__ltr" d="M987.1992499999998 541.32V450.2748H979.5675199999998V534.75939L909.8108299999998 450.2748H897.6268399999998V541.32H905.2585699999998V456.9693000000001L974.8813699999998 541.32Z"/>
+        </g>
+        <g class="logo__sub">
+          <path class="logo__ltr" d="M744.9853999999999 591.13166C744.9853999999999 608.1651899999999 779.6938899999999 603.60391 779.6938899999999 618.07172C779.6938899999999 624.4860199999999 773.7072099999999 628.69095 764.44211 628.69095C757.0300299999999 628.69095 751.3996999999999 625.19872 748.47763 619.28331L744.9853999999999 620.5661699999999C748.2638199999999 626.05396 756.03225 629.76 764.44211 629.76C776.0591199999999 629.76 783.82755 624.91364 783.82755 617.57283C783.82755 600.5393 749.11906 605.10058 749.11906 590.6327699999999C749.11906 584.1472 755.10574 579.94227 764.44211 579.94227C771.71165 579.94227 777.2707099999999 583.36323 780.26405 589.20737L783.82755 587.99578C780.6203999999999 582.50799 772.8519699999999 578.87322 764.44211 578.87322C752.68256 578.87322 744.9853999999999 583.71958 744.9853999999999 591.13166Z"/>
+          <path class="logo__ltr" d="M793.09265 578.87322V579.94227H809.19967V629.76H812.7631700000001V579.94227H828.87019V578.87322Z"/>
+          <path class="logo__ltr" d="M839.56069 578.87322V610.37456C839.56069 624.12967 845.0484799999999 629.76 856.09533 629.76C867.64107 629.76 871.98854 623.2744299999999 871.98854 607.95138V578.87322H870.91949V608.1651899999999C870.91949 622.0628399999999 866.92837 628.69095 855.9527899999999 628.69095C847.6142 628.69095 843.12419 622.27665 843.12419 611.9425V578.87322Z"/>
+          <path class="logo__ltr" d="M884.6746 629.76H901.92194C917.24499 629.47492 923.51675 621.13633 923.51675 604.03153C923.51675 586.2853 916.7461 579.1582999999999 901.92194 578.87322H884.6746ZM888.2381 628.69095V579.94227H901.49432C914.18038 579.79973 919.95325 586.85546 919.95325 604.03153C919.95325 620.92252 914.32292 628.69095 901.49432 628.69095Z"/>
+          <path class="logo__ltr" d="M938.4834500000001 629.76V578.87322H934.9199500000001V629.76Z"/>
+          <path class="logo__ltr" d="M971.4814600000001 629.76C986.5907000000001 629.76 993.0050000000001 618.1429899999999 993.0050000000001 604.31661C993.0050000000001 590.41896 986.5907000000001 578.87322 971.4814600000001 578.87322C956.3009500000001 578.87322 949.88665 590.41896 949.88665 604.31661C949.88665 618.1429899999999 956.3009500000001 629.76 971.4814600000001 629.76ZM971.4814600000001 579.94227C980.67529 579.94227 989.4415 589.34991 989.4415 604.31661C989.4415 619.28331 980.67529 628.69095 971.4814600000001 628.69095C962.21636 628.69095 953.45015 619.28331 953.45015 604.31661C953.45015 589.34991 962.21636 579.94227 971.4814600000001 579.94227Z"/>
+        </g>
+      </g>
+    </defs>
+  </svg>
+
+  <!-- grain global de filme — mesmo do index (o CSS o desliga no mobile) -->
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- cursor customizado — a lógica vive em js/ui.js; sem JS não aparece -->
+  <div class="cursor-ring" aria-hidden="true"></div>
+  <div class="cursor-dot" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <a href="/" class="wordmark" aria-label="Cinnamon Studio — página inicial">
+      <svg class="wordmark__art" viewBox="82.91 446.67 912.09 185.09" aria-hidden="true" focusable="false"><use href="#logo-cinnamon"/></svg>
+    </a>
+    <!-- "Entre em contato" vive no rodapé do drawer -->
+    <button class="header-menu-btn" type="button" data-menu-toggle
+            aria-expanded="false" aria-controls="menu-overlay"><span class="menu-icon" aria-hidden="true"><span></span><span></span><span></span></span><span class="header-menu-btn__txt">Menu</span></button>
+  </header>
+
+  <div class="menu-overlay" id="menu-overlay" hidden>
+    <div class="menu-overlay__scrim" data-menu-close aria-hidden="true"></div>
+    <aside class="menu-panel" role="dialog" aria-modal="true" aria-label="Menu de navegação">
+      <div class="menu-overlay__bar">
+        <span class="wordmark" aria-hidden="true"><svg class="wordmark__art" viewBox="82.91 446.67 912.09 185.09" aria-hidden="true" focusable="false"><use href="#logo-cinnamon"/></svg></span>
+        <button class="header-menu-btn" type="button" data-menu-close>Fechar</button>
+      </div>
+      <nav aria-label="Páginas do site"><ul class="menu-list"><li><a href="/">Início</a></li><li><a href="/landing">Material</a></li><li><a href="/o-ativo">O Ativo</a></li><li><a href="/os-servicos">Os Serviços</a></li><li><a href="/a-conta">A Conta</a></li><li><a href="/palmas" aria-current="page">Palmas</a></li><li><a href="/riscos">Riscos</a></li><li><a href="/area-da-imobiliaria">Área da Imobiliária</a></li><li><a href="/evento-rio">Evento Rio</a></li></ul></nav>
+      <div class="menu-overlay__foot">
+        <p class="menu-overlay__tag">Seu espaço. Seu ritmo.</p>
+        <a class="cta-link" href="https://wa.me/5563999718064" rel="noopener">Entre em contato</a>
+      </div>
+    </aside>
+  </div>
+
+  <main class="page">
+    <section class="page-hero"><div class="container"><p class="eyebrow">Palmas – Tocantins</p><h1 class="display-2">A capital mais nova do Brasil tem a maior renda familiar do seu grupo comparável.</h1><p class="page-hero__lead caption">R$ 10.164 por família, contra R$ 7.629 da média do grupo. Crescimento populacional de 2,58% ao ano, contra 1,88%. Não é um mercado emergente — é um mercado que a maioria dos investidores do Sudeste ainda não abriu a planilha para olhar.</p><div class="cta-row"><a class="cta-btn" href="/landing#form">Receber o estudo de mercado</a></div></div></section><div id="conteudo"></div><section class="section sec sec--capitular" id="s-01"><div class="container"><div class="section-head"><p class="eyebrow">Quem mora aqui</p><h2 class="display-2">323.625 habitantes, e o número de famílias cresceu 72,61% em catorze anos</h2></div><p class="sec-body">Entre 2010 e 2024, Palmas saiu de 48.824 para 84.273 famílias. Hoje são 121.339 domicílios, dos quais 34,79% são alugados — proporção alta para o padrão brasileiro. O IDH é 0,788. As gerações Y e Z somam 64,19% da população: a faixa que forma domicílio pequeno, mora sozinha e aluga.</p><p class="fonte">Fonte · ADEMI-TO / Grupo Prospecta, com base em IBGE e PNAD. Coleta de março de 2026.</p></div></section><section class="section sec sec--lastro" id="s-02"><div class="container"><div class="sec__main"><div class="section-head"><p class="eyebrow">O mercado imobiliário</p><h2 class="display-2">4.435 unidades lançadas e velocidade de venda de 78,85%</h2></div><p class="sec-body">O mercado vertical de Palmas lançou 4.435 unidades e mantém 938 em estoque, com velocidade de venda acumulada de 78,85% e preço médio de R$ 12.885 por metro quadrado. O segmento de studio é o mais líquido: a cidade absorveu 506 studios nesta faixa de ticket, com velocidade de venda entre 94% e 99%, sem qualquer plataforma de locação envolvida.</p></div><aside class="sec__aside"><!-- AJUSTAR: nota interna do deck (por_que), fora da tela. Se for copy pública, mova para "corpo" no JSON: A leitura que interessa: em Palmas o comprador compra imóvel. A liquidez do studio nesta faixa foi provada por produtos sem tecnologia de gestão — o que sustenta a decisão de posicionar este empreendimento por prazo, operação e endereço, não por aplicativo. --><p class="fonte">Fonte · ADEMI-TO / Grupo Prospecta, ofertas do 1º trimestre de 2026.</p></aside></div></section><section class="section sec sec--ficha" id="s-03"><div class="container"><div class="section-head"><p class="eyebrow">A demanda de hospedagem</p><h2 class="display-2">49 hotéis, 1.982 unidades e ocupação média de 69,19%</h2></div><div class="sec__corpo"><p class="sec-body">A diária média da hotelaria de Palmas é de R$ 331,87. O segmento de três estrelas concentra 1.179 unidades e roda 74,82% de ocupação com diária de R$ 343,64 — a melhor eficiência do mercado. No segmento superior há hotel operando a 95% de ocupação, o que indica demanda represada acima do padrão hoje ofertado.</p><p class="fonte">Fonte · ADEMI-TO / Grupo Prospecta, coleta de março de 2026.</p><p class="ressalva">Receita por unidade disponível na hotelaria é valor bruto. O custo operacional de um hotel é maior que o de uma locação por temporada.</p></div></div></section><section class="section sec sec--prancha" id="s-04"><figure class="prancha"><div class="prancha__media"><picture><source media="(max-width: 768px)" srcset="/img/ext-orla-960.webp"><img src="/img/ext-orla-1920.webp" width="1600" height="1600" sizes="100vw" alt="Fachada frontal do Cinnamon Studio na hora azul, com palmeiras na entrada e o letreiro aceso no alto da torre." loading="lazy" style="object-position:50% 44%;" decoding="async"></picture></div><div class="prancha__scrim" aria-hidden="true"></div><figcaption class="prancha__card container"><div class="section-head"><p class="eyebrow">O trecho</p><h2 class="display-2">Orla da Graciosa: onde a cidade negocia a R$ 19.000 o metro quadrado</h2></div><p class="prancha__legenda">Imagem meramente ilustrativa.</p></figcaption></figure><div class="container sec__depois"><p class="sec-body">Cruzamento da Avenida JK com a NS-15. Quinhentos metros do lago, quinhentos metros da universidade. Produtos de orla em Palmas sustentam R$ 19.000 por metro quadrado — o patamar mais alto da cidade, com a maior velocidade de venda registrada no período.</p><p class="fonte">Fonte · ADEMI-TO / Grupo Prospecta, ofertas do 1º trimestre de 2026.</p></div></section><section class="section section--claro sec sec--claro" id="s-05"><div class="container"><div class="section-head"><p class="eyebrow">O que o estudo também diz</p><h2 class="display-2">Onde este mercado é frágil</h2></div><p class="sec-body">A renda familiar média de Palmas é de R$ 10.164, e o estudo estima que o comprador natural de um vertical de um dormitório nesta faixa tenha renda a partir de R$ 16.000. Ou seja: o comprador local é minoria. Este produto depende de investidor de fora e do topo da pirâmide local — e é por isso que o lançamento acontece no Rio de Janeiro, e não na praça de alimentação de Palmas. Se essa premissa te preocupa, ela deve preocupar. Está no capítulo de riscos.</p><p class="fonte">Fonte · ADEMI-TO / Grupo Prospecta, slide de produto sugerido.</p><p class="sec-cta"><a class="cta-link" href="/riscos">Ver o capítulo de riscos</a></p></div></section><section class="section sec sec--quiet" id="s-06"><div class="container"><ul class="stats"><li class="stat"><span class="stat__num">R$ 10.164</span><span class="stat__label">renda familiar média — a maior do grupo comparável (média de R$ 7.629)</span><span class="stat__fonte">ADEMI</span></li><li class="stat"><span class="stat__num"><span class="stat__n" data-count="2,58" data-decimals="2">2,58</span>% a.a.</span><span class="stat__label">crescimento populacional, contra 1,88% do grupo</span><span class="stat__fonte">ADEMI</span></li><li class="stat"><span class="stat__num">+72,61%</span><span class="stat__label">crescimento no número de famílias entre 2010 e 2024</span><span class="stat__fonte">ADEMI</span></li><li class="stat"><span class="stat__num"><span class="stat__n" data-count="34,79" data-decimals="2">34,79</span>%</span><span class="stat__label">dos domicílios de Palmas são alugados</span><span class="stat__fonte">ADEMI</span></li><li class="stat"><span class="stat__num"><span class="stat__n" data-count="64,19" data-decimals="2">64,19</span>%</span><span class="stat__label">da população é das gerações Y e Z</span><span class="stat__fonte">ADEMI</span></li><li class="stat"><span class="stat__num"><span class="stat__n" data-count="78,85" data-decimals="2">78,85</span>%</span><span class="stat__label">velocidade de venda do mercado vertical de Palmas</span><span class="stat__fonte">ADEMI, 1º tri 2026</span></li></ul></div></section><section class="section sec sec--ficha" id="s-07"><div class="container"><div class="section-head"><p class="eyebrow">Credenciais</p></div><div class="sec__corpo"><ul class="credenciais"><li>Estudo ADEMI-TO / Grupo Prospecta, 226 páginas, coleta de março de 2026, com base em AirDNA, IBGE e PNAD</li></ul></div></div></section><section class="section sec sec--quiet" id="s-08"><div class="container"><div class="section-head"><h2 class="display-2">Perguntas frequentes</h2></div><div class="faq-list"><details><summary>De onde vêm esses números?</summary><p>Do relatório encomendado pela ADEMI-TO ao Grupo Prospecta, com coleta em março de 2026 sobre as ofertas do primeiro trimestre. As fontes primárias são AirDNA, IBGE e PNAD. O estudo completo vai no material.</p></details><details><summary>Palmas tem demanda de hospedagem o ano inteiro?</summary><p>A hotelaria formal roda 69,19% de ocupação média, com o segmento de três estrelas em 74,82%. A demanda de temporada é mais sazonal e mais disputada — o capítulo de riscos trata disso.</p></details></div></div></section><section class="finale" aria-label="Fechamento"><span class="finale__glow" aria-hidden="true"></span><svg class="ring ring--finale" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><circle cx="50" cy="50" r="49.5" fill="none" stroke="currentColor" stroke-width="0.35"/></svg><div class="finale__inner container"><p class="wordmark">
+          <span class="sr-only">Cinnamon Studio</span>
+          <svg class="wordmark__art" viewBox="82.91 446.67 912.09 185.09" aria-hidden="true" focusable="false">
+    <defs><clipPath id="logo-clip-finale"><rect x="82.91" y="446.67" width="912.09" height="185.09"/></clipPath></defs>
+    <g clip-path="url(#logo-clip-finale)">
+  <g class="wordmark__main logo__main">
+    <path class="logo__ltr" d="M160.42849999999999 536.76774V528.4665600000001C157.48291999999998 530.47491 144.89726 536.09829 132.17771 536.09829C106.33694 536.09829 93.4835 522.8431800000001 93.4835 493.7890500000001C93.4835 468.34995000000004 106.8725 455.49651000000006 132.17771 455.49651000000006C144.76337 455.49651000000006 156.81347 461.25378000000006 159.62516 462.86046000000005V454.8270600000001C157.61681 453.8898300000001 147.57506 448.66812000000004 130.9727 448.66812000000004C105.66749 448.66812000000004 84.91454 461.6554500000001 84.91454 493.7890500000001C84.91454 527.931 100.71356 542.92668 130.9727 542.92668C146.37005 542.92668 158.15237 537.97275 160.42849999999999 536.76774Z"/>
+    <path class="logo__ltr" d="M201.39883999999995 541.32V450.2748H192.82987999999997V541.32Z"/>
+    <path class="logo__ltr" d="M329.93323999999996 541.32V450.2748H322.30150999999995V534.75939L252.54481999999996 450.2748H240.36082999999996V541.32H247.99255999999997V456.9693000000001L317.61535999999995 541.32Z"/>
+    <path class="logo__ltr" d="M458.3337499999999 541.32V450.2748H450.70201999999995V534.75939L380.9453299999999 450.2748H368.7613399999999V541.32H376.3930699999999V456.9693000000001L446.01586999999995 541.32Z"/>
+    <path class="logo__ltr" d="M584.0564599999999 541.32 540.80999 450.2748H530.3665699999999L486.31675999999993 541.32H495.1534999999999L535.18661 455.8981800000001L574.55027 541.32Z"/>
+    <path class="logo__ltr" d="M732.1387999999998 541.32V450.2748H719.6870299999998L672.4238599999999 535.69662L624.7590199999999 450.2748H612.0394699999998V541.32H619.2695299999998V455.49651000000006L666.9343699999998 541.32H676.8422299999999L724.5070699999999 455.49651000000006V541.32Z"/>
+    <path class="logo__ltr" d="M862.1459899999998 493.7890500000001C862.1459899999998 462.19101000000006 843.1336099999997 448.66812000000004 814.8828199999998 448.66812000000004C787.9709299999998 448.66812000000004 767.7535399999998 461.5215600000001 767.7535399999998 493.7890500000001C767.7535399999998 527.7971100000001 783.0169999999998 542.92668 814.8828199999998 542.92668C843.1336099999997 542.92668 862.1459899999998 530.07324 862.1459899999998 493.7890500000001ZM853.5770299999998 493.7890500000001C853.5770299999998 523.5126300000001 839.3846899999998 536.09829 814.8828199999998 536.09829C789.7114999999998 536.09829 776.3224999999998 523.64652 776.3224999999998 493.7890500000001C776.3224999999998 467.81439000000006 790.2470599999998 455.49651000000006 814.8828199999998 455.49651000000006C839.1169099999997 455.49651000000006 853.5770299999998 467.68050000000005 853.5770299999998 493.7890500000001Z"/>
+    <path class="logo__ltr" d="M987.1992499999998 541.32V450.2748H979.5675199999998V534.75939L909.8108299999998 450.2748H897.6268399999998V541.32H905.2585699999998V456.9693000000001L974.8813699999998 541.32Z"/>
+  </g>
+  <g class="wordmark__sub logo__sub">
+    <path class="logo__ltr" d="M744.9853999999999 591.13166C744.9853999999999 608.1651899999999 779.6938899999999 603.60391 779.6938899999999 618.07172C779.6938899999999 624.4860199999999 773.7072099999999 628.69095 764.44211 628.69095C757.0300299999999 628.69095 751.3996999999999 625.19872 748.47763 619.28331L744.9853999999999 620.5661699999999C748.2638199999999 626.05396 756.03225 629.76 764.44211 629.76C776.0591199999999 629.76 783.82755 624.91364 783.82755 617.57283C783.82755 600.5393 749.11906 605.10058 749.11906 590.6327699999999C749.11906 584.1472 755.10574 579.94227 764.44211 579.94227C771.71165 579.94227 777.2707099999999 583.36323 780.26405 589.20737L783.82755 587.99578C780.6203999999999 582.50799 772.8519699999999 578.87322 764.44211 578.87322C752.68256 578.87322 744.9853999999999 583.71958 744.9853999999999 591.13166Z"/>
+    <path class="logo__ltr" d="M793.09265 578.87322V579.94227H809.19967V629.76H812.7631700000001V579.94227H828.87019V578.87322Z"/>
+    <path class="logo__ltr" d="M839.56069 578.87322V610.37456C839.56069 624.12967 845.0484799999999 629.76 856.09533 629.76C867.64107 629.76 871.98854 623.2744299999999 871.98854 607.95138V578.87322H870.91949V608.1651899999999C870.91949 622.0628399999999 866.92837 628.69095 855.9527899999999 628.69095C847.6142 628.69095 843.12419 622.27665 843.12419 611.9425V578.87322Z"/>
+    <path class="logo__ltr" d="M884.6746 629.76H901.92194C917.24499 629.47492 923.51675 621.13633 923.51675 604.03153C923.51675 586.2853 916.7461 579.1582999999999 901.92194 578.87322H884.6746ZM888.2381 628.69095V579.94227H901.49432C914.18038 579.79973 919.95325 586.85546 919.95325 604.03153C919.95325 620.92252 914.32292 628.69095 901.49432 628.69095Z"/>
+    <path class="logo__ltr" d="M938.4834500000001 629.76V578.87322H934.9199500000001V629.76Z"/>
+    <path class="logo__ltr" d="M971.4814600000001 629.76C986.5907000000001 629.76 993.0050000000001 618.1429899999999 993.0050000000001 604.31661C993.0050000000001 590.41896 986.5907000000001 578.87322 971.4814600000001 578.87322C956.3009500000001 578.87322 949.88665 590.41896 949.88665 604.31661C949.88665 618.1429899999999 956.3009500000001 629.76 971.4814600000001 629.76ZM971.4814600000001 579.94227C980.67529 579.94227 989.4415 589.34991 989.4415 604.31661C989.4415 619.28331 980.67529 628.69095 971.4814600000001 628.69095C962.21636 628.69095 953.45015 619.28331 953.45015 604.31661C953.45015 589.34991 962.21636 579.94227 971.4814600000001 579.94227Z"/>
+  </g>
+    </g>
+        </svg>
+        </p><h2 class="display-3 finale__titulo">O estudo completo de Palmas vai no material.</h2><p class="finale__texto caption">226 páginas, coleta de março de 2026, com as fontes primárias declaradas.</p><a class="cta-major" href="/landing#form">Receber o estudo de mercado</a></div></section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="site-footer__top">
+        <p class="wordmark">
+          <svg class="wordmark__art" viewBox="82.91 446.67 912.09 185.09" aria-hidden="true" focusable="false"><use href="#logo-cinnamon"/></svg>
+          <span class="sr-only">Cinnamon Studio</span>
+        </p>
+        <nav class="footer-nav" aria-label="Navegação do rodapé">
+          <a href="/#projeto">O Projeto</a>
+          <a href="/#studio">O Studio</a>
+          <a href="/#estrutura">Estrutura</a>
+          <a href="/#potencial">Potencial</a>
+          <a href="/#contato">Contato</a>
+          <a href="https://www.instagram.com/cinnamonstudiobr/" rel="noopener">Instagram</a>
+        </nav>
+      </div>
+      <p class="eyebrow" style="margin-top:2.4rem;">Para investidor e corretor</p>
+      <nav class="footer-nav" aria-label="Material completo para investidor e corretor" style="margin-top:1rem;"><a href="/landing">Material</a><a href="/o-ativo">O Ativo</a><a href="/os-servicos">Serviços</a><a href="/a-conta">A Conta</a><a href="/palmas" aria-current="page">Palmas</a><a href="/riscos">Riscos</a><a href="/area-da-imobiliaria">Imobiliária</a><a href="/evento-rio">Evento Rio</a></nav>
+      <div class="site-footer__legal">
+        <p>© 2026 Cinnamon Studio · Palmas – TO</p>
+        <p>Incorporação: Smart Studios SPE Ltda · CNPJ 68.632.814/0001-82</p>
+        <p>Intermediação: Denyse Xavier · CRECI 6089/TO</p>
+        <p>Q Orla 14 – Graciosa, Avenida Parque, Quadra 01, Lote 01, s/n · CEP 77.026-035 · Palmas/TO</p>
+        <!-- AJUSTAR: incluir nº do memorial de incorporação quando registrado -->
+        <p>Imagens meramente ilustrativas. Memorial de incorporação não registrado — não há oferta, reserva ou venda de unidades (Lei 4.591/64, art. 32).</p>
+      </div>
+    </div>
+  </footer>
+
+  <script defer src="https://cdn.jsdelivr.net/combine/npm/gsap@3.15.0/dist/gsap.min.js,npm/gsap@3.15.0/dist/ScrollTrigger.min.js,npm/lenis@1.3.26/dist/lenis.min.js"></script>
+  <script defer src="/js/menu.js?v=8bacd703"></script>
+  <script defer src="/js/lenis-setup.js?v=66135d02"></script>
+  <script defer src="/js/ui.js?v=0cb20cbb"></script>
+  <script defer src="/js/pages.js?v=6b60141f"></script>
+  <script defer src="/js/forms.js?v=85dde935"></script>
+</body>
+</html>

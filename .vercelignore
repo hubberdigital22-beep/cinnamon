@@ -4,3 +4,8 @@ _to_delete/
 scripts/serve.py
 PROMPT-CINNAMON-STUDIO-SITE.md
 CLAUDE.md
+
+# copy deck e notas internas — nunca no deploy publico
+content/
+scripts/
+__pycache__/

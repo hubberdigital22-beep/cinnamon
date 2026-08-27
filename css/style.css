@@ -83,13 +83,16 @@ a{ color:inherit; text-decoration:none; }
   color:var(--cream);
 }
 
-/* títulos de seção em fluxo — mesmo desenho, escala contida */
+/* títulos de seção em fluxo — mesmo desenho, escala contida.
+   break-word: válvula de escape — um token colado por NBSP (número+unidade)
+   maior que a coluna quebra dentro da palavra em vez de ser cortado */
 .display-2{
   font-weight:300;
   font-size:clamp(2.2rem, 5.6vw, 5.4rem);
   line-height:1.04;
   letter-spacing:-.005em;
   color:var(--cream);
+  overflow-wrap:break-word;
 }
 
 .display-3{
@@ -332,23 +335,9 @@ a{ color:inherit; text-decoration:none; }
 
 .site-header .wordmark{ width:clamp(92px, 8.5vw, 118px); }
 
-.header-cta{
-  font-size:.68rem;
-  font-weight:500;
-  letter-spacing:.28em;
-  text-transform:uppercase;
-  color:var(--cream);
-  padding-bottom:.55em;
-  border-bottom:1px solid var(--tan-soft);
-  transition:color .4s var(--ease-out), border-color .4s var(--ease-out);
-}
-.header-cta:hover{ color:var(--tan); border-color:var(--tan); }
-@media (max-width:767px){
-  .header-cta{ font-size:.6rem; letter-spacing:.22em; } /* sempre visível */
-}
-
-/* WhatsApp flutuante — mobile/touch */
-/* (o CTA "Entre em contato" é único e vive no header, em todas as larguras) */
+/* O CTA "Entre em contato" saiu do header: ele vive no rodapé do drawer,
+   e ter os dois deixava o mesmo destino repetido a um clique de distância.
+   O header fica só com a marca à esquerda e o botão de menu à direita. */
 
 /* ---------- 7 · PRELOADER ----------
    Sem JS ele NÃO aparece (display:none) — a página nunca
@@ -976,6 +965,20 @@ html.has-js .galeria__frame{ height:var(--galeria-media-h, auto); }
 .bloco-claro .display-2{ color:var(--dark); max-width:14ch; }
 .bloco-claro .hairline{ background:var(--dark-soft); }
 
+.potencial__corpo{
+  max-width:56ch;
+  margin-top:1.6rem;
+  font-size:1.05rem;
+  line-height:1.75;
+}
+.potencial__fonte{
+  max-width:56ch;
+  margin-top:1rem;
+  font-size:.78rem;
+  letter-spacing:.02em;
+  opacity:.62;
+}
+
 .pilares{
   display:grid;
   grid-template-columns:repeat(3, 1fr);
@@ -1018,7 +1021,7 @@ html.has-js .galeria__frame{ height:var(--galeria-media-h, auto); }
   min-height:220px;
   display:flex;
   flex-direction:column;
-  justify-content:space-between;
+  justify-content:flex-start;
   gap:2.5rem;
   transition:border-color .4s var(--ease-out), transform .4s var(--ease-out);
 }
@@ -1252,4 +1255,1129 @@ html.has-js .galeria__frame{ height:var(--galeria-media-h, auto); }
   .scroll-hint__line::after{ animation:none; }
   /* fases 3–4: pin, scrub, parallax, marquee e Ken Burns
      também são desligados via gsap.matchMedia() */
+}
+
+/* ============================================================
+   20 · PÁGINAS EDITORIAIS (multipágina)
+   As páginas do Copy Deck falam a MESMA língua do index: section-head
+   com eyebrow entre colchetes, títulos display-2 com word-mask, stats
+   com count-up, hairlines, finale com glow. Os reveals vivem em
+   js/pages.js (gêmeo do sections.js); sem JS tudo nasce visível.
+   ============================================================ */
+
+/* o fundo escuro fica SÓ no <body>: o morph da banda clara anima
+   background-color do body e um <main> opaco por cima o tornaria inerte
+   (mesma arquitetura da home, onde as seções são transparentes) */
+body.page{ background:var(--dark); }
+.page{ min-height:100vh; }
+
+/* ---------- hero da página ---------- */
+.page-hero{
+  position:relative;
+  display:flex;
+  align-items:flex-end;
+  min-height:min(78vh, 820px);
+  padding:clamp(140px, 20vh, 220px) 0 var(--section-pad);
+}
+.page-hero .container{ position:relative; }
+.page-hero h1{ max-width:18ch; text-wrap:balance; }
+.page-hero__lead{
+  margin-top:clamp(20px, 3vh, 32px);
+  max-width:56ch;
+}
+.page-hero .cta-row{ margin-top:clamp(32px, 5vh, 52px); }
+
+/* aviso de status (deck: "Sobe com ressalva") — micro-etiqueta */
+.page-aviso{
+  display:inline-block;
+  margin-top:4px;
+  padding:10px 16px;
+  border:1px solid var(--tan-soft);
+  font-size:.62rem;
+  font-weight:500;
+  letter-spacing:.24em;
+  text-transform:uppercase;
+  color:var(--tan);
+}
+
+/* ---------- CTAs ----------
+   O index não tem botão sólido: só contorno (cta-major) e sublinhado
+   (header-cta). As páginas herdam os dois registros, em escala de corpo. */
+.cta-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:16px 32px;
+  align-items:center;
+}
+.cta-btn{
+  display:inline-block;
+  border:1px solid var(--tan-soft);
+  padding:clamp(14px, 1.8vw, 19px) clamp(26px, 3.4vw, 44px);
+  font-weight:300;
+  font-size:clamp(.92rem, 1.4vw, 1.05rem);
+  letter-spacing:.08em;
+  color:var(--cream);
+  transition:background-color .5s var(--ease-out), color .5s var(--ease-out), border-color .5s var(--ease-out);
+}
+.cta-btn:hover{
+  background:var(--tan);
+  border-color:var(--tan);
+  color:var(--dark);
+}
+.cta-link{
+  font-size:.72rem;
+  font-weight:500;
+  letter-spacing:.24em;
+  text-transform:uppercase;
+  color:var(--cream-60);
+  padding-bottom:.55em;
+  border-bottom:1px solid var(--tan-soft);
+  transition:color .4s var(--ease-out), border-color .4s var(--ease-out);
+}
+.cta-link:hover{ color:var(--tan); border-color:var(--tan); }
+
+/* ---------- ritmo de seção ----------
+   Mesmo respiro do index: cada seção deixa UM --section-pad depois de si
+   (o seam nunca duplica — mesma regra do #arquitetura no index). */
+.page .section{ padding-block:0 var(--section-pad); }
+/* a regra acima assume que cada seção contribui só com o respiro de baixo.
+   A banda clara quebra a suposição: ela tem fundo próprio e termina no
+   próprio padding, deixando a seção seguinte colada na emenda. */
+.page .section.section--claro + .section{ padding-top:var(--section-pad); }
+.page .section-head{ max-width:100%; }
+/* Os títulos do deck são frases documentais longas (até 62 caracteres),
+   não as frases curtas da home. Na escala cheia do display-2 (80px) um
+   título desses vira uma parede de 5 linhas numa coluna de 7/12. Um degrau
+   abaixo resolve, e o `balance` impede que a última linha fique órfã.
+   A variante de abertura mantém a escala grande — é o diferencial dela. */
+.sec{ --fs-titulo:clamp(1.9rem, 4vw, 3.6rem); }
+.page .section-head .display-2{
+  max-width:30ch;
+  font-size:var(--fs-titulo);
+  text-wrap:balance;
+}
+.sec-body{
+  font-weight:300;
+  font-size:clamp(1rem, 1.4vw, 1.12rem);
+  line-height:1.75;
+  color:var(--cream-60);
+  /* 70ch: a seção "O ativo em cinco linhas" precisa caber em CINCO linhas
+     no desktop — o eyebrow promete isso. A 62ch dava seis. Como medida e
+     corpo são ambos relativos ao font-size, a contagem de caracteres por
+     linha não muda com a largura da janela: a promessa se sustenta em
+     todo o desktop. Continua dentro da faixa de boa leitura (45–75ch). */
+  max-width:70ch;
+  text-wrap:pretty; /* nunca uma palavra sozinha na última linha */
+}
+.sec-body + .sec-body{ margin-top:1em; }
+
+/* banda clara — mesma inversão do bloco-claro do index */
+/* especificidade 0,2,0 para empatar com `.page .section` — sem os três
+   níveis a banda nascia colada no topo. margin-bottom zerada: o respiro
+   de baixo já vem do próprio padding, senão o vão dobra. */
+.page .section.section--claro{
+  background:var(--cream-2);
+  padding-block:var(--section-pad);
+  margin-bottom:0;
+}
+/* A inversão precisa cobrir TUDO que a §22 admite dentro da banda —
+   um módulo esquecido aqui vira texto creme sobre creme (~1:1). */
+.section--claro .display-2,
+.section--claro .display-3,
+.section--claro .numlist h3,
+.section--claro .tabela__valor,
+.section--claro .args__frase,
+.section--claro .stat__num{ color:var(--dark); }
+
+.section--claro .eyebrow,
+.section--claro .timeline h3,
+.section--claro .tabela__chave,
+.section--claro .nota span,
+.section--claro .sec__lado span,
+.section--claro .sec__aberto span,
+.section--claro .prova__legenda .rotulo,
+.section--claro .form label{ color:var(--dark); opacity:.8; }
+
+.section--claro .sec-body,
+.section--claro .nota p,
+.section--claro .chips li,
+.section--claro .credenciais li,
+.section--claro .timeline p,
+.section--claro .numlist p,
+.section--claro .sec__lado p,
+.section--claro .sec__aberto p,
+.section--claro .args__nota,
+.section--claro .banned__nota,
+.section--claro .stat__label,
+.section--claro .faq-list details p{ color:var(--dark-60); }
+
+.section--claro .fonte,
+.section--claro .stat__fonte,
+.section--claro .banned__frase{ color:var(--dark); opacity:.55; }
+
+.section--claro .ressalva{ color:var(--dark-60); border-color:var(--dark-soft); }
+.section--claro .faq-list summary{ color:var(--dark); }
+.section--claro .faq-list summary::after,
+.section--claro .prancha__legenda{ color:var(--dark); opacity:.7; }
+
+/* CTAs — o caso que a home nunca teve (o .bloco-claro dela não leva CTA):
+   sem isto o único chamado da banda fica invisível */
+.section--claro .cta-link{ color:var(--dark-60); border-bottom-color:var(--dark-soft); }
+.section--claro .cta-link:hover{ color:var(--dark); border-bottom-color:var(--dark); }
+.section--claro .cta-btn{ color:var(--dark); border-color:var(--dark-soft); }
+.section--claro .cta-btn:hover{ background:var(--dark); border-color:var(--dark); color:var(--cream); }
+
+/* filetes e bordas internas invertem junto */
+.section--claro .tabela,
+.section--claro .tabela__linha,
+.section--claro .faq-list,
+.section--claro .faq-list details,
+.section--claro .numlist li,
+.section--claro .args li,
+.section--claro .banned li,
+.section--claro .timeline li,
+.section--claro .sec__lado--b,
+.section--claro .sec__aside,
+.section--claro .prova__legenda{ border-color:var(--dark-soft); }
+.section--claro .sec__aberto{ border-left-color:var(--dark); }
+.section--claro .chips li::before,
+.section--claro .credenciais li::before,
+.section--claro .timeline li::before{ background:var(--dark); }
+
+/* ---------- acentos documentais (fonte · ressalva · notas) ---------- */
+.fonte{
+  margin-top:clamp(20px, 3vh, 28px);
+  font-size:.74rem;
+  letter-spacing:.03em;
+  color:var(--cream-40);
+  /* sem teto em ch: a .74rem, 62ch estrangulava a linha e jogava a data
+     sozinha para a linha de baixo. A letra miúda acompanha a coluna. */
+  max-width:none;
+  text-wrap:pretty; /* e, quando precisar quebrar, nunca deixa órfã */
+}
+.sec--lastro .sec__aside .fonte{ max-width:none; }
+.ressalva{
+  margin-top:clamp(18px, 2.6vh, 26px);
+  padding-left:16px;
+  border-left:1px solid var(--tan);
+  font-size:.9rem;
+  font-style:italic;
+  line-height:1.7;
+  color:var(--cream-60);
+  max-width:72ch;
+  text-wrap:pretty;
+}
+.nota{
+  margin-top:clamp(20px, 3vh, 30px);
+  max-width:62ch;
+}
+.nota span{
+  display:block;
+  font-size:.64rem;
+  font-weight:500;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  color:var(--tan);
+  margin-bottom:.55em;
+}
+.nota p{
+  font-size:.96rem;
+  font-weight:300;
+  line-height:1.7;
+  color:var(--cream-60);
+}
+.sec-cta{ margin-top:clamp(24px, 3.6vh, 36px); }
+
+/* ---------- listas ---------- */
+/* itens curtos (serviços por grupo) — hairline-bullet do index */
+.chips{
+  list-style:none;
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(230px, 1fr));
+  gap:.55rem 32px;
+  margin-top:clamp(28px, 4vh, 40px);
+  max-width:900px;
+}
+.chips li{
+  position:relative;
+  padding-left:1.15rem;
+  font-size:.94rem;
+  font-weight:300;
+  line-height:1.55;
+  color:var(--cream-60);
+}
+.chips li::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:.78em;
+  width:7px;
+  height:1px;
+  background:var(--tan);
+}
+
+/* numeral fino grande — mesma régua do .pilar__num do index */
+.numlist{
+  list-style:none;
+  display:flex;
+  flex-direction:column;
+  margin-top:clamp(32px, 5vh, 56px);
+}
+.numlist li{
+  display:grid;
+  grid-template-columns:clamp(64px, 8vw, 110px) 1fr;
+  gap:clamp(16px, 2.5vw, 40px);
+  padding-block:clamp(28px, 4vh, 44px);
+  border-top:1px solid var(--tan-soft);
+}
+.numlist__n{
+  font-weight:200;
+  font-size:clamp(2rem, 3.4vw, 3.2rem);
+  line-height:1;
+  letter-spacing:-.02em;
+  color:var(--tan-soft);
+  font-variant-numeric:tabular-nums;
+}
+.numlist h3{
+  font-weight:400;
+  font-size:clamp(1.15rem, 1.8vw, 1.5rem);
+  letter-spacing:-.005em;
+  color:var(--cream);
+  max-width:30ch;
+}
+.numlist p{
+  margin-top:.7rem;
+  font-size:.98rem;
+  font-weight:300;
+  line-height:1.72;
+  color:var(--cream-60);
+  max-width:58ch;
+}
+@media (max-width:640px){
+  .numlist li{ grid-template-columns:1fr; gap:10px; }
+}
+
+/* credenciais — hairline-bullet */
+.credenciais{
+  list-style:none;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  margin-top:clamp(24px, 3.4vh, 36px);
+}
+.credenciais li{
+  padding-left:1.15rem;
+  position:relative;
+  font-size:.96rem;
+  font-weight:300;
+  color:var(--cream-60);
+  max-width:66ch;
+}
+.credenciais li::before{
+  content:"";
+  position:absolute;
+  left:0; top:.78em;
+  width:7px; height:1px;
+  background:var(--tan);
+}
+
+/* ficha técnica */
+.tabela{
+  display:grid;
+  margin-top:clamp(32px, 5vh, 48px);
+  border-top:1px solid var(--tan-soft);
+  max-width:920px;
+}
+.tabela__linha{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:4px;
+  padding-block:clamp(14px, 2vh, 20px);
+  border-bottom:1px solid rgba(183,164,142,.14);
+}
+@media (min-width:640px){
+  .tabela__linha{ grid-template-columns:minmax(180px, 300px) 1fr; gap:32px; align-items:baseline; }
+}
+.tabela__chave{
+  font-size:.66rem;
+  font-weight:500;
+  letter-spacing:.24em;
+  text-transform:uppercase;
+  color:var(--tan);
+}
+.tabela__valor{
+  font-size:1.02rem;
+  font-weight:300;
+  color:var(--cream);
+}
+
+/* números com fonte — cada dado em caixa própria.
+   flex em vez de grid: com grid, a última fileira incompleta deixava um
+   buraco à direita (5 dados em 3 colunas). No flex os itens da última
+   fileira crescem e fecham a largura. `min-width:0` é o que impede um
+   valor longo e sem espaço ("R$ 19.000/m²") de estourar a célula e
+   invadir a vizinha. */
+.page .stats{
+  display:flex;
+  flex-wrap:wrap;
+  gap:var(--gutter);
+  border-top:0;
+  margin-top:0;
+}
+.page .stat{
+  flex:1 1 28%;
+  min-width:min(100%, 240px);
+  border:1px solid var(--tan-soft);
+  padding:clamp(22px, 2.4vw, 36px);
+  display:flex;
+  flex-direction:column;
+  transition:border-color .4s var(--ease-out);
+}
+.page .stat:hover{ border-color:var(--tan); }
+.page .stat__num{
+  font-size:clamp(1.8rem, 2.6vw, 2.8rem);
+  white-space:normal;
+  overflow-wrap:break-word;
+}
+.page .stat__label{ letter-spacing:.18em; margin-top:auto; padding-top:1rem; }
+.page .stat__fonte{ margin-top:.6rem; }
+
+@media (min-width:1024px){
+  /* a banda de números atravessa as duas colunas do trilho: presa na
+     coluna de leitura (9,6/12) as caixas ficavam estreitas demais e um
+     valor longo e sem espaço ("R$ 19.000/m²") estourava para a vizinha */
+  .sec--quiet > .container > .stats,
+  .sec--capitular > .container > .stats,
+  .sec--claro > .container > .stats{ grid-column:1 / -1; }
+}
+.stat__fonte{
+  display:block;
+  margin-top:.6rem;
+  font-size:.66rem;
+  letter-spacing:.03em;
+  color:var(--cream-40);
+}
+
+/* argumentos / frases proibidas — página 08 */
+.args, .banned{
+  list-style:none;
+  display:flex;
+  flex-direction:column;
+  margin-top:clamp(28px, 4vh, 44px);
+  max-width:74ch;
+}
+.args li, .banned li{
+  padding-block:clamp(20px, 3vh, 30px);
+  border-top:1px solid rgba(183,164,142,.14);
+}
+.args__frase{
+  font-size:clamp(1.1rem, 1.7vw, 1.35rem);
+  font-weight:300;
+  line-height:1.5;
+  color:var(--cream);
+  max-width:60ch;
+}
+.banned__frase{
+  font-size:clamp(1rem, 1.5vw, 1.2rem);
+  font-weight:300;
+  line-height:1.5;
+  color:var(--cream-40);
+  text-decoration:line-through;
+  text-decoration-color:rgba(183,164,142,.5);
+  max-width:60ch;
+}
+.args__nota, .banned__nota{
+  margin-top:.6rem;
+  font-size:.88rem;
+  font-weight:300;
+  color:var(--cream-60);
+  line-height:1.65;
+  max-width:64ch;
+}
+
+/* linha do tempo — página 09 */
+.timeline{
+  list-style:none;
+  margin-top:clamp(32px, 5vh, 48px);
+  display:flex;
+  flex-direction:column;
+}
+.timeline li{
+  border-left:1px solid var(--tan-soft);
+  padding:0 0 clamp(28px, 4vh, 40px) clamp(22px, 3vw, 36px);
+  position:relative;
+}
+.timeline li:last-child{ padding-bottom:0; }
+.timeline li::before{
+  content:"";
+  position:absolute;
+  left:-4px; top:.4em;
+  width:7px; height:7px;
+  border-radius:50%; /* círculo — exceção permitida */
+  background:var(--tan);
+}
+.timeline h3{
+  font-size:.72rem;
+  font-weight:500;
+  letter-spacing:.24em;
+  text-transform:uppercase;
+  color:var(--tan);
+}
+.timeline p{
+  margin-top:.5rem;
+  font-size:.98rem;
+  font-weight:300;
+  color:var(--cream-60);
+  max-width:56ch;
+}
+
+/* FAQ — <details> nativo */
+.faq-list{ margin-top:clamp(32px, 5vh, 48px); border-top:1px solid var(--tan-soft); max-width:920px; }
+.faq-list details{
+  border-bottom:1px solid rgba(183,164,142,.14);
+}
+.faq-list summary{
+  cursor:pointer;
+  padding-block:clamp(18px, 2.6vh, 26px);
+  font-size:clamp(1rem, 1.5vw, 1.18rem);
+  font-weight:400;
+  color:var(--cream);
+  list-style:none;
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:24px;
+  transition:color .4s var(--ease-out);
+}
+.faq-list summary:hover{ color:var(--tan); }
+.faq-list summary::-webkit-details-marker{ display:none; }
+.faq-list summary::after{
+  content:"+";
+  font-weight:200;
+  font-size:1.5rem;
+  line-height:1;
+  color:var(--tan);
+  flex-shrink:0;
+}
+.faq-list details[open] summary::after{ content:"–"; }
+.faq-list details p{
+  padding-bottom:clamp(18px, 2.6vh, 26px);
+  font-size:.96rem;
+  font-weight:300;
+  line-height:1.72;
+  color:var(--cream-60);
+  max-width:64ch;
+}
+
+/* finale das páginas — mesmos componentes da home (glow, anel, wordmark,
+   cta-major); só as frases mudam. O título entra abaixo do wordmark, então
+   desce um degrau na escala para não disputar com ele. */
+.page .finale h2{
+  max-width:24ch;
+  margin-inline:auto;
+  text-wrap:balance;
+}
+.finale__texto{
+  max-width:52ch;
+  margin-inline:auto;
+  text-align:center;
+}
+
+/* formulário — captação (landing, evento) */
+.form{
+  margin-top:clamp(36px, 5vh, 56px);
+  max-width:560px;
+  display:flex;
+  flex-direction:column;
+  gap:clamp(22px, 3vh, 30px);
+}
+.form__campo{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.form label{
+  font-size:.64rem;
+  font-weight:500;
+  letter-spacing:.24em;
+  text-transform:uppercase;
+  color:var(--tan);
+}
+.form input,
+.form select,
+.form textarea{
+  font-family:inherit;
+  font-weight:300;
+  font-size:1.05rem;
+  color:var(--cream);
+  background:transparent;
+  border:0;
+  border-bottom:1px solid var(--tan-soft);
+  padding:.55em 0;
+  transition:border-color .4s var(--ease-out);
+}
+.form select{ background:var(--dark); }
+.form select option{ background:var(--dark); }
+.form input:focus,
+.form select:focus,
+.form textarea:focus{ border-color:var(--tan); }
+/* o :focus-visible global (§2) tem de sobreviver ao Tab — suprimir o anel
+   só quando o foco veio do ponteiro */
+.form input:focus:not(:focus-visible),
+.form select:focus:not(:focus-visible),
+.form textarea:focus:not(:focus-visible){ outline:none; }
+.form__consent{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  font-size:.82rem;
+  font-weight:300;
+  color:var(--cream-60);
+  line-height:1.6;
+}
+.form__consent input{ margin-top:.3em; accent-color:var(--tan); }
+.form__submit{
+  align-self:flex-start;
+  margin-top:6px;
+  background:transparent;
+  border:1px solid var(--tan-soft);
+  color:var(--cream);
+  padding:clamp(14px, 1.8vw, 19px) clamp(26px, 3.4vw, 44px);
+  font-family:inherit;
+  font-weight:300;
+  font-size:clamp(.92rem, 1.4vw, 1.05rem);
+  letter-spacing:.08em;
+  cursor:pointer;
+  transition:background-color .5s var(--ease-out), color .5s var(--ease-out), border-color .5s var(--ease-out);
+}
+.form__submit:hover{ background:var(--tan); border-color:var(--tan); color:var(--dark); }
+.form__submit:disabled{ opacity:.45; cursor:default; }
+.form__msg{ font-size:.9rem; font-weight:300; color:var(--cream-60); }
+.form__msg[data-state="ok"]{ color:var(--tan); }
+.form__msg[data-state="erro"]{ color:var(--cream); }
+
+/* ---------- 21 · MENU GLOBAL (drawer lateral) ----------
+   Botão "Menu" no header + painel de 1/3 da largura entrando pela
+   direita, sobre um scrim que escurece o resto da página. O botão só
+   aparece com JS (html.has-menu, via js/menu.js); sem JS a navegação
+   continua no rodapé. z-index 95: acima do grain (80) e do header (70),
+   abaixo do cursor (100) e do lightbox (120). */
+.header-menu-btn{
+  display:none;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  min-height:44px; /* alvo de toque */
+  min-width:44px;
+  background:none;
+  border:0;
+  cursor:pointer;
+  font-family:inherit;
+  font-size:.68rem;
+  font-weight:500;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  color:var(--cream);
+  padding:0;
+  transition:color .4s var(--ease-out);
+}
+.header-menu-btn:hover{ color:var(--tan); }
+html.has-menu .header-menu-btn{ display:inline-flex; }
+html.menu-open{ overflow:hidden; }
+/* hambúrguer — três hairlines da marca, nada de ícone de biblioteca */
+.menu-icon{
+  display:inline-flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:6px;
+  width:24px;
+  flex-shrink:0;
+}
+.menu-icon span{
+  display:block;
+  height:1px;
+  background:currentColor;
+  transition:transform .4s var(--ease-out);
+}
+.header-menu-btn:hover .menu-icon span:nth-child(2){ transform:scaleX(.7); transform-origin:left center; }
+@media (max-width:767px){
+  .header-menu-btn{ font-size:.6rem; letter-spacing:.22em; }
+}
+@media (max-width:420px){
+  /* tela estreita: só o ícone — o rótulo fica para leitores de tela */
+  .header-menu-btn__txt{
+    position:absolute;
+    width:1px; height:1px;
+    padding:0; margin:-1px;
+    overflow:hidden;
+    clip:rect(0 0 0 0);
+    white-space:nowrap;
+  }
+}
+
+.menu-overlay{
+  position:fixed;
+  inset:0;
+  z-index:95;
+  pointer-events:none;
+}
+.menu-overlay[hidden]{ display:none; }
+.menu-overlay.is-open{ pointer-events:auto; }
+
+/* scrim — clicável para fechar; blur só onde há folga de GPU (mesma
+   política do .site-header: em telas pequenas o blur custa frame) */
+.menu-overlay__scrim{
+  position:absolute;
+  inset:0;
+  background:rgba(23,24,22,.62);
+  opacity:0;
+  transition:opacity .5s var(--ease-out);
+}
+.menu-overlay.is-open .menu-overlay__scrim{ opacity:1; }
+@media (min-width:1024px) and (hover:hover) and (pointer:fine){
+  .menu-overlay__scrim{
+    -webkit-backdrop-filter:blur(3px);
+    backdrop-filter:blur(3px);
+  }
+}
+
+/* painel — 1/3 da largura, ancorado à direita.
+   clamp mantém legível: nunca menor que 360px nem maior que 560px. */
+.menu-panel{
+  position:absolute;
+  top:0;
+  right:0;
+  height:100%;
+  width:clamp(360px, 33.333vw, 560px);
+  display:flex;
+  flex-direction:column;
+  background:var(--dark-2);
+  border-left:1px solid var(--tan-soft);
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  transform:translateX(100%);
+  transition:transform .62s var(--ease-out);
+  will-change:transform;
+}
+.menu-overlay.is-open .menu-panel{ transform:translateX(0); }
+@media (max-width:767px){
+  /* 1/3 de um celular é inutilizável — o painel cresce, mas continua
+     drawer (a página aparece na fresta à esquerda) */
+  .menu-panel{ width:min(88vw, 420px); }
+}
+
+.menu-overlay__bar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:clamp(10px, 1.5vw, 18px) clamp(24px, 3vw, 40px);
+  border-bottom:1px solid var(--tan-soft);
+  flex-shrink:0;
+}
+.menu-overlay__bar .wordmark{ width:clamp(84px, 12vw, 104px); }
+
+.menu-list{
+  list-style:none;
+  margin:auto 0;
+  padding:clamp(24px, 4vh, 44px) clamp(24px, 3vw, 40px);
+}
+.menu-list li{ border-bottom:1px solid rgba(183,164,142,.14); }
+.menu-list li:first-child{ border-top:1px solid rgba(183,164,142,.14); }
+.menu-list a{
+  display:block;
+  padding:clamp(13px, 1.8vh, 18px) 0;
+  color:var(--cream);
+  font-weight:300;
+  font-size:clamp(1.1rem, 1.7vw, 1.55rem);
+  letter-spacing:-.005em;
+  transition:color .3s var(--ease-out), transform .3s var(--ease-out);
+}
+.menu-list a:hover{ color:var(--tan); transform:translateX(6px); }
+.menu-list a[aria-current="page"]{ color:var(--tan); }
+
+
+.menu-overlay__foot{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px 24px;
+  padding:clamp(18px, 2.6vh, 26px) clamp(24px, 3vw, 40px) clamp(24px, 4vh, 36px);
+  border-top:1px solid rgba(183,164,142,.14);
+  flex-shrink:0;
+}
+.menu-overlay__tag{
+  font-size:.64rem;
+  font-weight:500;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  color:var(--cream-60); /* --cream-40 dava 3,47:1 em 10px: reprovava AA */
+}
+
+/* entrada escalonada — os itens entram pela direita, atrás do painel;
+   transform/opacity apenas. A régua global de reduced-motion zera as
+   durações e o drawer abre instantâneo. */
+.menu-list li{
+  opacity:0;
+  transform:translateX(28px);
+  transition:opacity .5s var(--ease-out), transform .5s var(--ease-out);
+}
+.menu-overlay.is-open .menu-list li{
+  opacity:1;
+  transform:translateX(0);
+}
+.menu-overlay.is-open .menu-list li:nth-child(1){ transition-delay:.18s; }
+.menu-overlay.is-open .menu-list li:nth-child(2){ transition-delay:.23s; }
+.menu-overlay.is-open .menu-list li:nth-child(3){ transition-delay:.28s; }
+.menu-overlay.is-open .menu-list li:nth-child(4){ transition-delay:.33s; }
+.menu-overlay.is-open .menu-list li:nth-child(5){ transition-delay:.38s; }
+.menu-overlay.is-open .menu-list li:nth-child(6){ transition-delay:.43s; }
+.menu-overlay.is-open .menu-list li:nth-child(7){ transition-delay:.48s; }
+.menu-overlay.is-open .menu-list li:nth-child(8){ transition-delay:.53s; }
+.menu-overlay.is-open .menu-list li:nth-child(9){ transition-delay:.58s; }
+.menu-overlay__foot{
+  opacity:0;
+  transition:opacity .5s var(--ease-out) .55s;
+}
+.menu-overlay.is-open .menu-overlay__foot{ opacity:1; }
+
+/* ============================================================
+   22 · VARIANTES DE SEÇÃO (páginas editoriais)
+   Oito variantes que dão diferencial a cada seção sem inventar
+   device novo: cada uma é um RECORTE do que a home já faz.
+   A escolha por seção vem do mapa em scripts/build-pages.py —
+   nenhuma é aplicada à mão.
+     quiet     · trilho editorial (default)
+     capitular · fólio de abertura, 1x por página
+     lastro    · afirmação à esquerda, prova grudada à direita
+     contraste · balanço risco/mitigação em duas colunas
+     ficha     · cabeçalho-índice fixo + lista corrida
+     claro     · banda creme (o limite de cada página, 1x)
+     prancha   · imagem full-bleed com scrim e card (= torre__hero)
+     prova     · imagem dentro da coluna + legenda fixa ao lado
+   ============================================================ */
+
+/* minmax(0,1fr) — com 1fr puro o min-content de um filho grid (ex.: .chips,
+   auto-fill com max-width:900px) infla a trilha além do viewport no mobile */
+.sec > .container{ display:grid; grid-template-columns:minmax(0,1fr); }
+.sec > .container > *{ min-width:0; }
+
+/* ---------- trilho editorial: quiet · capitular · claro ---------- */
+@media (min-width:1024px){
+  .sec--quiet > .container,
+  .sec--capitular > .container,
+  .sec--claro > .container{
+    grid-template-columns:minmax(0, 2.4fr) minmax(0, 9.6fr);
+    column-gap:clamp(24px, 3.4vw, 64px);
+  }
+
+  /* o conteúdo corre na coluna de leitura */
+  .sec--quiet > .container > *,
+  .sec--capitular > .container > *,
+  .sec--claro > .container > *{ grid-column:2; }
+
+  /* O cabeçalho atravessa as duas colunas e monta a PRÓPRIA grade, com as
+     mesmas frações e o mesmo vão — visualmente idêntico ao trilho, mas
+     eyebrow e título viram irmãos numa linha só, que eu controlo.
+     Precisa do combinador de filho para vencer a regra `> *` acima, que
+     tem a mesma especificidade e vinha depois. */
+  .sec--quiet > .container > .section-head,
+  .sec--capitular > .container > .section-head,
+  .sec--claro > .container > .section-head{
+    display:grid;
+    grid-column:1 / -1;
+    grid-template-columns:minmax(0, 2.4fr) minmax(0, 9.6fr);
+    column-gap:clamp(24px, 3.4vw, 64px);
+    align-items:start;
+    margin-bottom:0;
+  }
+  .sec--quiet > .container > .section-head > .eyebrow,
+  .sec--capitular > .container > .section-head > .eyebrow,
+  .sec--claro > .container > .section-head > .eyebrow{
+    grid-column:1;
+    /* alinha o topo das MAIÚSCULAS do eyebrow com o do título:
+       topo = (entrelinha − corpo)/2 + (ascendente − caixa-alta) × corpo.
+       Com line-height 1.04 e Montserrat dá 0,288 × corpo no título,
+       contra 7px fixos no eyebrow (corpo fixo de .68rem). */
+    padding-top:calc(0.288 * var(--fs-titulo) - 7px);
+  }
+  .sec--quiet > .container > .section-head > .display-2,
+  .sec--capitular > .container > .section-head > .display-2,
+  .sec--claro > .container > .section-head > .display-2{
+    grid-column:2;
+    margin-top:0; /* a margem existe para o empilhamento do mobile */
+  }
+
+  /* o respiro que era do .section-head volta no primeiro conteúdo */
+  .sec--quiet .section-head + *,
+  .sec--capitular .section-head + *,
+  .sec--claro .section-head + *{ margin-top:clamp(26px, 3.6vh, 48px); }
+}
+
+/* ---------- capitular: a abertura ----------
+   Sem numeração, o que marca a primeira seção da página é o filete que a
+   separa do hero e um degrau a mais na escala do título. */
+.sec--capitular > .container{
+  border-top:1px solid var(--tan-soft);
+  padding-top:clamp(30px, 4.5vh, 60px);
+}
+.sec--capitular{ --fs-titulo:clamp(2.5rem, 6.2vw, 5.9rem); }
+/* régua fluida no celular estreito: com o NBSP que cola número+unidade
+   ("323.625 habitantes"), 2.5rem não cabe em 327px e o token era cortado.
+   8.6vw escala com o container — o maior token do deck cabe em qualquer
+   largura até o piso de 1.8rem (~320px de tela). */
+@media (max-width:480px){
+  .sec--capitular{ --fs-titulo:clamp(1.8rem, 8.6vw, 2.5rem); }
+}
+.page .sec--capitular .section-head .display-2{
+  font-size:var(--fs-titulo);
+  max-width:17ch;
+  text-wrap:balance;
+}
+@media (min-width:1024px){
+
+}
+
+/* ---------- lastro: prova ancorada ao lado da afirmação ---------- */
+@media (min-width:1024px){
+  .sec--lastro > .container{
+    grid-template-columns:minmax(0, 7fr) minmax(0, 4fr);
+    column-gap:clamp(32px, 5vw, 88px);
+  }
+  .sec--lastro .sec__main{ grid-column:1; }
+  .sec--lastro .sec__aside{
+    grid-column:2;
+    position:sticky;
+    top:max(96px, 22svh);
+    align-self:start;
+    padding-left:clamp(20px, 2vw, 32px);
+    border-left:1px solid var(--tan-soft);
+  }
+  /* dentro do aside os acentos perdem a borda própria: a coluna já é a borda */
+  .sec--lastro .sec__aside .ressalva{ padding-left:0; border-left:0; }
+  .sec--lastro .sec__aside > *:first-child{ margin-top:0; }
+}
+.sec--lastro .sec__aside{ margin-top:clamp(28px, 4vh, 44px); }
+@media (min-width:1024px){ .sec--lastro .sec__aside{ margin-top:0; } }
+
+/* ---------- contraste: o balanço ---------- */
+.sec__par{
+  display:grid;
+  gap:clamp(22px, 3vw, 44px);
+  margin-top:clamp(26px, 3.6vh, 48px);
+}
+@media (min-width:900px){
+  .sec__par{ grid-template-columns:1fr 1fr; }
+  .sec__lado--b{
+    border-left:1px solid var(--tan-soft);
+    padding-left:clamp(22px, 3vw, 44px);
+  }
+}
+.sec__lado span{
+  display:block;
+  font-size:.64rem;
+  font-weight:500;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  color:var(--tan);
+  margin-bottom:.7em;
+}
+.sec__lado p{
+  font-size:1rem;
+  font-weight:300;
+  line-height:1.72;
+  color:var(--cream-60);
+}
+.sec__aberto{
+  margin-top:clamp(24px, 3.2vh, 40px);
+  padding-left:clamp(18px, 2vw, 26px);
+  border-left:2px solid var(--tan);
+  max-width:72ch;
+}
+.sec__aberto span{
+  display:block;
+  font-size:.64rem;
+  font-weight:500;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  color:var(--tan);
+  margin-bottom:.6em;
+}
+.sec__aberto p{
+  font-size:.98rem;
+  font-weight:300;
+  line-height:1.72;
+  color:var(--cream-60);
+}
+/* frases proibidas em par: frase à esquerda, motivo legal à direita */
+@media (min-width:900px){
+  .sec--contraste .banned li,
+  .sec--contraste .args li{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    column-gap:clamp(22px, 3vw, 44px);
+    align-items:start;
+  }
+  .sec--contraste .banned__nota,
+  .sec--contraste .args__nota{
+    margin-top:0;
+    padding-left:clamp(22px, 3vw, 44px);
+    border-left:1px solid var(--tan-soft);
+  }
+}
+
+/* ---------- ficha: cabeçalho-índice fixo ---------- */
+@media (min-width:1024px){
+  .sec--ficha > .container{
+    grid-template-columns:minmax(0, 4fr) minmax(0, 8fr);
+    column-gap:clamp(32px, 5vw, 88px);
+  }
+  .sec--ficha .section-head{
+    grid-column:1;
+    position:sticky;
+    top:max(96px, 22svh);
+    align-self:start;
+    margin-bottom:0;
+  }
+  .sec--ficha .section-head .display-2{
+    /* a coluna do índice é 4/12: a 2.6rem "O empreendimento" não cabia e
+       o artigo caía sozinho na primeira linha */
+    font-size:clamp(1.5rem, 2.4vw, 2.1rem);
+    --fs-titulo:clamp(1.5rem, 2.4vw, 2.1rem);
+    max-width:18ch;
+    text-wrap:balance;
+  }
+  .sec--ficha .sec__corpo{ grid-column:2; }
+  .sec--ficha .sec__corpo > *:first-child{ margin-top:0; }
+}
+.sec--ficha .sec__corpo{ margin-top:clamp(26px, 3.6vh, 48px); }
+@media (min-width:1024px){ .sec--ficha .sec__corpo{ margin-top:0; } }
+
+/* ---------- prancha: a página inteira de imagem ---------- */
+.sec--prancha{ padding-block:0 var(--section-pad); }
+.prancha{
+  position:relative;
+  min-height:min(78svh, 860px);
+  display:flex;
+  align-items:flex-end;
+  overflow:hidden;
+}
+.prancha__media{
+  position:absolute;
+  inset:-12% 0; /* folga vertical consumida pelo parallax */
+  background-color:var(--dark-3);
+}
+.prancha__media img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.prancha__scrim{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    to top,
+    rgba(23,24,22,.94) 0%,
+    rgba(23,24,22,.86) 30%,
+    rgba(23,24,22,.62) 55%,
+    rgba(23,24,22,.24) 78%,
+    rgba(23,24,22,0) 100%
+  );
+}
+@media (max-width:768px){
+  .prancha__scrim{
+    background:linear-gradient(
+      to top,
+      rgba(23,24,22,.96) 0%,
+      rgba(23,24,22,.92) 45%,
+      rgba(23,24,22,.78) 72%,
+      rgba(23,24,22,.5) 100%
+    );
+  }
+}
+.prancha__card{
+  position:relative;
+  z-index:2;
+  width:100%;
+  padding-block:clamp(48px, 9vh, 110px);
+}
+.prancha__card .section-head{ margin-bottom:0; }
+/* três níveis para vencer `.page .section-head .display-2{max-width:20ch}`.
+   24ch cabe "510 studios de 29,92 m²" inteiro na primeira linha — com 16ch
+   a quebra caía no meio da metragem e no meio de "na orla da Graciosa". */
+.page .prancha__card .display-2{ margin-top:1.2rem; max-width:30ch; text-wrap:balance; }
+.prancha__legenda{
+  margin-top:1.5rem;
+  font-size:.62rem;
+  font-weight:500;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  color:var(--cream-60);
+}
+.sec__depois{ margin-top:clamp(40px, 6vh, 80px); }
+
+/* ---------- prova: imagem como anexo técnico ---------- */
+@media (min-width:1024px){
+  .sec--prova > .container{
+    grid-template-columns:minmax(0, 7fr) minmax(0, 4fr);
+    column-gap:clamp(32px, 5vw, 88px);
+  }
+  .sec--prova .section-head{ grid-column:1 / -1; }
+  .sec--prova .sec__corpo{ grid-column:1; }
+  .sec--prova .prova{ grid-column:1; }
+  .sec--prova .prova__legenda{
+    grid-column:2;
+    position:sticky;
+    top:max(96px, 22svh);
+    align-self:end;
+    padding-left:clamp(20px, 2vw, 32px);
+    border-left:1px solid var(--tan-soft);
+  }
+}
+.prova{ margin-top:clamp(28px, 4vh, 52px); }
+.prova__frame{
+  overflow:hidden;
+  background-color:var(--dark-3);
+  border:1px solid var(--tan-soft);
+}
+.prova__frame img{
+  width:100%;
+  height:auto;
+  display:block;
+}
+.prova__legenda{ margin-top:clamp(20px, 3vh, 32px); }
+.prova__legenda .rotulo{
+  display:block;
+  font-size:.62rem;
+  font-weight:500;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  color:var(--tan);
+  margin-bottom:.8em;
+}
+.prova__legenda .fonte{ margin-top:1rem; }
+
+/* ---------- módulo .serie (dentro de quiet/lastro/claro) ----------
+   Eixo único desenhado pelo scroll no lugar das bordas por item;
+   sem JS e em reduced-motion o CSS já entrega o eixo inteiro. */
+.serie{ position:relative; }
+.serie__eixo{
+  position:absolute;
+  left:0; top:0; bottom:0;
+  width:1px;
+  background:var(--tan-soft);
+  transform-origin:50% 0;
+}
+.section--claro .serie__eixo{ background:var(--dark-soft); }
+.serie .numlist li,
+.serie .timeline li{ border-top:0; border-left:0; }
+.serie .timeline li::before{ opacity:1; }
+@media (min-width:1024px){
+  .serie .numlist__n{
+    position:sticky;
+    top:28svh;
+    /* sem transition: o GSAP é dono da opacity aqui — as duas juntas
+       alongavam o brilho de .7s para ~1,2s */
+  }
 }

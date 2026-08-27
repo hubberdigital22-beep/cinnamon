@@ -27,7 +27,11 @@
     if (el.dataset.split === 'words') {
       return Array.prototype.slice.call(el.querySelectorAll('.word'));
     }
-    var text = el.textContent.replace(/\s+/g, ' ').trim();
+    /* \s em JS INCLUI o espaço inseparável (\u00a0) — normalizar por /\s+/
+       destruiria as travas tipográficas do build ("R$\u00a019.000",
+       "29,92\u00a0m²") e a metragem voltaria a quebrar longe do número.
+       [^\S\u00a0] = qualquer espaço EXCETO o inseparável. */
+    var text = el.textContent.replace(/[^\S\u00a0]+/g, ' ').trim();
     if (!text) return [];
     el.setAttribute('aria-label', text);
     var frag = document.createDocumentFragment();

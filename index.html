@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Cinnamon Studio · Condotel na Orla de Palmas – TO</title>
-  <meta name="description" content="Seu espaço. Seu ritmo. Studios inteligentes de 29,92 m² para quem vive em movimento — condotel na Orla de Palmas – TO.">
+  <title>Cinnamon Studio · Orla de Palmas – TO</title>
+  <meta name="description" content="Seu espaço. Seu ritmo. Studios inteligentes de 29,92 m² para quem vive em movimento, na Orla de Palmas – TO.">
   <meta name="theme-color" content="#22231f">
 
   <!-- AJUSTAR: URL absoluta do domínio final nas metas OG/Twitter e no canonical -->
   <link rel="canonical" href="https://cinnamonstudio.com.br/">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Cinnamon Studio · Condotel na Orla de Palmas – TO">
+  <meta property="og:title" content="Cinnamon Studio · Orla de Palmas – TO">
   <meta property="og:description" content="Seu espaço. Seu ritmo. Studios inteligentes de 29,92 m² para quem vive em movimento.">
   <meta property="og:image" content="https://cinnamonstudio.com.br/img/ext-frontal-1920.webp">
   <meta property="og:locale" content="pt_BR">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Cinnamon Studio · Condotel na Orla de Palmas – TO">
+  <meta name="twitter:title" content="Cinnamon Studio · Orla de Palmas – TO">
   <meta name="twitter:description" content="Seu espaço. Seu ritmo. Studios inteligentes de 29,92 m² para quem vive em movimento.">
   <meta name="twitter:image" content="https://cinnamonstudio.com.br/img/ext-frontal-1920.webp">
 
@@ -36,7 +36,7 @@
   <link rel="preload" as="image" href="img/ext-baixo-960.webp" media="(max-width: 768px)" fetchpriority="high">
   <link rel="preload" as="image" href="img/ext-baixo-1920.webp" media="(min-width: 768.02px)" fetchpriority="high">
 
-  <link rel="stylesheet" href="css/style.css?v=20260826h">
+  <link rel="stylesheet" href="css/style.css?v=20260827i">
 
   <!-- AJUSTAR: dados abertos do JSON-LD — endereço completo, incorporadora,
        telefone e URL definitiva devem ser confirmados antes de publicar -->
@@ -45,13 +45,16 @@
     "@context": "https://schema.org",
     "@type": "Residence",
     "name": "Cinnamon Studio",
-    "description": "Condotel com studios inteligentes de 29,92 m² na Orla de Palmas – TO. Seu espaço. Seu ritmo.",
+    "description": "Studios inteligentes de 29,92 m² na Orla de Palmas – TO. Seu espaço. Seu ritmo.",
     "address": {
       "@type": "PostalAddress",
+      "streetAddress": "Q Orla 14 – Graciosa, Avenida Parque, Quadra 01, Lote 01, s/n",
+      "postalCode": "77026-035",
       "addressLocality": "Palmas",
       "addressRegion": "TO",
       "addressCountry": "BR"
-    }
+    },
+    "sameAs": ["https://www.instagram.com/cinnamonstudiobr/"]
   }
   </script>
 </head>
@@ -133,9 +136,41 @@
     <a href="#hero" class="wordmark" aria-label="Cinnamon Studio — voltar ao início">
       <svg class="wordmark__art" viewBox="82.91 446.67 912.09 185.09" aria-hidden="true" focusable="false"><use href="#logo-cinnamon"/></svg>
     </a>
-    <!-- AJUSTAR: número de WhatsApp oficial -->
-    <a class="header-cta" href="https://wa.me/55XXXXXXXXXXX" rel="noopener">Entre em contato</a>
+    <!-- "Entre em contato" vive no rodapé do drawer: repetir aqui duplicava
+         o mesmo destino a dois cliques de distância um do outro -->
+    <button class="header-menu-btn" type="button" data-menu-toggle
+            aria-expanded="false" aria-controls="menu-overlay"><span class="menu-icon" aria-hidden="true"><span></span><span></span><span></span></span><span class="header-menu-btn__txt">Menu</span></button>
   </header>
+
+  <!-- menu global — drawer de 1/3 entrando pela direita. Gêmeo do markup
+       gerado por scripts/build-pages.py para as páginas editoriais; mudou
+       aqui, muda lá. Numeração segue o Copy Deck (02 = Home = este index). -->
+  <div class="menu-overlay" id="menu-overlay" hidden>
+    <div class="menu-overlay__scrim" data-menu-close aria-hidden="true"></div>
+    <aside class="menu-panel" role="dialog" aria-modal="true" aria-label="Menu de navegação">
+      <div class="menu-overlay__bar">
+        <span class="wordmark" aria-hidden="true"><svg class="wordmark__art" viewBox="82.91 446.67 912.09 185.09" aria-hidden="true" focusable="false"><use href="#logo-cinnamon"/></svg></span>
+        <button class="header-menu-btn" type="button" data-menu-close>Fechar</button>
+      </div>
+      <nav aria-label="Páginas do site">
+        <ul class="menu-list">
+          <li><a href="/" aria-current="page">Início</a></li>
+          <li><a href="/landing">Material</a></li>
+          <li><a href="/o-ativo">O Ativo</a></li>
+          <li><a href="/os-servicos">Os Serviços</a></li>
+          <li><a href="/a-conta">A Conta</a></li>
+          <li><a href="/palmas">Palmas</a></li>
+          <li><a href="/riscos">Riscos</a></li>
+          <li><a href="/area-da-imobiliaria">Área da Imobiliária</a></li>
+          <li><a href="/evento-rio">Evento Rio</a></li>
+        </ul>
+      </nav>
+      <div class="menu-overlay__foot">
+        <p class="menu-overlay__tag">Seu espaço. Seu ritmo.</p>
+          <a class="cta-link" href="https://wa.me/5563999718064" rel="noopener">Entre em contato</a>
+      </div>
+    </aside>
+  </div>
 
   <main id="app">
 
@@ -253,13 +288,14 @@
       <div class="container">
         <div class="section-head">
           <p class="eyebrow">[ 01 · O Projeto ]</p>
-          <h2 class="display-2">Um condotel para quem vive em movimento.</h2>
-          <!-- AJUSTAR: texto institucional final (aprovar com o cliente) -->
+          <h2 class="display-2">Um espaço para quem vive em movimento.</h2>
+          <!-- AJUSTAR: texto institucional final (aprovar com o cliente).
+               Palavra "condotel" removida em 26/08 — o panfleto oficial evita
+               o termo (ver content/documento.json → base_aprovada). -->
           <p class="projeto__lead caption">
             Primeiro, o lago. Depois, a torre — e, dentro dela, 29,92 m² que
-            resolvem a vida inteira. Studios inteligentes com operação de
-            condotel na Orla de Palmas – TO, para quem prefere carregar menos
-            e viver mais.
+            resolvem a vida inteira. Studios inteligentes na Orla de Palmas –
+            TO, para quem prefere carregar menos e viver mais.
           </p>
         </div>
 
@@ -546,31 +582,27 @@
 
       <div class="bloco-claro">
         <div class="container">
-          <p class="eyebrow">O Potencial</p>
-          <h2 class="display-2" style="margin-top:1.4rem;">Beleza que hospeda. Patrimônio que rende.</h2>
-
-          <!-- AJUSTAR: textos finais dos 3 pilares; NÃO incluir percentuais ou
-               promessas de rentabilidade sem aprovação jurídica -->
-          <div class="pilares">
-            <article class="pilar">
-              <p class="pilar__num">01</p>
-              <span class="hairline" aria-hidden="true"></span>
-              <h3>Renda de condotel</h3>
-              <p>Nos dias em que você não está, o studio segue vivo — hospedando, rendendo, trabalhando por você.</p>
-            </article>
-            <article class="pilar">
-              <p class="pilar__num">02</p>
-              <span class="hairline" aria-hidden="true"></span>
-              <h3>Gestão profissional</h3>
-              <p>Check-in, limpeza, manutenção: a operação hoteleira assume a rotina inteira, sem esforço do proprietário.</p>
-            </article>
-            <article class="pilar">
-              <p class="pilar__num">03</p>
-              <span class="hairline" aria-hidden="true"></span>
-              <h3>Endereço</h3>
-              <p>A Orla de Palmas como ativo: o lago na paisagem, o endereço no patrimônio.</p>
-            </article>
-          </div>
+          <!-- FASE 0 · 26/08/2026 — bloco anterior removido: "Beleza que
+               hospeda. Patrimônio que rende." e os 3 pilares descreviam
+               promessa de renda (CDC art. 37) e pool de locação, o gatilho
+               clássico de contrato de investimento coletivo perante a CVM.
+               Ver content/nao-publicar.json → fora_do_ar_agora[0].
+               Substituído pelo bloco "Regra da casa" da página 02 do Copy
+               Deck (content/paginas/02-home.json), copy literal e já
+               aprovada. Os 4 pilares reais da página 02 (prazo, operação,
+               condomínio, endereço) exigem componente de Fonte/Ressalva
+               ainda não construído — entram na fase de layout. -->
+          <p class="eyebrow">Regra da casa</p>
+          <h2 class="display-2" style="margin-top:1.4rem;">O que este material não vai te dizer</h2>
+          <p class="potencial__corpo">
+            Não dizemos quanto a unidade vai render, porque o estudo de
+            operação ainda está sendo contratado. Não dizemos quanto ela vai
+            valer na entrega, porque ninguém sabe. Não oferecemos
+            rentabilidade garantida nem recompra. E não vendemos nada até o
+            memorial de incorporação estar registrado. Se você ouvir qualquer
+            uma dessas coisas sobre este empreendimento, ela não veio daqui.
+          </p>
+          <p class="potencial__fonte">Fonte · Lei 4.591/64 art. 32 · Código de Defesa do Consumidor arts. 30, 35 e 37.</p>
         </div>
       </div>
     </section>
@@ -590,7 +622,21 @@
              AJUSTAR: confirmar quais itens são serviços de terceiros / mediante agendamento
              (cuidado pessoal e saúde) — muda o texto legal do rodapé.
              AJUSTAR: "Lavanderia" veio duplicada na lista original; se forem duas
-             estruturas distintas (self-service e com serviço), separar. -->
+             estruturas distintas (self-service e com serviço), separar.
+
+             FASE 0 · 26/08/2026 — ver content/nao-publicar.json → remover_do_site_atual:
+             · "Garagem Privativa" → "Garagem": as vagas são locadas, não vendidas com
+               a unidade; "privativa" faz o comprador entender que a vaga acompanha o
+               studio (CDC art. 30). Ver content/dados.json → vagas.
+             · "Brinquedoteca" removida: estava na lista de remoção do projeto (18/08).
+             · "Jogos virtuais" removido: não consta no confirmado.
+             · "Área Gourmet" removida: não consta no confirmado; grupo de itens
+               cortados do projeto inclui churrasqueira/salão de festas.
+             · Dermatologia, Makeup, Podologia, Manicure, Cabeleireira e Barbeiro,
+               Fisioterapia, Massagem removidos: nomear especialidade vincula um
+               concessionário que ainda não existe (CDC art. 30). O confirmado é
+               "Concessões de beleza e saúde" (content/paginas/04-servicos.json,
+               Grupo 3) — Academia e Pilates seguem confirmados (Grupo 5). -->
         <div class="servicos">
           <article class="servico">
             <p class="servico__num">01</p>
@@ -609,7 +655,7 @@
             <div>
               <h3>Mobilidade e guarda</h3>
               <ul class="servico__lista">
-                <li>Garagem Privativa</li>
+                <li>Garagem</li>
                 <li>Carregamento elétrico</li>
                 <li>Bicicletário</li>
                 <li>Storage</li>
@@ -633,11 +679,9 @@
             <div>
               <h3>Bem-estar</h3>
               <ul class="servico__lista">
-                <li>Academia</li>
-                <li>Fisioterapia e Pilates</li>
+                <li>Academia e Pilates</li>
                 <li>Piscina</li>
                 <li>Sauna</li>
-                <li>Massagem</li>
               </ul>
             </div>
           </article>
@@ -646,11 +690,7 @@
             <div>
               <h3>Cuidado pessoal</h3>
               <ul class="servico__lista">
-                <li>Cabeleireira e Barbeiro</li>
-                <li>Manicure</li>
-                <li>Podologia</li>
-                <li>Makeup</li>
-                <li>Dermatologia</li>
+                <li>Concessões de beleza e saúde</li>
               </ul>
             </div>
           </article>
@@ -659,11 +699,8 @@
             <div>
               <h3>Convívio</h3>
               <ul class="servico__lista">
-                <li>Área Gourmet</li>
                 <li>Deck</li>
                 <li>Jardim Sensorial</li>
-                <li>Jogos virtuais</li>
-                <li>Brinquedoteca</li>
                 <li>Pet Place</li>
               </ul>
             </div>
@@ -714,8 +751,8 @@
         <figcaption class="local__card container">
           <p class="eyebrow">[ 05 · Orla de Palmas ]</p>
           <h2 class="display-3">Orla de&nbsp;Palmas&nbsp;–&nbsp;TO</h2>
-          <!-- AJUSTAR: endereço completo, ponto de referência na orla e frase final -->
           <p class="caption">À beira do lago, no ritmo da capital — a cidade perto, a pressa longe.</p>
+          <p class="eyebrow" style="margin-top:1.4rem;">Q Orla 14 – Graciosa · Avenida Parque · Palmas – TO</p>
           <!-- AJUSTAR: lista opcional de distâncias em micro-label
                (aeroporto, centro, praia) quando confirmadas -->
         </figcaption>
@@ -759,8 +796,7 @@
         </svg>
         </p>
         <p class="finale__tagline">Seu espaço. Seu ritmo.</p>
-        <!-- AJUSTAR: número de WhatsApp oficial -->
-        <a class="cta-major" href="https://wa.me/55XXXXXXXXXXX" rel="noopener">Quero conhecer o projeto</a>
+          <a class="cta-major" href="https://wa.me/5563999718064" rel="noopener">Quero conhecer o projeto</a>
       </div>
     </section>
 
@@ -779,15 +815,27 @@
           <a href="#estrutura">Estrutura</a>
           <a href="#potencial">Potencial</a>
           <a href="#contato">Contato</a>
-          <!-- AJUSTAR: URL do Instagram oficial -->
-          <a href="https://www.instagram.com/" rel="noopener">Instagram</a>
+          <a href="https://www.instagram.com/cinnamonstudiobr/" rel="noopener">Instagram</a>
         </nav>
       </div>
+      <p class="eyebrow" style="margin-top:2.4rem;">Para investidor e corretor</p>
+      <nav class="footer-nav" aria-label="Material completo para investidor e corretor" style="margin-top:1rem;">
+        <a href="/landing">Receber o material</a>
+        <a href="/o-ativo">O Ativo</a>
+        <a href="/os-servicos">Os Serviços</a>
+        <a href="/a-conta">A Conta</a>
+        <a href="/palmas">Palmas</a>
+        <a href="/riscos">Riscos</a>
+        <a href="/area-da-imobiliaria">Área da Imobiliária</a>
+        <a href="/evento-rio">Evento Rio de Janeiro</a>
+      </nav>
       <div class="site-footer__legal">
         <p>© 2026 Cinnamon Studio · Palmas – TO</p>
-        <p>Imagens meramente ilustrativas.</p>
-        <!-- AJUSTAR: incorporadora, número do memorial de incorporação e CRECI —
-             obrigatórios no rodapé para venda de imóvel na planta -->
+        <p>Incorporação: Smart Studios SPE Ltda · CNPJ 68.632.814/0001-82</p>
+        <p>Intermediação: Denyse Xavier · CRECI 6089/TO</p>
+        <p>Q Orla 14 – Graciosa, Avenida Parque, Quadra 01, Lote 01, s/n · CEP 77.026-035 · Palmas/TO</p>
+        <!-- AJUSTAR: incluir nº do memorial de incorporação quando registrado -->
+        <p>Imagens meramente ilustrativas. Memorial de incorporação não registrado — não há oferta, reserva ou venda de unidades (Lei 4.591/64, art. 32).</p>
       </div>
     </div>
   </footer>
@@ -795,10 +843,11 @@
   <!-- libs (CDN, requisição única via /combine — 1 round-trip no 4G em vez
        de 3) + módulos do site — criados nas fases 3–4 -->
   <script defer src="https://cdn.jsdelivr.net/combine/npm/gsap@3.15.0/dist/gsap.min.js,npm/gsap@3.15.0/dist/ScrollTrigger.min.js,npm/lenis@1.3.26/dist/lenis.min.js"></script>
-  <script defer src="js/lenis-setup.js?v=20260826h"></script>
-  <script defer src="js/ui.js?v=20260826h"></script>
-  <script defer src="js/hero.js?v=20260826h"></script>
-  <script defer src="js/sections.js?v=20260826h"></script>
+  <script defer src="js/menu.js?v=20260827i"></script>
+  <script defer src="js/lenis-setup.js?v=20260827h"></script>
+  <script defer src="js/ui.js?v=20260827h"></script>
+  <script defer src="js/hero.js?v=20260827h"></script>
+  <script defer src="js/sections.js?v=20260827h"></script>
 
 </body>
 </html>

@@ -32,6 +32,16 @@ class NoCacheHandler(http.server.SimpleHTTPRequestHandler):
                 del self.headers[h]
         super().do_GET()
 
+    def translate_path(self, path):
+        """Clean URLs iguais às da Vercel (vercel.json → cleanUrls:true):
+        /o-ativo serve o-ativo.html, para o preview local se comportar
+        como a produção."""
+        full = super().translate_path(path)
+        base = full.split("?", 1)[0].split("#", 1)[0]
+        if not os.path.isdir(base) and not os.path.exists(base) and os.path.exists(base + ".html"):
+            return base + ".html"
+        return full
+
     def log_message(self, fmt, *args):
         pass  # silencioso
 

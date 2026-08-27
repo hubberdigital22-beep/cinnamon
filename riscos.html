@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cinnamon Studio · Riscos</title>
+  <meta name="description" content="O que pode dar errado e como está mitigado. É a página que constrói a confiança que sustenta todas as outras.">
+  <meta name="theme-color" content="#22231f">
+  <meta name="robots" content="noindex">
+  <!-- AJUSTAR: remover noindex quando o memorial de incorporação estiver
+       registrado e a comercialização, autorizada (Lei 4.591/64 art. 32). -->
+  <link rel="icon" type="image/svg+xml" href="<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' fill='%2322231f'/><path fill='%23b7a48e' d='M47.22159090909091 49.16477272727273V45.81818181818182C46.03409090909091 46.62784090909091 40.96022727272727 48.89488636363637 35.83238636363636 48.89488636363637C25.414772727272727 48.89488636363637 20.232954545454547 43.55113636363636 20.232954545454547 31.83806818181818C20.232954545454547 21.582386363636363 25.630681818181817 16.40056818181818 35.83238636363636 16.40056818181818C40.90625 16.40056818181818 45.76420454545454 18.721590909090907 46.89772727272727 19.36931818181818V16.13068181818182C46.08806818181818 15.752840909090907 42.03977272727273 13.647727272727273 35.34659090909091 13.647727272727273C25.14488636363636 13.647727272727273 16.77840909090909 18.883522727272727 16.77840909090909 31.83806818181818C16.77840909090909 45.60227272727273 23.147727272727273 51.64772727272727 35.34659090909091 51.64772727272727C41.55397727272727 51.64772727272727 46.30397727272727 49.65056818181818 47.22159090909091 49.16477272727273Z'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css?v=f077e391">
+</head>
+<body class="page">
+
+  <svg class="logo-sprite" aria-hidden="true" focusable="false">
+    <defs>
+      <g id="logo-cinnamon">
+        <g class="logo__main">
+          <path class="logo__ltr" d="M160.42849999999999 536.76774V528.4665600000001C157.48291999999998 530.47491 144.89726 536.09829 132.17771 536.09829C106.33694 536.09829 93.4835 522.8431800000001 93.4835 493.7890500000001C93.4835 468.34995000000004 106.8725 455.49651000000006 132.17771 455.49651000000006C144.76337 455.49651000000006 156.81347 461.25378000000006 159.62516 462.86046000000005V454.8270600000001C157.61681 453.8898300000001 147.57506 448.66812000000004 130.9727 448.66812000000004C105.66749 448.66812000000004 84.91454 461.6554500000001 84.91454 493.7890500000001C84.91454 527.931 100.71356 542.92668 130.9727 542.92668C146.37005 542.92668 158.15237 537.97275 160.42849999999999 536.76774Z"/>
+          <path class="logo__ltr" d="M201.39883999999995 541.32V450.2748H192.82987999999997V541.32Z"/>
+          <path class="logo__ltr" d="M329.93323999999996 541.32V450.2748H322.30150999999995V534.75939L252.54481999999996 450.2748H240.36082999999996V541.32H247.99255999999997V456.9693000000001L317.61535999999995 541.32Z"/>
+          <path class="logo__ltr" d="M458.3337499999999 541.32V450.2748H450.70201999999995V534.75939L380.9453299999999 450.2748H368.7613399999999V541.32H376.3930699999999V456.9693000000001L446.01586999999995 541.32Z"/>
+          <path class="logo__ltr" d="M584.0564599999999 541.32 540.80999 450.2748H530.3665699999999L486.31675999999993 541.32H495.1534999999999L535.18661 455.8981800000001L574.55027 541.32Z"/>
+          <path class="logo__ltr" d="M732.1387999999998 541.32V450.2748H719.6870299999998L672.4238599999999 535.69662L624.7590199999999 450.2748H612.0394699999998V541.32H619.2695299999998V455.49651000000006L666.9343699999998 541.32H676.8422299999999L724.5070699999999 455.49651000000006V541.32Z"/>
+          <path class="logo__ltr" d="M862.1459899999998 493.7890500000001C862.1459899999998 462.19101000000006 843.1336099999997 448.66812000000004 814.8828199999998 448.66812000000004C787.9709299999998 448.66812000000004 767.7535399999998 461.5215600000001 767.7535399999998 493.7890500000001C767.7535399999998 527.7971100000001 783.0169999999998 542.92668 814.8828199999998 542.92668C843.1336099999997 542.92668 862.1459899999998 530.07324 862.1459899999998 493.7890500000001ZM853.5770299999998 493.7890500000001C853.5770299999998 523.5126300000001 839.3846899999998 536.09829 814.8828199999998 536.09829C789.7114999999998 536.09829 776.3224999999998 523.64652 776.3224999999998 493.7890500000001C776.3224999999998 467.81439000000006 790.2470599999998 455.49651000000006 814.8828199999998 455.49651000000006C839.1169099999997 455.49651000000006 853.5770299999998 467.68050000000005 853.5770299999998 493.7890500000001Z"/>
+          <path class="logo__ltr" d="M987.1992499999998 541.32V450.2748H979.5675199999998V534.75939L909.8108299999998 450.2748H897.6268399999998V541.32H905.2585699999998V456.9693000000001L974.8813699999998 541.32Z"/>
+        </g>
+        <g class="logo__sub">
+          <path class="logo__ltr" d="M744.9853999999999 591.13166C744.9853999999999 608.1651899999999 779.6938899999999 603.60391 779.6938899999999 618.07172C779.6938899999999 624.4860199999999 773.7072099999999 628.69095 764.44211 628.69095C757.0300299999999 628.69095 751.3996999999999 625.19872 748.47763 619.28331L744.9853999999999 620.5661699999999C748.2638199999999 626.05396 756.03225 629.76 764.44211 629.76C776.0591199999999 629.76 783.82755 624.91364 783.82755 617.57283C783.82755 600.5393 749.11906 605.10058 749.11906 590.6327699999999C749.11906 584.1472 755.10574 579.94227 764.44211 579.94227C771.71165 579.94227 777.2707099999999 583.36323 780.26405 589.20737L783.82755 587.99578C780.6203999999999 582.50799 772.8519699999999 578.87322 764.44211 578.87322C752.68256 578.87322 744.9853999999999 583.71958 744.9853999999999 591.13166Z"/>
+          <path class="logo__ltr" d="M793.09265 578.87322V579.94227H809.19967V629.76H812.7631700000001V579.94227H828.87019V578.87322Z"/>
+          <path class="logo__ltr" d="M839.56069 578.87322V610.37456C839.56069 624.12967 845.0484799999999 629.76 856.09533 629.76C867.64107 629.76 871.98854 623.2744299999999 871.98854 607.95138V578.87322H870.91949V608.1651899999999C870.91949 622.0628399999999 866.92837 628.69095 855.9527899999999 628.69095C847.6142 628.69095 843.12419 622.27665 843.12419 611.9425V578.87322Z"/>
+          <path class="logo__ltr" d="M884.6746 629.76H901.92194C917.24499 629.47492 923.51675 621.13633 923.51675 604.03153C923.51675 586.2853 916.7461 579.1582999999999 901.92194 578.87322H884.6746ZM888.2381 628.69095V579.94227H901.49432C914.18038 579.79973 919.95325 586.85546 919.95325 604.03153C919.95325 620.92252 914.32292 628.69095 901.49432 628.69095Z"/>
+          <path class="logo__ltr" d="M938.4834500000001 629.76V578.87322H934.9199500000001V629.76Z"/>
+          <path class="logo__ltr" d="M971.4814600000001 629.76C986.5907000000001 629.76 993.0050000000001 618.1429899999999 993.0050000000001 604.31661C993.0050000000001 590.41896 986.5907000000001 578.87322 971.4814600000001 578.87322C956.3009500000001 578.87322 949.88665 590.41896 949.88665 604.31661C949.88665 618.1429899999999 956.3009500000001 629.76 971.4814600000001 629.76ZM971.4814600000001 579.94227C980.67529 579.94227 989.4415 589.34991 989.4415 604.31661C989.4415 619.28331 980.67529 628.69095 971.4814600000001 628.69095C962.21636 628.69095 953.45015 619.28331 953.45015 604.31661C953.45015 589.34991 962.21636 579.94227 971.4814600000001 579.94227Z"/>
+        </g>
+      </g>
+    </defs>
+  </svg>
+
+  <!-- grain global de filme — mesmo do index (o CSS o desliga no mobile) -->
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- cursor customizado — a lógica vive em js/ui.js; sem JS não aparece -->
+  <div class="cursor-ring" aria-hidden="true"></div>
+  <div class="cursor-dot" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <a href="/" class="wordmark" aria-label="Cinnamon Studio — página inicial">
+      <svg class="wordmark__art" viewBox="82.91 446.67 912.09 185.09" aria-hidden="true" focusable="false"><use href="#logo-cinnamon"/></svg>
+    </a>
+    <!-- "Entre em contato" vive no rodapé do drawer -->
+    <button class="header-menu-btn" type="button" data-menu-toggle
+            aria-expanded="false" aria-controls="menu-overlay"><span class="menu-icon" aria-hidden="true"><span></span><span></span><span></span></span><span class="header-menu-btn__txt">Menu</span></button>
+  </header>
+
+  <div class="menu-overlay" id="menu-overlay" hidden>
+    <div class="menu-overlay__scrim" data-menu-close aria-hidden="true"></div>
+    <aside class="menu-panel" role="dialog" aria-modal="true" aria-label="Menu de navegação">
+      <div class="menu-overlay__bar">
+        <span class="wordmark" aria-hidden="true"><svg class="wordmark__art" viewBox="82.91 446.67 912.09 185.09" aria-hidden="true" focusable="false"><use href="#logo-cinnamon"/></svg></span>
+        <button class="header-menu-btn" type="button" data-menu-close>Fechar</button>
+      </div>
+      <nav aria-label="Páginas do site"><ul class="menu-list"><li><a href="/">Início</a></li><li><a href="/landing">Material</a></li><li><a href="/o-ativo">O Ativo</a></li><li><a href="/os-servicos">Os Serviços</a></li><li><a href="/a-conta">A Conta</a></li><li><a href="/palmas">Palmas</a></li><li><a href="/riscos" aria-current="page">Riscos</a></li><li><a href="/area-da-imobiliaria">Área da Imobiliária</a></li><li><a href="/evento-rio">Evento Rio</a></li></ul></nav>
+      <div class="menu-overlay__foot">
+        <p class="menu-overlay__tag">Seu espaço. Seu ritmo.</p>
+        <a class="cta-link" href="https://wa.me/5563999718064" rel="noopener">Entre em contato</a>
+      </div>
+    </aside>
+  </div>
+
+  <main class="page">
+    <section class="page-hero"><div class="container"><p class="eyebrow">Riscos</p><h1 class="display-2">O que pode dar errado neste investimento.</h1><p class="page-hero__lead caption">Nenhum outro lançamento que analisamos publica esta página. Publicamos porque o seu conselheiro financeiro vai fazer estas perguntas de qualquer forma — e é melhor que ele encontre as respostas aqui do que invente as dele.</p><div class="cta-row"><a class="cta-btn" href="https://wa.me/5563999718064" rel="noopener">Falar com um consultor</a></div></div></section><div id="conteudo"></div><!-- STATUS DO DECK: Revisão jurídica antes de subir --><section class="section sec sec--contraste" id="s-01"><div class="container"><div class="section-head"><p class="eyebrow">Risco 1</p><h2 class="display-2">A obra pode atrasar</h2></div><div class="sec__par"><div class="sec__lado sec__lado--a"><span>Risco</span><p>Quinze meses é um prazo agressivo e depende de uma cadeia industrial: estrutura metálica produzida em Minas Gerais e kits de parede montados no local. Atraso de fornecedor vira atraso de entrega.</p></div><div class="sec__lado sec__lado--b"><span>Mitigação</span><p>O método foi escolhido justamente por ter cronograma mais previsível que a obra convencional, e o custo mais alto de produção já está absorvido no preço. Além disso, existem os 6 meses de carência legal.</p></div></div><div class="sec__aberto"><span>Ainda em aberto</span><p>A cadeia de fornecimento é concentrada. Estamos publicando o cronograma detalhado no material para que você acompanhe marco a marco.</p></div></div></section><section class="section sec sec--lastro" id="s-02"><div class="container"><div class="sec__main"><div class="section-head"><p class="eyebrow">Risco 2</p><h2 class="display-2">São 510 unidades entrando num mercado que já tem estoque</h2></div></div><aside class="sec__aside"><div class="nota"><span>Risco</span><p>O mercado vertical de Palmas tem 938 unidades em estoque. Este empreendimento acrescenta 510. Se a absorção não acompanhar, há pressão sobre preço de revenda e sobre a tarifa de locação.</p></div><div class="nota"><span>Mitigação</span><p>O ticket e a tipologia escolhidos são os de maior liquidez comprovada da cidade — 506 studios absorvidos nesta faixa com velocidade de venda de 94% a 99%. E o produto foi posicionado no trecho de orla, que registra os maiores preços e as maiores velocidades do período.</p></div><div class="nota"><span>Ainda em aberto</span><p>Absorção passada não garante absorção futura. Este é um risco real e você deve pesar ele.</p></div><p class="fonte">Fonte · ADEMI-TO / Grupo Prospecta, ofertas do 1º trimestre de 2026.</p></aside></div></section><section class="section sec sec--contraste" id="s-03"><div class="container"><div class="section-head"><p class="eyebrow">Risco 3</p><h2 class="display-2">A receita da unidade é variável e não está projetada</h2></div><div class="sec__par"><div class="sec__lado sec__lado--a"><span>Risco</span><p>Não há estudo de operação concluído. Receita de hospedagem depende de ocupação, tarifa, sazonalidade e da competência do operador. Nenhuma dessas variáveis está sob controle do proprietário.</p></div><div class="sec__lado sec__lado--b"><span>Mitigação</span><p>Estamos contratando administradoras hoteleiras profissionais para rodar o estudo sobre o preço real do empreendimento. Até ele existir, não publicamos e não autorizamos nenhum número de receita.</p></div></div><div class="sec__aberto"><span>Ainda em aberto</span><p>Tudo. Este é o item mais aberto do projeto, e é por isso que ele é o Risco 3 e não uma nota de rodapé.</p></div></div></section><section class="section sec sec--ficha" id="s-04"><div class="container"><div class="section-head"><p class="eyebrow">Risco 4</p><h2 class="display-2">O memorial de incorporação ainda não está registrado</h2></div><div class="sec__corpo"><div class="nota"><span>Risco</span><p>Sem registro do memorial no cartório de registro de imóveis, não existe venda de unidade autônoma. Qualquer valor pago antes disso é exposição do comprador.</p></div><div class="nota"><span>Mitigação</span><p>Por isso nada é vendido, reservado ou sinalizado hoje — nem neste site, nem no evento do Rio em setembro, nem por corretor credenciado. O evento é de captação e mostruário, sem comercialização.</p></div><div class="nota"><span>Ainda em aberto</span><p>A data do registro. Você será avisado quando ele sair, com o número da matrícula.</p></div><p class="fonte">Fonte · Lei 4.591/64, art. 32.</p></div></div></section><section class="section sec sec--contraste" id="s-05"><div class="container"><div class="section-head"><p class="eyebrow">Risco 5</p><h2 class="display-2">O condomínio pode vir mais alto do que se espera</h2></div><div class="sec__par"><div class="sec__lado sec__lado--a"><span>Risco</span><p>Um prédio com 30 serviços e operação hoteleira tem custo de manutenção alto. Condomínio é o item que mais corrói o retorno de um studio.</p></div><div class="sec__lado sec__lado--b"><span>Mitigação</span><p>Três mecanismos declarados em projeto: concessões que pagam aluguel e rateio, usina solar própria com banco de baterias, e poço próprio com água sem custo para o proprietário. Áreas comuns improdutivas — cinema, salão de festas grande, churrasqueira — foram cortadas do projeto.</p></div></div><div class="sec__aberto"><span>Ainda em aberto</span><p>O valor. Só será publicado com memória de cálculo assinada, e não aceite nenhum número antes disso.</p></div></div></section><section class="section sec sec--lastro" id="s-06"><div class="container"><div class="sec__main"><div class="section-head"><p class="eyebrow">Risco 6</p><h2 class="display-2">O comprador local é minoria</h2></div></div><aside class="sec__aside"><div class="nota"><span>Risco</span><p>A renda familiar média de Palmas é R$ 10.164, e o estudo estima renda a partir de R$ 16.000 para o comprador natural desta tipologia. A demanda depende de investidor de fora do estado.</p></div><div class="nota"><span>Mitigação</span><p>É exatamente por isso que a captação começa no Rio de Janeiro e o produto é estruturado com material que resiste à análise de um conselheiro financeiro — em vez de depender de entusiasmo local.</p></div><p class="fonte">Fonte · ADEMI-TO / Grupo Prospecta.</p></aside></div></section><section class="section section--claro sec sec--claro" id="s-07"><div class="container"><div class="section-head"><p class="eyebrow">Risco 7</p><h2 class="display-2">Imóvel não tem liquidez de título</h2></div><div class="nota"><span>Risco</span><p>Você não vende um studio em Palmas em um dia útil. O comparável mediano da cidade leva 24 meses para vender todas as unidades de um empreendimento, e a revenda individual depende do momento de mercado.</p></div><div class="nota"><span>Mitigação</span><p>Nenhuma. Isso é característica da classe de ativo, não deste empreendimento, e precisa entrar na sua decisão de alocação.</p></div><p class="fonte">Fonte · Cálculo Hubber sobre ADEMI, 1º trimestre de 2026.</p></div></section><section class="section sec sec--quiet" id="s-08"><div class="container"><div class="section-head"><h2 class="display-2">Perguntas frequentes</h2></div><div class="faq-list"><details><summary>Por que vocês publicam isso?</summary><p>Porque o material vai ser repetido por milhares de corretores, e o que não estiver escrito vai ser improvisado. Preferimos que a resposta difícil venha de nós.</p></details><details><summary>Isso significa que o investimento é ruim?</summary><p>Significa que ele tem risco, como todo investimento de renda variável. A decisão é sua e do seu assessor. Nosso trabalho é entregar os dados para que ela seja tomada com informação.</p></details></div></div></section><section class="finale" aria-label="Fechamento"><span class="finale__glow" aria-hidden="true"></span><svg class="ring ring--finale" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><circle cx="50" cy="50" r="49.5" fill="none" stroke="currentColor" stroke-width="0.35"/></svg><div class="finale__inner container"><p class="wordmark">
+          <span class="sr-only">Cinnamon Studio</span>
+          <svg class="wordmark__art" viewBox="82.91 446.67 912.09 185.09" aria-hidden="true" focusable="false">
+    <defs><clipPath id="logo-clip-finale"><rect x="82.91" y="446.67" width="912.09" height="185.09"/></clipPath></defs>
+    <g clip-path="url(#logo-clip-finale)">
+  <g class="wordmark__main logo__main">
+    <path class="logo__ltr" d="M160.42849999999999 536.76774V528.4665600000001C157.48291999999998 530.47491 144.89726 536.09829 132.17771 536.09829C106.33694 536.09829 93.4835 522.8431800000001 93.4835 493.7890500000001C93.4835 468.34995000000004 106.8725 455.49651000000006 132.17771 455.49651000000006C144.76337 455.49651000000006 156.81347 461.25378000000006 159.62516 462.86046000000005V454.8270600000001C157.61681 453.8898300000001 147.57506 448.66812000000004 130.9727 448.66812000000004C105.66749 448.66812000000004 84.91454 461.6554500000001 84.91454 493.7890500000001C84.91454 527.931 100.71356 542.92668 130.9727 542.92668C146.37005 542.92668 158.15237 537.97275 160.42849999999999 536.76774Z"/>
+    <path class="logo__ltr" d="M201.39883999999995 541.32V450.2748H192.82987999999997V541.32Z"/>
+    <path class="logo__ltr" d="M329.93323999999996 541.32V450.2748H322.30150999999995V534.75939L252.54481999999996 450.2748H240.36082999999996V541.32H247.99255999999997V456.9693000000001L317.61535999999995 541.32Z"/>
+    <path class="logo__ltr" d="M458.3337499999999 541.32V450.2748H450.70201999999995V534.75939L380.9453299999999 450.2748H368.7613399999999V541.32H376.3930699999999V456.9693000000001L446.01586999999995 541.32Z"/>
+    <path class="logo__ltr" d="M584.0564599999999 541.32 540.80999 450.2748H530.3665699999999L486.31675999999993 541.32H495.1534999999999L535.18661 455.8981800000001L574.55027 541.32Z"/>
+    <path class="logo__ltr" d="M732.1387999999998 541.32V450.2748H719.6870299999998L672.4238599999999 535.69662L624.7590199999999 450.2748H612.0394699999998V541.32H619.2695299999998V455.49651000000006L666.9343699999998 541.32H676.8422299999999L724.5070699999999 455.49651000000006V541.32Z"/>
+    <path class="logo__ltr" d="M862.1459899999998 493.7890500000001C862.1459899999998 462.19101000000006 843.1336099999997 448.66812000000004 814.8828199999998 448.66812000000004C787.9709299999998 448.66812000000004 767.7535399999998 461.5215600000001 767.7535399999998 493.7890500000001C767.7535399999998 527.7971100000001 783.0169999999998 542.92668 814.8828199999998 542.92668C843.1336099999997 542.92668 862.1459899999998 530.07324 862.1459899999998 493.7890500000001ZM853.5770299999998 493.7890500000001C853.5770299999998 523.5126300000001 839.3846899999998 536.09829 814.8828199999998 536.09829C789.7114999999998 536.09829 776.3224999999998 523.64652 776.3224999999998 493.7890500000001C776.3224999999998 467.81439000000006 790.2470599999998 455.49651000000006 814.8828199999998 455.49651000000006C839.1169099999997 455.49651000000006 853.5770299999998 467.68050000000005 853.5770299999998 493.7890500000001Z"/>
+    <path class="logo__ltr" d="M987.1992499999998 541.32V450.2748H979.5675199999998V534.75939L909.8108299999998 450.2748H897.6268399999998V541.32H905.2585699999998V456.9693000000001L974.8813699999998 541.32Z"/>
+  </g>
+  <g class="wordmark__sub logo__sub">
+    <path class="logo__ltr" d="M744.9853999999999 591.13166C744.9853999999999 608.1651899999999 779.6938899999999 603.60391 779.6938899999999 618.07172C779.6938899999999 624.4860199999999 773.7072099999999 628.69095 764.44211 628.69095C757.0300299999999 628.69095 751.3996999999999 625.19872 748.47763 619.28331L744.9853999999999 620.5661699999999C748.2638199999999 626.05396 756.03225 629.76 764.44211 629.76C776.0591199999999 629.76 783.82755 624.91364 783.82755 617.57283C783.82755 600.5393 749.11906 605.10058 749.11906 590.6327699999999C749.11906 584.1472 755.10574 579.94227 764.44211 579.94227C771.71165 579.94227 777.2707099999999 583.36323 780.26405 589.20737L783.82755 587.99578C780.6203999999999 582.50799 772.8519699999999 578.87322 764.44211 578.87322C752.68256 578.87322 744.9853999999999 583.71958 744.9853999999999 591.13166Z"/>
+    <path class="logo__ltr" d="M793.09265 578.87322V579.94227H809.19967V629.76H812.7631700000001V579.94227H828.87019V578.87322Z"/>
+    <path class="logo__ltr" d="M839.56069 578.87322V610.37456C839.56069 624.12967 845.0484799999999 629.76 856.09533 629.76C867.64107 629.76 871.98854 623.2744299999999 871.98854 607.95138V578.87322H870.91949V608.1651899999999C870.91949 622.0628399999999 866.92837 628.69095 855.9527899999999 628.69095C847.6142 628.69095 843.12419 622.27665 843.12419 611.9425V578.87322Z"/>
+    <path class="logo__ltr" d="M884.6746 629.76H901.92194C917.24499 629.47492 923.51675 621.13633 923.51675 604.03153C923.51675 586.2853 916.7461 579.1582999999999 901.92194 578.87322H884.6746ZM888.2381 628.69095V579.94227H901.49432C914.18038 579.79973 919.95325 586.85546 919.95325 604.03153C919.95325 620.92252 914.32292 628.69095 901.49432 628.69095Z"/>
+    <path class="logo__ltr" d="M938.4834500000001 629.76V578.87322H934.9199500000001V629.76Z"/>
+    <path class="logo__ltr" d="M971.4814600000001 629.76C986.5907000000001 629.76 993.0050000000001 618.1429899999999 993.0050000000001 604.31661C993.0050000000001 590.41896 986.5907000000001 578.87322 971.4814600000001 578.87322C956.3009500000001 578.87322 949.88665 590.41896 949.88665 604.31661C949.88665 618.1429899999999 956.3009500000001 629.76 971.4814600000001 629.76ZM971.4814600000001 579.94227C980.67529 579.94227 989.4415 589.34991 989.4415 604.31661C989.4415 619.28331 980.67529 628.69095 971.4814600000001 628.69095C962.21636 628.69095 953.45015 619.28331 953.45015 604.31661C953.45015 589.34991 962.21636 579.94227 971.4814600000001 579.94227Z"/>
+  </g>
+    </g>
+        </svg>
+        </p><h2 class="display-3 finale__titulo">Leve esta página para o seu assessor.</h2><p class="finale__texto caption">O material completo traz cada um destes riscos com a fonte e a data-base.</p><a class="cta-major" href="/landing#form">Receber o material completo</a></div></section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="site-footer__top">
+        <p class="wordmark">
+          <svg class="wordmark__art" viewBox="82.91 446.67 912.09 185.09" aria-hidden="true" focusable="false"><use href="#logo-cinnamon"/></svg>
+          <span class="sr-only">Cinnamon Studio</span>
+        </p>
+        <nav class="footer-nav" aria-label="Navegação do rodapé">
+          <a href="/#projeto">O Projeto</a>
+          <a href="/#studio">O Studio</a>
+          <a href="/#estrutura">Estrutura</a>
+          <a href="/#potencial">Potencial</a>
+          <a href="/#contato">Contato</a>
+          <a href="https://www.instagram.com/cinnamonstudiobr/" rel="noopener">Instagram</a>
+        </nav>
+      </div>
+      <p class="eyebrow" style="margin-top:2.4rem;">Para investidor e corretor</p>
+      <nav class="footer-nav" aria-label="Material completo para investidor e corretor" style="margin-top:1rem;"><a href="/landing">Material</a><a href="/o-ativo">O Ativo</a><a href="/os-servicos">Serviços</a><a href="/a-conta">A Conta</a><a href="/palmas">Palmas</a><a href="/riscos" aria-current="page">Riscos</a><a href="/area-da-imobiliaria">Imobiliária</a><a href="/evento-rio">Evento Rio</a></nav>
+      <div class="site-footer__legal">
+        <p>© 2026 Cinnamon Studio · Palmas – TO</p>
+        <p>Incorporação: Smart Studios SPE Ltda · CNPJ 68.632.814/0001-82</p>
+        <p>Intermediação: Denyse Xavier · CRECI 6089/TO</p>
+        <p>Q Orla 14 – Graciosa, Avenida Parque, Quadra 01, Lote 01, s/n · CEP 77.026-035 · Palmas/TO</p>
+        <!-- AJUSTAR: incluir nº do memorial de incorporação quando registrado -->
+        <p>Imagens meramente ilustrativas. Memorial de incorporação não registrado — não há oferta, reserva ou venda de unidades (Lei 4.591/64, art. 32).</p>
+      </div>
+    </div>
+  </footer>
+
+  <script defer src="https://cdn.jsdelivr.net/combine/npm/gsap@3.15.0/dist/gsap.min.js,npm/gsap@3.15.0/dist/ScrollTrigger.min.js,npm/lenis@1.3.26/dist/lenis.min.js"></script>
+  <script defer src="/js/menu.js?v=8bacd703"></script>
+  <script defer src="/js/lenis-setup.js?v=66135d02"></script>
+  <script defer src="/js/ui.js?v=0cb20cbb"></script>
+  <script defer src="/js/pages.js?v=6b60141f"></script>
+  <script defer src="/js/forms.js?v=85dde935"></script>
+</body>
+</html>

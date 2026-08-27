@@ -19,3 +19,12 @@ Icon?
 
 # node (usado só para ferramentas pontuais, nunca em runtime)
 node_modules/
+
+# Copy deck e notas internas — NUNCA no repositório (este repo é público).
+# Contêm o "nunca publicar", a análise de exposição jurídica e os dados
+# marcados citavel:false. O .vercelignore já os tira do deploy; isto os
+# tira também do GitHub. Fluxo previsto: gerar o HTML local e versionar
+# só o HTML pronto (ver content/README.md).
+content/
+scripts/deck/
+__pycache__/
