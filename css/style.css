@@ -49,6 +49,13 @@ body{
   overflow-x:hidden;
 }
 
+/* âncora interna nunca pode parar embaixo do header fixo. Vale para o
+   scroll nativo (sem JS, reduced-motion e mobile, onde o Lenis é desligado);
+   o caminho com Lenis compensa por offset em lenis-setup.js, porque a lib
+   não lê scroll-margin. */
+:root{ --header-h:68px; }  /* header real: 44px no mobile, 65px no desktop */
+[id]{ scroll-margin-top:calc(var(--header-h) + 24px); }
+
 img{ display:block; max-width:100%; height:auto; }
 /* <picture> é só o seletor de arquivo (960 no celular): transparente
    para o layout — todo o CSS continua mirando o <img> interno */

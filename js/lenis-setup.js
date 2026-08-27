@@ -95,8 +95,12 @@
     var target = document.getElementById(id);
     if (!target || !window.CINNAMON.lenis) return; /* sem Lenis: nativo */
     ev.preventDefault();
-    if (id === 'hero') window.CINNAMON.lenis.scrollTo(0);
-    else window.CINNAMON.lenis.scrollTo(target, { offset: 0 });
+    if (id === 'hero') { window.CINNAMON.lenis.scrollTo(0); return; }
+    /* o Lenis ignora scroll-margin-top do CSS: sem este desconto a
+       âncora para debaixo do header fixo e come a primeira linha */
+    var barra = document.querySelector('.site-header');
+    var folga = (barra ? barra.offsetHeight : 0) + 16;
+    window.CINNAMON.lenis.scrollTo(target, { offset: -folga });
   });
 
   /* ---------- Lenis re-mede o limite sempre que a página muda de altura ----

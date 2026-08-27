@@ -378,6 +378,64 @@ ARGUMENTOS_SUPRIMIDOS = {
 }
 
 
+# Âncoras semânticas: seções que um CTA aponta por nome. Sem isto a seção
+# só tem o id numerado (s-NN), que muda de número quando outra seção entra
+# ou sai — foi assim que três CTAs viraram link morto. Chave: (slug, título
+# literal da seção); o valor substitui o id numerado.
+ANCORAS = {
+    ('landing', 'tipo:numeros'): 'numeros',
+    ('evento-rio', 'O projeto, aberto'): 'estande',
+    ('area-da-imobiliaria', 'Material que faz o trabalho difícil por você'):
+        'o-que-vem-no-credenciamento',
+}
+
+
+def aplicar_ancoras(slug, doc, blocos):
+    """Troca o id numerado pelo semântico nas seções do mapa ANCORAS.
+    Falha o build se um título do mapa não existir mais no deck — assim a
+    âncora nunca morre em silêncio."""
+    titulos = {}
+    n = 0
+    for b in blocos:
+        if b['tipo'] in ('abertura', 'microcopy', 'nota_interna', 'fechamento',
+                         'status', 'trava') or b.get('bloqueado'):
+            continue
+        n += 1
+        t = (b.get('titulo') or '').strip()
+        if t:
+            titulos.setdefault(t, '%02d' % n)
+        # blocos sem título (números, credenciais, faq) são endereçáveis
+        # pelo tipo — a banda de stats da landing é um deles
+        titulos.setdefault('tipo:' + b['tipo'], '%02d' % n)
+    for (sl, titulo), ancora in ANCORAS.items():
+        if sl != slug:
+            continue
+        num = titulos.get(titulo)
+        if num is None:
+            raise SystemExit(
+                'ÂNCORA ÓRFÃ em %s: nenhuma seção casa com a chave %r.\n'
+                'O deck mudou — atualize ANCORAS em build-pages.py, '
+                'senão o CTA que aponta para #%s vira link morto.'
+                % (slug, titulo, ancora))
+        doc = doc.replace('id="s-%s"' % num, 'id="%s"' % ancora, 1)
+    return doc
+
+
+def lint_ancoras(slug, doc):
+    """Nenhum href="#alvo" pode apontar para um id que não existe.
+    Ignora markup comentado (o <form> desligado mora num comentário)."""
+    vis = re.sub(r'<!--.*?-->', ' ', doc, flags=re.S)
+    ids = set(re.findall(r'id="([^"]+)"', vis))
+    mortas = sorted({h for h in re.findall(r'href="#([^"]+)"', vis)
+                     if h and h not in ids})
+    if mortas:
+        raise SystemExit(
+            'ÂNCORA MORTA em %s: %s\n'
+            'O CTA aponta para uma seção que não existe na página. '
+            'Ou registre o destino em ANCORAS, ou corrija o href em CTA_STATIC.'
+            % (slug, ', '.join('#' + m for m in mortas)))
+
+
 def aplicar_politica(slug, blocos):
     """Poda os blocos travados para publicação ANTES de renderizar.
     Devolve a lista de supressões aplicadas, para o relatório do build."""
@@ -1043,16 +1101,41 @@ def build_page(fname):
         nav_links.append('<a href="/%s"%s>%s</a>' % (sl, cls, esc(NAV_LABEL[sl])))
 
     titulo_pagina = d.get('titulo') or ''
+
+    # O que o WhatsApp mostra no preview NÃO pode ser a nota interna do deck
+    # ("Destino do QR code do estande. Captar lead qualificado. NÃO vender.").
+    # Usa o h1 e a linha de apoio — copy já aprovada para a tela.
+    corpo_html = ''.join(body_parts)
+    _h1 = re.search(r'<h1[^>]*>(.*?)</h1>', corpo_html, re.S)
+    _ld = re.search(r'class="page-hero__lead[^"]*">(.*?)</p>', corpo_html, re.S)
+
+    def _texto(m, limite):
+        if not m:
+            return ''
+        t = re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', '', m.group(1))).strip()
+        t = html.unescape(t)
+        if len(t) <= limite:
+            return t
+        corte = t[:limite].rsplit(' ', 1)[0]
+        return corte.rstrip(' ,;:—-') + '…'
+
+    compartilha_titulo = _texto(_h1, 92) or titulo_pagina
+    compartilha_desc = _texto(_ld, 155) or (d.get('funcao') or '')
     html_doc = TEMPLATE.format(
         titulo=esc(titulo_pagina),
         descricao=esc(d.get('funcao') or ''),
+        compartilha_titulo=esc(compartilha_titulo),
+        compartilha_desc=esc(compartilha_desc),
+        slug=slug,
         sprite=LOGO_SPRITE,
         v_css=V_CSS, v_menu=V_MENU, v_lenis=V_LENIS,
         v_ui=V_UI, v_pages=V_PAGES, v_forms=V_FORMS,
         menu=render_menu(slug),
-        body=''.join(body_parts),
+        body=corpo_html,
         nav_links=''.join(nav_links),
     )
+    html_doc = aplicar_ancoras(slug, html_doc, blocos)
+    lint_ancoras(slug, html_doc)
     return slug, html_doc, escolhidas, imagens, avisos
 
 
@@ -1062,12 +1145,32 @@ TEMPLATE = '''<!DOCTYPE html>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Cinnamon Studio · {titulo}</title>
-  <meta name="description" content="{descricao}">
+  <meta name="description" content="{compartilha_desc}">
   <meta name="theme-color" content="#22231f">
   <meta name="robots" content="noindex">
   <!-- AJUSTAR: remover noindex quando o memorial de incorporação estiver
        registrado e a comercialização, autorizada (Lei 4.591/64 art. 32). -->
-  <link rel="icon" type="image/svg+xml" href="<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' fill='%2322231f'/><path fill='%23b7a48e' d='M47.22159090909091 49.16477272727273V45.81818181818182C46.03409090909091 46.62784090909091 40.96022727272727 48.89488636363637 35.83238636363636 48.89488636363637C25.414772727272727 48.89488636363637 20.232954545454547 43.55113636363636 20.232954545454547 31.83806818181818C20.232954545454547 21.582386363636363 25.630681818181817 16.40056818181818 35.83238636363636 16.40056818181818C40.90625 16.40056818181818 45.76420454545454 18.721590909090907 46.89772727272727 19.36931818181818V16.13068181818182C46.08806818181818 15.752840909090907 42.03977272727273 13.647727272727273 35.34659090909091 13.647727272727273C25.14488636363636 13.647727272727273 16.77840909090909 18.883522727272727 16.77840909090909 31.83806818181818C16.77840909090909 45.60227272727273 23.147727272727273 51.64772727272727 35.34659090909091 51.64772727272727C41.55397727272727 51.64772727272727 46.30397727272727 49.65056818181818 47.22159090909091 49.16477272727273Z'/></svg>">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/img/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/img/favicon-180.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Cinnamon Studio">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:title" content="{compartilha_titulo}">
+  <meta property="og:description" content="{compartilha_desc}">
+  <meta property="og:url" content="https://www.cinnamonstudio.com.br/{slug}">
+  <meta property="og:image" content="https://www.cinnamonstudio.com.br/img/og-cinnamon.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Wordmark Cinnamon Studio sobre a fachada da torre ao entardecer.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{compartilha_titulo}">
+  <meta name="twitter:description" content="{compartilha_desc}">
+  <meta name="twitter:image" content="https://www.cinnamonstudio.com.br/img/og-cinnamon.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
