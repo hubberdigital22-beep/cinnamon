@@ -23,6 +23,16 @@ PAGINAS = os.path.join(CONTENT, 'paginas')
 
 WHATSAPP = "https://wa.me/5563999718064"  # oficial: Denyse Xavier (CRECI 6089/TO) — investidor e cliente final
 
+# Cadastro de corretor/investidor para o evento e o credenciamento — decisão
+# de 27/08 (trava "um número ou dois"): são DOIS canais por natureza, não um
+# só WhatsApp. O investidor fala 1:1 com a Denyse (WHATSAPP, acima). O
+# corretor NÃO fala com ela — ele preenche este cadastro, que hoje termina
+# em confirmação manual para o grupo/lista de transmissão de corretores.
+# Automação com o Thiago fica para depois; até lá isto é o destino final,
+# não um substituto temporário do form nativo (que segue em FORM_ATIVO,
+# independente desta decisão).
+FORM_CADASTRO = "https://form.respondi.app/RwKMw19v"
+
 # slug do arquivo (JSON) -> slug da URL publicada
 URL_SLUG = {
     '01-landing-captacao': 'landing',
@@ -914,15 +924,19 @@ def render_form_landing(blocos, n):
 
 
 def render_form_evento(blocos, n):
-    """Página 09 — primeiro campo ramifica corretor/investidor, campos literais do deck."""
+    """Página 09 — cadastro EXTERNO (respondi.app): corretor e investidor no
+    mesmo link, a ramificação é a primeira tela do formulário lá fora, não
+    um <select> aqui dentro. Decisão de 27/08 ("um número ou dois"): quem
+    visita esta página, corretor ou investidor, não fala 1:1 com a Denyse —
+    cai neste cadastro, que hoje termina em confirmação manual para o
+    grupo/lista de transmissão. Por isso este bloco NÃO passa por
+    desligar_form()/FORM_ATIVO: aquele mecanismo é sobre o form nativo
+    (POST /api/lead) esperando o Kommo, uma decisão separada e ainda em
+    aberto. O markup do form nativo que existia aqui fica preservado
+    comentado abaixo, caso um dia volte a fazer sentido."""
     consent = get_micro(blocos, 'form consent') or get_micro(blocos, 'disclaimer rodape') or ''
     primeiro = get_micro(blocos, 'form primeiro campo') or ''
-    markup = '''
-<section class="section" id="form"><div class="container">
-  <div class="section-head">
-    <h2 class="display-2">Cadastro para o evento</h2>
-  </div>
-  <form class="form" method="POST" action="/api/lead" data-form="lead">
+    nativo = '''<form class="form" method="POST" action="/api/lead" data-form="lead">
     <input type="hidden" name="origem" value="evento-rio">
     <div class="form__campo">
       <label for="ev-perfil">%s</label>
@@ -941,11 +955,27 @@ def render_form_evento(blocos, n):
     <button class="form__submit" type="submit">Garantir meu acesso</button>
     <p class="form__msg" data-role="msg" hidden></p>
     <p class="fonte">%s</p>
-  </form>
-</div></section>''' % (esc(primeiro), esc(consent))
-    return desligar_form(
-        markup, 'Cadastro para o evento', 'Garantir meu acesso',
-        ' · o credenciamento de corretor é confirmado por este mesmo canal')
+  </form>''' % (esc(primeiro), esc(consent))
+    # '--' fecharia o comentário HTML antes da hora
+    preservado = nativo.replace('--', '- -').strip()
+    return '''
+<section class="section" id="form"><div class="container">
+  <div class="section-head">
+    <h2 class="display-2">Cadastro para o evento</h2>
+  </div>
+  <p class="sec-body">Corretor ou investidor: o cadastro é o mesmo link — a
+  primeira pergunta do formulário direciona para o caminho certo.</p>
+  <p class="sec-cta"><a class="cta-btn" href="%s" rel="noopener">Garantir meu acesso</a></p>
+  <p class="fonte">Confirmação manual por enquanto.</p>
+</div></section>
+<!-- Decisão de 27/08 ("um número ou dois"): o cadastro do evento é externo
+     (respondi.app, ver FORM_CADASTRO), não o form nativo abaixo. Corretor
+     não fala 1:1 com a Denyse aqui — cadastro > confirmação manual > grupo/
+     lista de transmissão; automação com o Thiago fica para depois. O form
+     nativo (POST /api/lead, ramificado por <select>) fica preservado
+     comentado, caso volte a ser o caminho certo.
+%s
+-->''' % (esc_attr(FORM_CADASTRO), preservado)
 
 
 PAGE_HEAD_EXTRA = {
@@ -953,16 +983,15 @@ PAGE_HEAD_EXTRA = {
 <section class="section sec sec--quiet" id="credenciamento"><div class="container">
   <div class="section-head">
     <p class="eyebrow">Credenciamento</p>
-    <h2 class="display-2">Fale com a incorporação para credenciar sua imobiliária</h2>
+    <h2 class="display-2">Preencha o cadastro para credenciar sua imobiliária</h2>
   </div>
-  <p class="sec-body">O formulário de cadastro (CNPJ, CRECI, corretores) ainda não tem os
-  campos definidos no Copy Deck — para não inventar copy de formulário, o credenciamento
-  começa por contato direto até esse fluxo ser desenhado.</p>
-  <p class="sec-cta"><a class="cta-btn" href="%s" rel="noopener">Falar sobre credenciamento</a></p>
-  <p class="fonte">AJUSTAR: trocar pelo formulário Kommo quando Thiago enviar o endpoint —
-  decisão de 27/08: corretor NÃO é atendido individual (cadastro → grupo/canal coletivo);
-  o WhatsApp aqui é interino. Validação de CRECI: upload manual com conferência humana.</p>
-</div></section>''' % esc_attr(WHATSAPP),
+  <p class="sec-body">O credenciamento começa pelo cadastro abaixo — a incorporação
+  confirma e adiciona você ao grupo e à lista de transmissão de corretores
+  credenciados.</p>
+  <p class="sec-cta"><a class="cta-btn" href="%s" rel="noopener">Credenciar minha imobiliária</a></p>
+  <p class="fonte">Confirmação manual por enquanto — automação com o Kommo fica para
+  depois. Validação de CRECI: upload manual com conferência humana.</p>
+</div></section>''' % esc_attr(FORM_CADASTRO),
 }
 
 

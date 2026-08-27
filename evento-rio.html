@@ -136,19 +136,18 @@
   <div class="section-head">
     <h2 class="display-2">Cadastro para o evento</h2>
   </div>
-  <p class="sec-body">Enquanto o cadastro on-line não entra no ar, o material
-  completo é enviado pelo WhatsApp, direto com a corretora responsável.</p>
-  <p class="sec-cta"><a class="cta-btn" href="https://wa.me/5563999718064" rel="noopener">Garantir meu acesso</a></p>
-  <p class="fonte">Denyse Xavier · CRECI 6089/TO · o credenciamento de corretor é confirmado por este mesmo canal</p>
+  <p class="sec-body">Corretor ou investidor: o cadastro é o mesmo link — a
+  primeira pergunta do formulário direciona para o caminho certo.</p>
+  <p class="sec-cta"><a class="cta-btn" href="https://form.respondi.app/RwKMw19v" rel="noopener">Garantir meu acesso</a></p>
+  <p class="fonte">Confirmação manual por enquanto.</p>
 </div></section>
-<!-- FORMULÁRIO DESLIGADO em 27/08/2026 — aguardando endpoint e chave do Kommo.
-     O markup abaixo está intacto: religar é trocar FORM_ATIVO para True em
-     scripts/build-pages.py e rodar o build. Não editar por aqui.
-<section class="section" id="form"><div class="container">
-  <div class="section-head">
-    <h2 class="display-2">Cadastro para o evento</h2>
-  </div>
-  <form class="form" method="POST" action="/api/lead" data-form="lead">
+<!-- Decisão de 27/08 ("um número ou dois"): o cadastro do evento é externo
+     (respondi.app, ver FORM_CADASTRO), não o form nativo abaixo. Corretor
+     não fala 1:1 com a Denyse aqui — cadastro > confirmação manual > grupo/
+     lista de transmissão; automação com o Thiago fica para depois. O form
+     nativo (POST /api/lead, ramificado por <select>) fica preservado
+     comentado, caso volte a ser o caminho certo.
+<form class="form" method="POST" action="/api/lead" data-form="lead">
     <input type="hidden" name="origem" value="evento-rio">
     <div class="form__campo">
       <label for="ev-perfil">Você é corretor ou investidor?</label>
@@ -168,7 +167,6 @@
     <p class="form__msg" data-role="msg" hidden></p>
     <p class="fonte">Evento de captação e apresentação de projeto. Não há oferta, reserva ou venda de unidades. Memorial de incorporação não registrado (Lei 4.591/64, art. 32). Imagens meramente ilustrativas.</p>
   </form>
-</div></section>
 --><section class="finale" aria-label="Fechamento"><span class="finale__glow" aria-hidden="true"></span><svg class="ring ring--finale" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><circle cx="50" cy="50" r="49.5" fill="none" stroke="currentColor" stroke-width="0.35"/></svg><div class="finale__inner container"><p class="wordmark">
           <span class="sr-only">Cinnamon Studio</span>
           <svg class="wordmark__art" viewBox="82.91 446.67 912.09 185.09" aria-hidden="true" focusable="false">
