@@ -4,8 +4,10 @@
    direita, sobre um scrim clicável. Compartilhado entre o index
    imersivo e as páginas editoriais.
    Vanilla, sem dependência: funciona mesmo se o CDN do GSAP
-   falhar. Sem JS o botão nem aparece (html.has-menu) e a
-   navegação continua pelo rodapé.
+   falhar — e a tag <script> dele vem ANTES da do CDN, senão o
+   defer o faria esperar o bundle inteiro. Quem exibe o botão é
+   o bootstrap inline do <head> (html.has-menu, antes do 1º
+   paint); sem JS a classe não entra e a navegação fica no rodapé.
    ============================================================ */
 (function () {
   'use strict';
@@ -15,6 +17,8 @@
   var overlay = document.getElementById('menu-overlay');
   if (!btn || !overlay) return;
 
+  /* o bootstrap do <head> já pôs a classe; repetimos para o caso de
+     esta página não ter o inline (fallback inofensivo) */
   root.classList.add('has-menu');
 
   var panel = overlay.querySelector('.menu-panel') || overlay;
@@ -45,10 +49,14 @@
     lastFocus = document.activeElement;
     overlay.hidden = false;
     overlay.removeAttribute('aria-hidden');
-    /* classe no frame seguinte para a transição rodar */
-    requestAnimationFrame(function () {
-      requestAnimationFrame(function () { overlay.classList.add('is-open'); });
-    });
+    /* o painel sai de translateX(100%): a transição só roda se esse estado
+       inicial for calculado ANTES da classe entrar. Um reflow forçado faz
+       isso na hora — o duplo requestAnimationFrame de antes dependia de
+       frames, e com o rAF suspenso (aba em 2º plano, app minimizado no
+       celular) o drawer ficava logicamente aberto e visualmente ausente,
+       com o scroll travado. */
+    void overlay.offsetWidth;
+    overlay.classList.add('is-open');
     btn.setAttribute('aria-expanded', 'true');
     root.classList.add('menu-open');
     var l = lenis();
@@ -102,6 +110,14 @@
       primeiro.focus();
     }
   });
+
+  /* toque dado antes deste arquivo carregar (bootstrap do <head>):
+     abre agora, para o botão nunca parecer morto */
+  window.__menuPronto = true;
+  if (window.__menuPendente) {
+    window.__menuPendente = false;
+    open();
+  }
 
   /* link clicado → fecha (âncoras na mesma página não recarregam) */
   panel.addEventListener('click', function (ev) {

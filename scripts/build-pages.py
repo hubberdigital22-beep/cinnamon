@@ -1177,6 +1177,19 @@ TEMPLATE = '''<!DOCTYPE html>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css?v={v_css}">
 
+  <!-- O hambúrguer NÃO pode depender de rede: /js/menu.js é <script defer>
+       e, atrás do bundle do CDN, deixava o header sem botão o download
+       inteiro em 4G frio. Esta linha roda antes do primeiro paint. Sem JS
+       a classe não entra e a navegação segue pelo rodapé. -->
+  <script>
+    document.documentElement.classList.add('has-menu');
+    document.addEventListener('click', function (ev) {{
+      if (window.__menuPronto) return;
+      var alvo = ev.target && ev.target.closest && ev.target.closest('[data-menu-toggle]');
+      if (alvo) window.__menuPendente = true;
+    }}, true);
+  </script>
+
   <!-- Meta Pixel — 1953789878618915 (Cinnamon Studio).
        Fim do <head>, depois do CSS e das preconnects: o snippet injeta o
        script como async, então a conexão com o connect.facebook.net não
@@ -1255,8 +1268,8 @@ TEMPLATE = '''<!DOCTYPE html>
     </div>
   </footer>
 
-  <script defer src="https://cdn.jsdelivr.net/combine/npm/gsap@3.15.0/dist/gsap.min.js,npm/gsap@3.15.0/dist/ScrollTrigger.min.js,npm/lenis@1.3.26/dist/lenis.min.js"></script>
   <script defer src="/js/menu.js?v={v_menu}"></script>
+  <script defer src="https://cdn.jsdelivr.net/combine/npm/gsap@3.15.0/dist/gsap.min.js,npm/gsap@3.15.0/dist/ScrollTrigger.min.js,npm/lenis@1.3.26/dist/lenis.min.js"></script>
   <script defer src="/js/lenis-setup.js?v={v_lenis}"></script>
   <script defer src="/js/ui.js?v={v_ui}"></script>
   <script defer src="/js/pages.js?v={v_pages}"></script>
