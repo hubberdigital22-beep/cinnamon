@@ -21,17 +21,34 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CONTENT = os.path.join(ROOT, 'content')
 PAGINAS = os.path.join(CONTENT, 'paginas')
 
-WHATSAPP = "https://wa.me/5563999718064"  # oficial: Denyse Xavier (CRECI 6089/TO) — investidor e cliente final
+# Número oficial: Denyse Xavier (CRECI 6089/TO). Desde 07/09/2026 NENHUM CTA
+# aponta para cá direto — o site inteiro entra pelo FORM_CADASTRO, que
+# termina entregando a conversa neste mesmo WhatsApp. Fica registrado porque
+# é o destino real do funil e porque o form nativo (FORM_ATIVO) volta a
+# precisar dele quando o Kommo entrar.
+WHATSAPP = "https://wa.me/5563999718064"
 
-# Cadastro de corretor/investidor para o evento e o credenciamento — decisão
-# de 27/08 (trava "um número ou dois"): são DOIS canais por natureza, não um
-# só WhatsApp. O investidor fala 1:1 com a Denyse (WHATSAPP, acima). O
-# corretor NÃO fala com ela — ele preenche este cadastro, que hoje termina
-# em confirmação manual para o grupo/lista de transmissão de corretores.
-# Automação com o Thiago fica para depois; até lá isto é o destino final,
-# não um substituto temporário do form nativo (que segue em FORM_ATIVO,
-# independente desta decisão).
+# Cadastro de corretor/investidor — decisão de 27/08 (trava "um número ou
+# dois"): são DOIS canais por natureza. A primeira pergunta do formulário é
+# "Você é... investidor(a) / corretor(a)", e é ela que ramifica. O corretor
+# NÃO fala 1:1 com a Denyse — ele preenche, e a confirmação é manual para o
+# grupo/lista de transmissão. Automação com o Thiago fica para depois; até
+# lá isto é o destino final, não um substituto temporário do form nativo
+# (que segue em FORM_ATIVO, independente desta decisão).
 FORM_CADASTRO = "https://form.respondi.app/RwKMw19v"
+
+# Destino de TODO CTA do site — decisão de 07/09/2026 (Gabriel). Antes: os
+# CTAs de conversa iam direto ao WHATSAPP e os de material caíam no finale,
+# também no WhatsApp, porque o form nativo está desligado. Resultado: nenhum
+# lead ficava registrado em lugar nenhum — o mesmo buraco que motivou
+# desligar o /api/lead. Passando tudo pelo cadastro, o lead fica gravado e a
+# conversa continua no WhatsApp no fim do formulário.
+# ATENÇÃO: isto vale para os CTAs do site (incluindo "Entre em contato" e
+# "Falar com um consultor", que agora ganham uma etapa antes da conversa).
+# Se o redirect final do formulário mandar o CORRETOR para o WhatsApp da
+# Denyse, a decisão de 27/08 acima é desfeita na prática — o ramo de
+# corretor precisa terminar no grupo/lista, não no 1:1 dela.
+CTA_DESTINO = FORM_CADASTRO
 
 # slug do arquivo (JSON) -> slug da URL publicada
 URL_SLUG = {
@@ -61,7 +78,8 @@ PAGINAS_COM_FORM = {'landing', 'evento-rio'}  # únicas com <form> real (POST /a
 # projeto está no plano Hobby, onde esse log não é retido — quem preenchia
 # sumia sem deixar rastro, e a caixa de consentimento prometia um
 # descadastramento impossível de honrar sobre um dado que não existe.
-# Enquanto isso o CTA vai para o WhatsApp da corretora responsável.
+# Enquanto isso o CTA vai para o FORM_CADASTRO (ver CTA_DESTINO), que
+# grava o lead e entrega a conversa no WhatsApp da corretora responsável.
 # Para religar: FORM_ATIVO = True, rodar o build e subir.
 FORM_ATIVO = False
 
@@ -70,8 +88,8 @@ def desligar_form(markup, titulo, cta, nota=''):
     """Com FORM_ATIVO=False o <form> vira só o comentário de preservação —
     nenhuma seção visível. A âncora id="form" NÃO morre: o finale da página
     a herda (ver o ajuste em r_foot/assembly), então /landing#form e os
-    CTAs internos seguem caindo em pé, agora no fechamento com o botão de
-    WhatsApp. Decisão de 27/08 (print do cliente): sem texto de espera e
+    CTAs internos seguem caindo em pé, agora no fechamento com o botão do
+    cadastro. Decisão de 27/08 (print do cliente): sem texto de espera e
     sem nome da corretora — só a opção de clique, encaixada no finale.
     Para religar: FORM_ATIVO = True, rodar o build e subir."""
     if FORM_ATIVO:
@@ -302,13 +320,13 @@ def render_menu(active_slug):
         <a class="cta-link" href="%s" rel="noopener">Entre em contato</a>
       </div>
     </aside>
-  </div>''' % (WORDMARK_SVG, ''.join(itens), WHATSAPP)
+  </div>''' % (WORDMARK_SVG, ''.join(itens), CTA_DESTINO)
 
 
 CTA_STATIC = {
-    'Falar com um consultor': WHATSAPP,
-    'Baixar a ficha técnica em PDF': WHATSAPP,  # AJUSTAR: sem pipeline de PDF ainda
-    'Reportar material não oficial': WHATSAPP,
+    'Falar com um consultor': CTA_DESTINO,
+    'Baixar a ficha técnica em PDF': CTA_DESTINO,  # AJUSTAR: sem pipeline de PDF ainda
+    'Reportar material não oficial': CTA_DESTINO,
     'Ver a lista completa de serviços': '/os-servicos',
     'Ver o capítulo de riscos': '/riscos',
     'Receber o estudo de mercado': '/landing#form',
@@ -1073,7 +1091,7 @@ def build_page(fname):
             if slug == 'landing' and not FORM_ATIVO:
                 # a seção #form não existe como bloco visível: o finale herda
                 # a âncora (4 páginas apontam /landing#form) e o botão deixa
-                # de rolar para si mesmo — vai direto ao WhatsApp
+                # de rolar para si mesmo — vai direto ao cadastro
                 if fechamento_html.count('href="#form"') != 1:
                     raise SystemExit('finale da landing sem o CTA #form único')
                 fechamento_html = fechamento_html.replace(
@@ -1081,7 +1099,7 @@ def build_page(fname):
                     '<section class="finale" id="form" aria-label="Fechamento">')
                 fechamento_html = fechamento_html.replace(
                     'href="#form"',
-                    'href="%s" rel="noopener"' % esc_attr(WHATSAPP))
+                    'href="%s" rel="noopener"' % esc_attr(CTA_DESTINO))
             continue
 
         if b.get('bloqueado'):
@@ -1312,7 +1330,7 @@ TEMPLATE = '''<!DOCTYPE html>
   <script defer src="/js/forms.js?v={v_forms}"></script>
 </body>
 </html>
-'''.replace('{whatsapp}', WHATSAPP).replace('{wordmark}', WORDMARK_SVG)
+'''.replace('{wordmark}', WORDMARK_SVG)
 
 
 def main():
