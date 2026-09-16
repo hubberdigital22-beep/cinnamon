@@ -47,7 +47,7 @@
   <link rel="preload" as="image" href="img/ext-baixo-960.webp" media="(max-width: 768px)" fetchpriority="high">
   <link rel="preload" as="image" href="img/ext-baixo-1920.webp" media="(min-width: 768.02px)" fetchpriority="high">
 
-  <link rel="stylesheet" href="css/style.css?v=20260827j">
+  <link rel="stylesheet" href="css/style.css?v=20260916k">
 
   <!-- O hambúrguer NÃO pode depender de rede: js/menu.js é um <script defer>
        e roda depois do bundle do CDN, então em 4G frio o header ficava sem
@@ -613,6 +613,150 @@
     </section>
 
     <!-- ============================================================
+         05b · DE PERTO — a câmera do scroll entra em três renders.
+         Mídia sticky (CSS) com os renders empilhados; cada passo da
+         lista leva a imagem até o recorte declarado em data-* (JS,
+         só transform/opacity). Sem JS ou com reduced-motion, cada
+         passo mostra o próprio recorte estático (.deperto__static).
+         Rótulos falam de função e luz, não de material:
+         AJUSTAR: cruzar cada rótulo com o memorial descritivo.
+         ============================================================ -->
+    <section id="deperto" class="section deperto" aria-label="O studio de perto">
+      <div class="container section-head">
+        <p class="eyebrow">O Studio · De perto</p>
+        <h2 class="display-2">Cada ambiente pensado para simplificar sua rotina.</h2>
+      </div>
+
+      <div class="container deperto__grid">
+        <div class="deperto__media">
+          <div class="deperto__frame">
+            <picture>
+              <source media="(max-width: 768px)" srcset="img/studio-03-960.webp">
+              <img class="deperto__img is-active" data-render="studio-03"
+                src="img/studio-03-1920.webp"
+                srcset="img/studio-03-960.webp 960w, img/studio-03-1920.webp 1920w, img/studio-03-2560.webp 2560w"
+                sizes="(min-width: 1024px) 116vw, 100vw"
+                width="2560" height="1440"
+                loading="lazy" decoding="async"
+                alt="Área de estar e dormir do studio: cama de casal, painel de cabeceira iluminado sob o teto ripado e box espelhado ao lado.">
+            </picture>
+            <picture>
+              <source media="(max-width: 768px)" srcset="img/studio-04-960.webp">
+              <img class="deperto__img" data-render="studio-04"
+                src="img/studio-04-1920.webp"
+                srcset="img/studio-04-960.webp 960w, img/studio-04-1920.webp 1920w"
+                sizes="(min-width: 1024px) 116vw, 100vw"
+                width="1920" height="1240"
+                loading="lazy" decoding="async"
+                alt="Cozinha do studio em linha, com bancada iluminada por luz embutida, mesa de tronco e a cama ao lado.">
+            </picture>
+            <picture>
+              <source media="(max-width: 768px)" srcset="img/studio-05-960.webp">
+              <img class="deperto__img" data-render="studio-05"
+                src="img/studio-05-1920.webp"
+                srcset="img/studio-05-960.webp 960w, img/studio-05-1920.webp 1920w"
+                sizes="(min-width: 1024px) 116vw, 100vw"
+                width="1920" height="1240"
+                loading="lazy" decoding="async"
+                alt="Vista da cama para a sacada aberta do studio, com a TV suspensa e a mesa junto à varanda.">
+            </picture>
+            <picture>
+              <source media="(max-width: 768px)" srcset="img/banho-01-960.webp">
+              <img class="deperto__img" data-render="banho-01"
+                src="img/banho-01-1920.webp"
+                srcset="img/banho-01-960.webp 960w, img/banho-01-1920.webp 1254w"
+                sizes="(min-width: 1024px) 116vw, 100vw"
+                width="1254" height="1254"
+                loading="lazy" decoding="async"
+                alt="Banheiro do studio com bancada, nicho embutido e espelho iluminado.">
+            </picture>
+          </div>
+          <p class="deperto__legenda">Imagem meramente ilustrativa.</p>
+        </div>
+
+        <ol class="deperto__passos">
+          <li class="deperto__passo" data-render="studio-03" data-cx="50" data-cy="50" data-w="0" data-h="0">
+            <p class="eyebrow"><span class="idx">01</span> O conjunto</p>
+            <h3 class="deperto__titulo">Estar e dormir</h3>
+            <p class="caption">Cama, mesa e cozinha no mesmo campo de visão.</p>
+          </li>
+          <li class="deperto__passo" data-render="studio-03" data-cx="55" data-cy="24" data-w="54" data-h="48">
+            <p class="eyebrow"><span class="idx">02</span> Dormir</p>
+            <h3 class="deperto__titulo">Cabeceira iluminada</h3>
+            <p class="caption">Luz indireta na cabeceira, sob o teto ripado.</p>
+            <picture class="deperto__static">
+              <source media="(max-width: 768px)" srcset="img/deperto-cabeceira-960.webp">
+              <img src="img/deperto-cabeceira-1600.webp" width="1382" height="691" loading="lazy" decoding="async" alt="Detalhe: painel de cabeceira iluminado sob o teto ripado.">
+            </picture>
+          </li>
+          <li class="deperto__passo" data-render="studio-03" data-cx="17" data-cy="50" data-w="28" data-h="70">
+            <p class="eyebrow"><span class="idx">03</span> Guardar</p>
+            <h3 class="deperto__titulo">Box e armário espelhados</h3>
+            <p class="caption">O reflexo estende o ambiente.</p>
+            <picture class="deperto__static">
+              <source media="(max-width: 768px)" srcset="img/deperto-box-960.webp">
+              <img src="img/deperto-box-1600.webp" width="870" height="1224" loading="lazy" decoding="async" alt="Detalhe: box do banho e armário com portas espelhadas.">
+            </picture>
+          </li>
+          <li class="deperto__passo" data-render="studio-04" data-cx="26" data-cy="54" data-w="52" data-h="36">
+            <p class="eyebrow"><span class="idx">04</span> Cozinhar</p>
+            <h3 class="deperto__titulo">Bancada iluminada</h3>
+            <p class="caption">Cozinha em linha, com luz embutida sobre a bancada.</p>
+            <picture class="deperto__static">
+              <source media="(max-width: 768px)" srcset="img/deperto-bancada-960.webp">
+              <img src="img/deperto-bancada-1600.webp" width="998" height="447" loading="lazy" decoding="async" alt="Detalhe: bancada da cozinha com iluminação embutida.">
+            </picture>
+          </li>
+          <li class="deperto__passo" data-render="studio-04" data-cx="30" data-cy="80" data-w="44" data-h="36">
+            <p class="eyebrow"><span class="idx">05</span> Trabalhar e comer</p>
+            <h3 class="deperto__titulo">Mesa de apoio junto à cama</h3>
+            <p class="caption">Uma mesa, várias funções ao longo do dia.</p>
+            <picture class="deperto__static">
+              <source media="(max-width: 768px)" srcset="img/deperto-mesa-960.webp">
+              <img src="img/deperto-mesa-1600.webp" width="922" height="595" loading="lazy" decoding="async" alt="Detalhe: mesa redonda de tronco ao lado da cama.">
+            </picture>
+          </li>
+          <li class="deperto__passo" data-render="studio-05" data-cx="49" data-cy="60" data-w="34" data-h="34">
+            <p class="eyebrow"><span class="idx">06</span> Respirar</p>
+            <h3 class="deperto__titulo">Sacada com 7,48 m²</h3>
+            <p class="caption">Aberta para o estar pela porta de vidro.</p>
+            <picture class="deperto__static">
+              <source media="(max-width: 768px)" srcset="img/deperto-sacada-960.webp">
+              <img src="img/deperto-sacada-1600.webp" width="729" height="595" loading="lazy" decoding="async" alt="Detalhe: sacada com mesa e poltronas, vista de dentro do studio.">
+            </picture>
+          </li>
+          <li class="deperto__passo" data-render="banho-01" data-cx="52" data-cy="55" data-w="42" data-h="18">
+            <p class="eyebrow"><span class="idx">07</span> Organizar</p>
+            <h3 class="deperto__titulo">Um nicho para o dia a dia</h3>
+            <p class="caption">Embutido sob o espelho, iluminado, logo acima da bancada.</p>
+            <picture class="deperto__static">
+              <source media="(max-width: 768px)" srcset="img/deperto-nicho-960.webp">
+              <img src="img/deperto-nicho-1600.webp" width="602" height="276" loading="lazy" decoding="async" alt="Detalhe: vão iluminado sob o espelho do banheiro, com a torneira e os itens de higiene sobre a bancada.">
+            </picture>
+          </li>
+          <li class="deperto__passo" data-render="banho-01" data-cx="50" data-cy="51" data-w="57" data-h="38">
+            <p class="eyebrow"><span class="idx">08</span> Banho</p>
+            <h3 class="deperto__titulo">O espelho e o balcão</h3>
+            <p class="caption">Painel retroiluminado, torneira e cuba na mesma parede.</p>
+            <picture class="deperto__static">
+              <source media="(max-width: 768px)" srcset="img/deperto-espelho-perto-960.webp">
+              <img src="img/deperto-espelho-perto-1600.webp" width="714" height="477" loading="lazy" decoding="async" alt="Espelho retroiluminado do banheiro com a torneira, a cuba e o balcão logo abaixo.">
+            </picture>
+          </li>
+          <li class="deperto__passo" data-render="banho-01" data-cx="50" data-cy="56" data-w="100" data-h="100">
+            <p class="eyebrow"><span class="idx">09</span> Banho</p>
+            <h3 class="deperto__titulo">O banheiro por inteiro</h3>
+            <p class="caption">Box, bancada e espelho no mesmo ambiente.</p>
+            <picture class="deperto__static">
+              <source media="(max-width: 768px)" srcset="img/deperto-espelho-longe-960.webp">
+              <img src="img/deperto-espelho-longe-1600.webp" width="1254" height="838" loading="lazy" decoding="async" alt="Vista ampla do banheiro do studio: box de vidro à esquerda, bancada suspensa com cuba e espelho retroiluminado ao fundo.">
+            </picture>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============================================================
          06 · O POTENCIAL — marquee + bloco claro
          ============================================================ -->
     <section id="potencial" class="section potencial" aria-label="O potencial do investimento">
@@ -895,7 +1039,7 @@
   <script defer src="js/lenis-setup.js?v=20260827h"></script>
   <script defer src="js/ui.js?v=20260827h"></script>
   <script defer src="js/hero.js?v=20260827h"></script>
-  <script defer src="js/sections.js?v=20260827h"></script>
+  <script defer src="js/sections.js?v=20260916k"></script>
 
 </body>
 </html>

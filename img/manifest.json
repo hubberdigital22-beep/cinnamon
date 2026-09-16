@@ -27,6 +27,118 @@
   "avg": "#67523e",
   "kb": 51
  },
+ "deperto-bancada-1600.webp": {
+  "w": 998,
+  "h": 447,
+  "ratio": 2.2327,
+  "avg": "#584e43",
+  "kb": 21
+ },
+ "deperto-bancada-960.webp": {
+  "w": 960,
+  "h": 430,
+  "ratio": 2.2326,
+  "avg": "#584e43",
+  "kb": 16
+ },
+ "deperto-box-1600.webp": {
+  "w": 870,
+  "h": 1224,
+  "ratio": 0.7108,
+  "avg": "#5f5b54",
+  "kb": 22
+ },
+ "deperto-box-960.webp": {
+  "w": 870,
+  "h": 1224,
+  "ratio": 0.7108,
+  "avg": "#5f5b54",
+  "kb": 19
+ },
+ "deperto-cabeceira-1600.webp": {
+  "w": 1382,
+  "h": 691,
+  "ratio": 2.0,
+  "avg": "#916e52",
+  "kb": 66
+ },
+ "deperto-cabeceira-960.webp": {
+  "w": 960,
+  "h": 480,
+  "ratio": 2.0,
+  "avg": "#916e52",
+  "kb": 33
+ },
+ "deperto-espelho-longe-1600.webp": {
+  "w": 1254,
+  "h": 838,
+  "ratio": 1.4964,
+  "avg": "#624f3e",
+  "kb": 59
+ },
+ "deperto-espelho-longe-960.webp": {
+  "w": 960,
+  "h": 642,
+  "ratio": 1.4953,
+  "avg": "#624f3e",
+  "kb": 31
+ },
+ "deperto-espelho-perto-1600.webp": {
+  "w": 714,
+  "h": 477,
+  "ratio": 1.4969,
+  "avg": "#685745",
+  "kb": 20
+ },
+ "deperto-espelho-perto-960.webp": {
+  "w": 714,
+  "h": 477,
+  "ratio": 1.4969,
+  "avg": "#685745",
+  "kb": 17
+ },
+ "deperto-mesa-1600.webp": {
+  "w": 922,
+  "h": 595,
+  "ratio": 1.5496,
+  "avg": "#6c5548",
+  "kb": 27
+ },
+ "deperto-mesa-960.webp": {
+  "w": 922,
+  "h": 595,
+  "ratio": 1.5496,
+  "avg": "#6c5548",
+  "kb": 22
+ },
+ "deperto-nicho-1600.webp": {
+  "w": 602,
+  "h": 276,
+  "ratio": 2.1812,
+  "avg": "#715c44",
+  "kb": 12
+ },
+ "deperto-nicho-960.webp": {
+  "w": 602,
+  "h": 276,
+  "ratio": 2.1812,
+  "avg": "#715c44",
+  "kb": 9
+ },
+ "deperto-sacada-1600.webp": {
+  "w": 729,
+  "h": 595,
+  "ratio": 1.2252,
+  "avg": "#8d8f84",
+  "kb": 27
+ },
+ "deperto-sacada-960.webp": {
+  "w": 729,
+  "h": 595,
+  "ratio": 1.2252,
+  "avg": "#8c8f84",
+  "kb": 23
+ },
  "ext-acesso-1920.webp": {
   "w": 1600,
   "h": 895,
@@ -139,6 +251,13 @@
   "avg": "#473e3e",
   "kb": 47
  },
+ "og-cinnamon.jpg": {
+  "w": 1200,
+  "h": 630,
+  "ratio": 1.9048,
+  "avg": "#312d2a",
+  "kb": 84
+ },
  "planta-1300.webp": {
   "w": 1300,
   "h": 643,
@@ -201,6 +320,13 @@
   "ratio": 1.7778,
   "avg": "#806f5e",
   "kb": 130
+ },
+ "studio-03-2560.webp": {
+  "w": 2560,
+  "h": 1440,
+  "ratio": 1.7778,
+  "avg": "#806f5e",
+  "kb": 194
  },
  "studio-03-960.webp": {
   "w": 960,

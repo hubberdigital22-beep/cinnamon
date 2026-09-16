@@ -879,6 +879,129 @@ html.has-js .galeria__frame{ height:var(--galeria-media-h, auto); }
   .galeria__item{ width:86vw; }
 }
 
+/* ---------- 5b · DE PERTO ----------
+   Mídia presa por position:sticky (CSS puro — funciona no scroll nativo
+   do celular, onde o Lenis é desligado, e não empilha um terceiro pin).
+   Os renders ficam empilhados na moldura; o JS move/amplia a imagem
+   ativa a cada passo e faz o crossfade quando o render muda.
+   Sem JS e com reduced-motion: nada gruda, cada passo mostra o
+   próprio recorte estático. */
+.deperto{ --deperto-top:calc(var(--header-h) + 16px); }
+.deperto__grid{
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  gap:clamp(28px, 4vw, 72px);
+  align-items:start;
+}
+.deperto__media{ min-width:0; }
+.deperto__frame{
+  position:relative;
+  width:100%;
+  aspect-ratio:3 / 2;
+  max-height:calc(100svh - var(--deperto-top) - 72px);
+  overflow:hidden;
+  background-color:var(--dark-3); /* placeholder dentro da paleta */
+}
+.deperto__frame picture{ display:contents; }
+.deperto__img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  /* sem transition: o transform/opacity é do GSAP */
+}
+/* sem JS (e no reduced-motion, abaixo) só o primeiro render aparece */
+.deperto__img:not(.is-active){ opacity:0; }
+.deperto--live .deperto__img{ opacity:1; }   /* o JS assume via inline */
+.deperto__legenda{
+  margin-top:1rem;
+  font-size:.66rem;
+  font-weight:500;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  color:var(--cream-60); /* contraste AA, como a legenda da galeria */
+}
+
+.deperto__passos{ min-width:0; }
+.deperto__passo{
+  position:relative;
+  padding-block:clamp(28px, 5vh, 48px);
+  border-top:1px solid var(--tan-soft);
+}
+.deperto__passo .eyebrow{
+  display:flex;
+  align-items:baseline;
+  gap:1.2em;
+}
+.deperto__passo .eyebrow .idx{
+  font-weight:200;
+  color:var(--tan);
+  letter-spacing:.1em;
+}
+.deperto__titulo{
+  margin-top:1rem;
+  font-weight:300;
+  font-size:clamp(1.5rem, 2.6vw, 2.4rem);
+  line-height:1.12;
+  letter-spacing:-.005em;
+  color:var(--cream);
+  text-wrap:balance;
+}
+.deperto__passo .caption{ margin-top:.8rem; max-width:34ch; }
+/* recorte estático: só sem JS / reduced-motion */
+.deperto__static{ display:block; margin-top:1.4rem; background-color:var(--dark-3); }
+html.has-js .deperto__static{ display:none; }
+
+/* com o JS vivo e a seção NA TELA: passo fora de foco recua, o ativo
+   acende. Fora da tela ninguém recua — o texto nasce com contraste AA
+   (Lighthouse/axe medem com a página no topo). */
+.deperto--live .deperto__passo{ transition:opacity .5s var(--ease-out); }
+.deperto--live.is-inview .deperto__passo{ opacity:.42; }
+.deperto--live.is-inview .deperto__passo.is-active{ opacity:1; }
+
+@media (min-width:1024px){
+  .deperto__grid{ grid-template-columns:minmax(0,7fr) minmax(0,5fr); }
+  /* a mídia ocupa TODA a faixa livre abaixo do header e centra a imagem
+     dentro dela: o respiro acima e abaixo do quadro fica igual, em vez
+     de a imagem colar no topo e sobrar o vazio embaixo. A altura da
+     caixa é o que o sticky segura; o conteúdo é que se centraliza. */
+  .deperto__media{
+    position:sticky;
+    top:var(--deperto-top);
+    height:calc(100svh - var(--deperto-top));
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+  }
+  .deperto__passo{
+    min-height:62vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+  }
+  .deperto__passo:first-child{ border-top:0; }
+  .deperto__passos{ padding-top:min(8vh, 72px); }
+}
+@media (max-width:1023.98px){
+  .deperto{ --deperto-top:calc(var(--header-h) - 12px); } /* header real: 44px */
+  .deperto__media{
+    position:sticky;
+    top:var(--deperto-top);
+    z-index:1;
+    background:var(--dark); /* o texto passa por baixo, não por cima */
+    padding-bottom:8px;
+  }
+  /* a mídia ocupa até ~50% da tela; o texto vive na metade de baixo.
+     Passo de 40vh + gatilhos do JS a 92% mantêm o passo ativo visível
+     o tempo todo abaixo da mídia. */
+  .deperto__frame{ max-height:min(44svh, 100vw * 2 / 3); }
+  .deperto__legenda{ margin-top:.7rem; }
+  .deperto__passo{ min-height:40vh; }
+  .deperto__passo:first-child{ border-top:0; }
+  .deperto__passos{ padding-top:4px; }
+}
+
 /* lightbox da galeria: expandir e dar zoom (ui.js) */
 .lightbox{
   position:fixed;
@@ -1267,6 +1390,9 @@ html.has-js .galeria__frame{ height:var(--galeria-media-h, auto); }
   .scroll-hint__line::after{ animation:none; }
   /* fases 3–4: pin, scrub, parallax, marquee e Ken Burns
      também são desligados via gsap.matchMedia() */
+  /* De perto: nada gruda e cada passo mostra o próprio recorte */
+  .deperto__media{ position:static; }
+  html.has-js .deperto__static{ display:block; }
 }
 
 /* ============================================================

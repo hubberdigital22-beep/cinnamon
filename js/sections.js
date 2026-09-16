@@ -537,6 +537,249 @@
       }
     }
 
+    /* ---------------- 05b · DE PERTO ----------------
+       Mídia sticky (CSS) com os renders empilhados. Cada passo da
+       lista declara o recorte (data-cx/cy/w/h em % da imagem); a
+       câmera é calculada aqui a partir da moldura real (object-fit:
+       cover) e vira xPercent/yPercent/scale da imagem ativa. Quando o
+       render muda, crossfade. Só transform/opacity.
+
+       UMA linha do tempo para a seção inteira, com todos os estados
+       explícitos (fromTo): um único render order, nenhum valor
+       "recordado" na hora errada por refresh/revert do ScrollTrigger.
+       O tempo da timeline é medido em px de scroll: cada passo entra
+       na posição real dele; se o layout mudar, a timeline é refeita. */
+    var deperto = q('#deperto');
+    if (deperto) {
+      var dHead = q('.section-head', deperto);
+      if (dHead) {
+        var dEyebrow = q('.eyebrow', dHead);
+        var dWords = split(q('.display-2', dHead));
+        if (dEyebrow) gsap.set(dEyebrow, { autoAlpha: 0, y: 24 });
+        if (dWords.length) gsap.set(dWords, { yPercent: 115 });
+        onEnter(dHead, function () {
+          if (dEyebrow) gsap.to(dEyebrow, { autoAlpha: 1, y: 0, duration: 0.8, ease: 'power3.out' });
+          if (dWords.length) gsap.to(dWords, { yPercent: 0, duration: 1.1, stagger: 0.06, ease: 'expo.out', delay: 0.1 });
+        }, 'top 75%');
+      }
+
+      var dFrame = q('.deperto__frame', deperto);
+      var dImgs = dFrame ? qa('.deperto__img', dFrame) : [];
+      var dPassos = qa('.deperto__passo', deperto);
+      if (dFrame && dImgs.length && dPassos.length > 1) {
+        deperto.classList.add('deperto--live');
+        cleanups.push(function () {
+          deperto.classList.remove('deperto--live');
+          dPassos.forEach(function (p) { p.classList.remove('is-active'); });
+        });
+
+        var byRender = {};
+        dImgs.forEach(function (im) { byRender[im.dataset.render] = im; });
+
+        /* como na galeria: as imagens andam por transform, então viram
+           eager uma tela antes para o scrub não encontrar moldura vazia */
+        ScrollTrigger.create({
+          trigger: deperto, start: 'top 200%', once: true,
+          onEnter: function () { dImgs.forEach(function (im) { im.loading = 'eager'; }); }
+        });
+
+        gsap.set(dImgs, { autoAlpha: 0, xPercent: 0, yPercent: 0, scale: 1, transformOrigin: '50% 50%', willChange: 'transform, opacity' });
+
+        /* o teto de ampliação depende da largura REAL da fonte escolhida
+           pelo browser (naturalWidth já vem corrigido pela densidade do
+           srcset). Antes de carregar, estima; quando carregar, um refresh
+           recalcula as câmeras (valores em função + invalidateOnRefresh). */
+        var pendingRefresh = null;
+        dImgs.forEach(function (im) {
+          if (im.complete && im.naturalWidth) return;
+          im.addEventListener('load', function () {
+            clearTimeout(pendingRefresh);
+            pendingRefresh = setTimeout(function () { ScrollTrigger.refresh(); }, 120);
+          }, { once: true });
+        });
+        cleanups.push(function () { clearTimeout(pendingRefresh); });
+
+        /* desktop: colunas lado a lado, o passo chega ao centro.
+           mobile: o texto vive abaixo da mídia sticky (metade de baixo),
+           então a câmera e o estado ativo acompanham essa faixa.
+           a/b = frações da altura da tela onde a viagem começa/termina. */
+        var camRange = isDesktop ? { a: 0.85, b: 0.35 } : { a: 0.92, b: 0.62 };
+        var actRange = isDesktop ? { start: 'top 62%', end: 'bottom 38%' } : { start: 'top 92%', end: 'bottom 92%' };
+
+        /* Largura REAL em pixels do arquivo que o browser escolheu.
+           naturalWidth NÃO serve aqui: com srcset de descritor `w` +
+           sizes, ele devolve o tamanho intrínseco em px de CSS (= o
+           valor de sizes), não a contagem de pixels do arquivo — o teto
+           de nitidez virava letra morta e a escala mudava sozinha quando
+           a imagem terminava de carregar. Os descritores do srcset já
+           declaram a largura verdadeira; é deles que ela sai. */
+        function larguraReal(img) {
+          var atual = (img.currentSrc || img.src || '').split('/').pop();
+          var achado = 0;
+          var fontes = [];
+          var pic = img.parentNode;
+          if (pic && pic.tagName === 'PICTURE') {
+            qa('source', pic).forEach(function (s) { fontes.push(s.getAttribute('srcset') || ''); });
+          }
+          fontes.push(img.getAttribute('srcset') || '');
+          fontes.forEach(function (ss) {
+            ss.split(',').forEach(function (parte) {
+              var bits = parte.trim().split(/\s+/);
+              if (!bits[0] || achado) return;
+              if (bits[0].split('/').pop() !== atual) return;
+              if (bits[1] && /^\d+w$/.test(bits[1])) achado = parseInt(bits[1], 10);
+            });
+          });
+          if (achado) return achado;
+          /* o <source> do celular não traz descritor: usa o sufixo do nome */
+          var m = /-(\d+)\.(?:webp|jpg|png)$/.exec(atual);
+          if (m) return parseInt(m[1], 10);
+          return parseInt(img.getAttribute('width'), 10) || 1600;
+        }
+
+        /* câmera: leva o centro do recorte ao centro da moldura com a
+           escala que enquadra o recorte (média geométrica entre "cabe
+           inteiro" e "preenche"), limitada a 1,3× de ampliação do pixel
+           e sem nunca mostrar borda da imagem */
+        function camera(img, st, mult) {
+          var fw = dFrame.clientWidth || 1, fh = dFrame.clientHeight || 1;
+          var aw = parseInt(img.getAttribute('width'), 10) || 1600;
+          var ah = parseInt(img.getAttribute('height'), 10) || 1000;
+          var iw = larguraReal(img);
+          var ih = Math.round(ah * iw / aw);
+          var k = Math.max(fw / iw, fh / ih);         /* object-fit: cover */
+          var dw = iw * k, dh = ih * k;
+          var ox = (fw - dw) / 2, oy = (fh - dh) / 2;
+          var s = 1;
+          if (st.w && st.h) {
+            var contain = Math.max(1, Math.min(fw / (st.w * dw), fh / (st.h * dh)));
+            var cover = Math.max(1, Math.max(fw / (st.w * dw), fh / (st.h * dh)));
+            s = Math.sqrt(contain * cover);
+            s = Math.min(s, (iw / dw) * 1.3);
+            s = Math.max(1, s);
+          }
+          s *= (mult || 1);
+          s = Math.max(1, s); /* nunca menor que a moldura: sem borda à mostra */
+          var px = ox + st.cx * dw, py = oy + st.cy * dh;
+          var tx = (fw / 2 - px) * s, ty = (fh / 2 - py) * s;
+          var lx = Math.max(0, (dw * s - fw) / 2), ly = Math.max(0, (dh * s - fh) / 2);
+          tx = Math.max(-lx, Math.min(lx, tx));
+          ty = Math.max(-ly, Math.min(ly, ty));
+          return { x: tx / fw * 100, y: ty / fh * 100, s: s };
+        }
+        function vars(img, st, mult) {
+          /* mult explícito (o "punch" de entrada de um render novo) some
+             por cima do data-zoom do próprio passo — uma direção de câmera
+             pode pedir mais perto do que o enquadramento geométrico dá,
+             topando a nitidez de propósito (ex.: sacada, espelho de perto) */
+          var m = (mult || 1) * (st.zoom || 1);
+          return {
+            xPercent: function () { return camera(img, st, m).x; },
+            yPercent: function () { return camera(img, st, m).y; },
+            scale: function () { return camera(img, st, m).s; }
+          };
+        }
+        function merge(a, b) { for (var k in b) a[k] = b[k]; return a; }
+
+        /* Quando o render MUDA, a câmera não tem de onde viajar: é o
+           crossfade que precisa carregar a direção do movimento. Nesta
+           seção o gesto é sempre APROXIMAR — o render novo entra aberto
+           (quase inteiro na moldura) e fecha no detalhe. data-entrada
+           maior que 1 inverte: chega fechado e abre (o espelho). */
+        var ENTRADA_APROXIMA = 0.42;
+        function stateOf(passo) {
+          var ent = parseFloat(passo.dataset.entrada);
+          return {
+            cx: parseFloat(passo.dataset.cx) / 100 || 0.5,
+            cy: parseFloat(passo.dataset.cy) / 100 || 0.5,
+            w: parseFloat(passo.dataset.w) / 100 || 0,
+            h: parseFloat(passo.dataset.h) / 100 || 0,
+            zoom: parseFloat(passo.dataset.zoom) || 1,
+            entrada: ent > 0 ? ent : ENTRADA_APROXIMA
+          };
+        }
+
+        /* posições reais dos passos (px a partir do 2º) e duração da
+           viagem da câmera (px de scroll entre as frações a e b) */
+        function layout() {
+          var vh = document.documentElement.clientHeight;
+          var t0 = dPassos[1].getBoundingClientRect().top;
+          var pos = dPassos.map(function (p) { return Math.round(p.getBoundingClientRect().top - t0); });
+          var dur = Math.round((camRange.a - camRange.b) * vh);
+          return { pos: pos, dur: dur, total: pos[pos.length - 1] + dur, sig: pos.join(',') + '|' + dur };
+        }
+
+        var master = null, masterSig = '';
+        function killMaster() {
+          if (!master) return;
+          if (master.scrollTrigger) master.scrollTrigger.kill();
+          master.kill();
+          master = null;
+        }
+        function buildMaster() {
+          killMaster();
+          var L = layout();
+          masterSig = L.sig;
+          master = gsap.timeline({
+            scrollTrigger: {
+              trigger: dPassos[1],
+              start: 'top ' + Math.round(camRange.a * 100) + '%',
+              end: function () { return '+=' + layout().total; },
+              scrub: 1,
+              invalidateOnRefresh: true
+            }
+          });
+          var prev = null;
+          dPassos.forEach(function (passo, i) {
+            var img = byRender[passo.dataset.render];
+            if (!img) return;
+            var st = stateOf(passo);
+            if (!prev) {
+              /* abertura: só o primeiro render, no plano declarado */
+              gsap.set(img, merge({ autoAlpha: 1 }, vars(img, st)));
+            } else if (prev.img === img) {
+              /* mesmo render: a câmera viaja do recorte anterior ao novo */
+              master.fromTo(img, vars(img, prev.st),
+                merge({ ease: 'none', duration: L.dur, immediateRender: false }, vars(img, st)), L.pos[i]);
+            } else {
+              /* render novo: entra no enquadramento de entrada (aberto
+                 por padrão) e fecha no recorte do passo enquanto o
+                 anterior some — o zoom in é o que dá o "aproximar" */
+              master.fromTo(img, merge({ autoAlpha: 0 }, vars(img, st, st.entrada)),
+                merge({ autoAlpha: 1, ease: 'none', duration: L.dur, immediateRender: false }, vars(img, st)), L.pos[i]);
+              master.fromTo(prev.img, { autoAlpha: 1 },
+                { autoAlpha: 0, ease: 'none', duration: L.dur, immediateRender: false }, L.pos[i]);
+            }
+            prev = { img: img, st: st };
+          });
+        }
+        buildMaster();
+        /* se a altura dos passos mudar (resize, fontes), refaz a timeline
+           nas posições novas — o refresh sozinho só recalcula start/end */
+        function onRefresh() { if (layout().sig !== masterSig) buildMaster(); }
+        ScrollTrigger.addEventListener('refresh', onRefresh);
+        cleanups.push(function () {
+          ScrollTrigger.removeEventListener('refresh', onRefresh);
+          killMaster();
+        });
+
+        /* o recuo dos passos só vale com a seção na tela (CSS .is-inview) */
+        ScrollTrigger.create({
+          trigger: deperto, start: 'top bottom', end: 'bottom top',
+          toggleClass: { targets: deperto, className: 'is-inview' }
+        });
+        cleanups.push(function () { deperto.classList.remove('is-inview'); });
+
+        /* passo ativo: o texto acende, os outros recuam (CSS) */
+        dPassos.forEach(function (passo) {
+          ScrollTrigger.create({
+            trigger: passo, start: actRange.start, end: actRange.end,
+            toggleClass: { targets: passo, className: 'is-active' }
+          });
+        });
+      }
+    }
+
     /* ---------------- 06 · MARQUEE + BLOCO CLARO ---------------- */
     var marquee = q('.marquee');
     if (marquee) {
