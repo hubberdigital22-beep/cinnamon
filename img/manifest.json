@@ -258,6 +258,111 @@
   "avg": "#312d2a",
   "kb": 84
  },
+ "pano-bem-estar-2048.avif": {
+  "w": 2048,
+  "h": 1024,
+  "ratio": 2.0,
+  "avg": "#86593b",
+  "kb": 451
+ },
+ "pano-bem-estar-2048.jpg": {
+  "w": 2048,
+  "h": 1024,
+  "ratio": 2.0,
+  "avg": "#85593b",
+  "kb": 744
+ },
+ "pano-bem-estar-thumb.webp": {
+  "w": 240,
+  "h": 160,
+  "ratio": 1.5,
+  "avg": "#805637",
+  "kb": 9
+ },
+ "pano-corporativo-2048.avif": {
+  "w": 2048,
+  "h": 1024,
+  "ratio": 2.0,
+  "avg": "#895a3a",
+  "kb": 322
+ },
+ "pano-corporativo-2048.jpg": {
+  "w": 2048,
+  "h": 1024,
+  "ratio": 2.0,
+  "avg": "#895a3a",
+  "kb": 574
+ },
+ "pano-corporativo-thumb.webp": {
+  "w": 240,
+  "h": 160,
+  "ratio": 1.5,
+  "avg": "#916a4d",
+  "kb": 6
+ },
+ "pano-gourmet-2048.avif": {
+  "w": 2048,
+  "h": 1024,
+  "ratio": 2.0,
+  "avg": "#a16f4c",
+  "kb": 445
+ },
+ "pano-gourmet-2048.jpg": {
+  "w": 2048,
+  "h": 1024,
+  "ratio": 2.0,
+  "avg": "#a1704b",
+  "kb": 758
+ },
+ "pano-gourmet-thumb.webp": {
+  "w": 240,
+  "h": 160,
+  "ratio": 1.5,
+  "avg": "#90633e",
+  "kb": 8
+ },
+ "pano-jardim-sensorial-2048.avif": {
+  "w": 2048,
+  "h": 1024,
+  "ratio": 2.0,
+  "avg": "#92775b",
+  "kb": 409
+ },
+ "pano-jardim-sensorial-2048.jpg": {
+  "w": 2048,
+  "h": 1024,
+  "ratio": 2.0,
+  "avg": "#92775b",
+  "kb": 664
+ },
+ "pano-jardim-sensorial-thumb.webp": {
+  "w": 240,
+  "h": 160,
+  "ratio": 1.5,
+  "avg": "#837052",
+  "kb": 11
+ },
+ "pano-lavanderia-2048.avif": {
+  "w": 2048,
+  "h": 1024,
+  "ratio": 2.0,
+  "avg": "#9d7054",
+  "kb": 376
+ },
+ "pano-lavanderia-2048.jpg": {
+  "w": 2048,
+  "h": 1024,
+  "ratio": 2.0,
+  "avg": "#9d7154",
+  "kb": 646
+ },
+ "pano-lavanderia-thumb.webp": {
+  "w": 240,
+  "h": 160,
+  "ratio": 1.5,
+  "avg": "#9e775b",
+  "kb": 7
+ },
  "planta-1300.webp": {
   "w": 1300,
   "h": 643,

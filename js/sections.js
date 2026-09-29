@@ -909,6 +909,36 @@
       }
     }
 
+    /* ---------------- 07b · EXPERIÊNCIA 360° ----------------
+       Só o cabeçalho e a entrada do palco: o panorama é de js/tour360.js.
+       O palco entra por opacity, sem transform — a tela cheia de reserva
+       é position:fixed e não pode herdar um transform esquecido. */
+    var tour = q('#tour');
+    if (tour) {
+      var tHead = q('.section-head', tour);
+      if (tHead) {
+        var toEyebrow = q('.eyebrow', tHead);
+        var toWords = split(q('.display-2', tHead));
+        var toLead = q('.tour__lead', tHead);
+        if (toEyebrow) gsap.set(toEyebrow, { autoAlpha: 0, y: 24 });
+        if (toWords.length) gsap.set(toWords, { yPercent: 115 });
+        if (toLead) gsap.set(toLead, { autoAlpha: 0, y: 30 });
+        onEnter(tHead, function () {
+          var tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+          if (toEyebrow) tl.to(toEyebrow, { autoAlpha: 1, y: 0, duration: 0.8 }, 0);
+          if (toWords.length) tl.to(toWords, { yPercent: 0, duration: 1.1, stagger: 0.06, ease: 'expo.out' }, 0.1);
+          if (toLead) tl.to(toLead, { autoAlpha: 1, y: 0, duration: 0.9 }, 0.45);
+        });
+      }
+      var tStage = q('.tour__stage', tour);
+      if (tStage) {
+        gsap.set(tStage, { autoAlpha: 0 });
+        onEnter(tStage, function () {
+          gsap.to(tStage, { autoAlpha: 1, duration: 1.2, ease: 'power2.out' });
+        }, 'top 88%');
+      }
+    }
+
     /* ---------------- 08 · LOCALIZAÇÃO ---------------- */
     var localHero = q('.local__hero');
     if (localHero) {

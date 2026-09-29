@@ -47,7 +47,7 @@
   <link rel="preload" as="image" href="img/ext-baixo-960.webp" media="(max-width: 768px)" fetchpriority="high">
   <link rel="preload" as="image" href="img/ext-baixo-1920.webp" media="(min-width: 768.02px)" fetchpriority="high">
 
-  <link rel="stylesheet" href="css/style.css?v=20260916k">
+  <link rel="stylesheet" href="css/style.css?v=20260929a">
 
   <!-- O hambúrguer NÃO pode depender de rede: js/menu.js é um <script defer>
        e roda depois do bundle do CDN, então em 4G frio o header ficava sem
@@ -924,6 +924,119 @@
     </section>
 
     <!-- ============================================================
+         07b · EXPERIÊNCIA 360°
+         Os cinco ambientes do tour entregue pela ABREU3DFX em 29/09/2026.
+         Nomes, ordem e textos de interface são literais do arquivo; os
+         ambientes foram confirmados pelo cliente na mesma data — inclusive
+         o Espaço gourmet, que em 26/08 estava fora do confirmado (ver o
+         comentário da seção 07).
+
+         Cada <button class="tour__room"> É a cena: data-pano aponta o
+         equirretangular em AVIF, data-pano-fallback o JPEG original e
+         data-alt a descrição. Incluir ou tirar um ambiente é incluir ou
+         tirar um botão — o contador se ajusta sozinho (js/tour360.js).
+         Sem JS ou sem WebGL fica o panorama plano, como no arquivo original.
+         Regerar os arquivos: python3 scripts/prepare-tour.py <html | pasta>
+         ============================================================ -->
+    <section id="tour" class="section tour" aria-label="Experiência 360° — ambientes do Cinnamon Studio">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">[ 05 · 360° ]</p>
+          <h2 class="display-2">Experiência 360°</h2>
+          <p class="caption tour__lead">Explore os ambientes do Cinnamon Studio em 360°.</p>
+        </div>
+      </div>
+
+      <div class="tour__stage" data-tour>
+        <picture>
+          <source type="image/avif" srcset="img/pano-bem-estar-2048.avif">
+          <img class="tour__poster" data-tour-poster
+               src="img/pano-bem-estar-2048.jpg"
+               width="2048" height="1024"
+               loading="lazy" decoding="async"
+               alt="Espaço de bem-estar em vista panorâmica: macas e lavatórios sob o forro de madeira com linhas de luz, ao lado da academia envidraçada ao pôr do sol.">
+        </picture>
+        <canvas class="tour__canvas" data-tour-canvas tabindex="0" role="application"
+                aria-label="Vista panorâmica 360 graus" aria-describedby="tour-ajuda"></canvas>
+        <div class="tour__scrim" aria-hidden="true"></div>
+        <span class="tour__loading" aria-hidden="true"></span>
+
+        <!-- barra da tela cheia: o cabeçalho do arquivo original -->
+        <div class="tour__top">
+          <span class="wordmark" aria-hidden="true"><svg class="wordmark__art" viewBox="82.91 446.67 912.09 185.09" aria-hidden="true" focusable="false"><use href="#logo-cinnamon"/></svg></span>
+          <p class="eyebrow tour__place">Orla de Palmas · TO</p>
+          <button class="tour__close" type="button" data-tour-close>Fechar</button>
+        </div>
+
+        <p class="tour__hint" data-tour-hint>Arraste para explorar<span class="tour__hint-zoom"> · role para aproximar</span></p>
+        <p class="sr-only" id="tour-ajuda">Use as setas do teclado para girar a vista e as teclas mais e menos para aproximar e afastar.</p>
+
+        <div class="tour__actions">
+          <button class="tour__action" type="button" data-tour-zoom="in" aria-label="Aproximar">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg>
+          </button>
+          <button class="tour__action" type="button" data-tour-zoom="out" aria-label="Afastar">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14"/></svg>
+          </button>
+          <button class="tour__action" type="button" data-tour-full aria-label="Tela cheia">
+            <svg class="tour__icon-abrir" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg>
+            <svg class="tour__icon-fechar" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 4v5H4M20 9h-5V4M15 20v-5h5M4 15h5v5"/></svg>
+          </button>
+        </div>
+
+        <div class="tour__bottom">
+          <div class="tour__info" aria-live="polite">
+            <p class="eyebrow"><span data-tour-count>01 / 05</span> · Experiência 360°</p>
+            <h3 class="display-3 tour__title" data-tour-title>Espaço de bem-estar</h3>
+          </div>
+          <nav class="tour__rooms" aria-label="Escolher ambiente">
+            <button class="tour__room" type="button" aria-current="true"
+                    data-pano="img/pano-bem-estar-2048.avif"
+                    data-pano-fallback="img/pano-bem-estar-2048.jpg"
+                    data-alt="Espaço de bem-estar em vista panorâmica: macas e lavatórios sob o forro de madeira com linhas de luz, ao lado da academia envidraçada ao pôr do sol.">
+              <img src="img/pano-bem-estar-thumb.webp" width="240" height="160" loading="lazy" decoding="async" alt="">
+              <span>Espaço de bem-estar</span>
+            </button>
+            <button class="tour__room" type="button"
+                    data-pano="img/pano-corporativo-2048.avif"
+                    data-pano-fallback="img/pano-corporativo-2048.jpg"
+                    data-alt="Espaço corporativo em vista panorâmica: bancada curva de trabalho, mesa de reunião ao fundo e salas envidraçadas sob o forro de madeira.">
+              <img src="img/pano-corporativo-thumb.webp" width="240" height="160" loading="lazy" decoding="async" alt="">
+              <span>Espaço corporativo</span>
+            </button>
+            <button class="tour__room" type="button"
+                    data-pano="img/pano-jardim-sensorial-2048.avif"
+                    data-pano-fallback="img/pano-jardim-sensorial-2048.jpg"
+                    data-alt="Jardim sensorial em vista panorâmica: espelho d'água com árvores e colunas verdes, sofás curvos e paredes de vegetação.">
+              <img src="img/pano-jardim-sensorial-thumb.webp" width="240" height="160" loading="lazy" decoding="async" alt="">
+              <span>Jardim sensorial</span>
+            </button>
+            <button class="tour__room" type="button"
+                    data-pano="img/pano-lavanderia-2048.avif"
+                    data-pano-fallback="img/pano-lavanderia-2048.jpg"
+                    data-alt="Lavanderia em vista panorâmica: lavadoras e secadoras empilhadas, bancadas brancas com cubas e pórticos de madeira.">
+              <img src="img/pano-lavanderia-thumb.webp" width="240" height="160" loading="lazy" decoding="async" alt="">
+              <span>Lavanderia</span>
+            </button>
+            <button class="tour__room" type="button"
+                    data-pano="img/pano-gourmet-2048.avif"
+                    data-pano-fallback="img/pano-gourmet-2048.jpg"
+                    data-alt="Espaço gourmet em vista panorâmica: mesas redondas, bancada com banquetas e parede de pedra, com janelas para a cidade.">
+              <img src="img/pano-gourmet-thumb.webp" width="240" height="160" loading="lazy" decoding="async" alt="">
+              <span>Espaço gourmet</span>
+            </button>
+          </nav>
+        </div>
+
+        <p class="tour__error" data-tour-error role="alert" hidden>Não foi possível abrir o panorama neste dispositivo.</p>
+      </div>
+
+      <div class="container">
+        <p class="tour__legenda">Imagens meramente ilustrativas.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================
          08 · LOCALIZAÇÃO
          ============================================================ -->
     <section id="localizacao" class="section local" aria-label="Localização — Orla de Palmas">
@@ -942,7 +1055,7 @@
         </div>
         <div class="local__scrim" aria-hidden="true"></div>
         <figcaption class="local__card container">
-          <p class="eyebrow">[ 05 · Orla de Palmas ]</p>
+          <p class="eyebrow">[ 06 · Orla de Palmas ]</p>
           <h2 class="display-3">Orla de&nbsp;Palmas&nbsp;–&nbsp;TO</h2>
           <p class="caption">À beira do lago, no ritmo da capital — a cidade perto, a pressa longe.</p>
           <p class="eyebrow" style="margin-top:1.4rem;">Q Orla 14 – Graciosa · Avenida Parque · Palmas – TO</p>
@@ -1006,6 +1119,7 @@
           <a href="#projeto">O Projeto</a>
           <a href="#studio">O Studio</a>
           <a href="#estrutura">Estrutura</a>
+          <a href="#tour">Experiência 360°</a>
           <a href="#potencial">Potencial</a>
           <a href="#contato">Contato</a>
           <a href="https://www.instagram.com/cinnamonstudiobr/" rel="noopener">Instagram</a>
@@ -1037,9 +1151,11 @@
   <script defer src="js/menu.js?v=20260827j"></script>
   <script defer src="https://cdn.jsdelivr.net/combine/npm/gsap@3.15.0/dist/gsap.min.js,npm/gsap@3.15.0/dist/ScrollTrigger.min.js,npm/lenis@1.3.26/dist/lenis.min.js"></script>
   <script defer src="js/lenis-setup.js?v=20260827h"></script>
-  <script defer src="js/ui.js?v=20260827h"></script>
+  <script defer src="js/ui.js?v=20260929a"></script>
   <script defer src="js/hero.js?v=20260827h"></script>
-  <script defer src="js/sections.js?v=20260916k"></script>
+  <script defer src="js/sections.js?v=20260929a"></script>
+  <!-- vanilla, não depende do CDN: o tour abre mesmo se o GSAP falhar -->
+  <script defer src="js/tour360.js?v=20260929a"></script>
 
 </body>
 </html>

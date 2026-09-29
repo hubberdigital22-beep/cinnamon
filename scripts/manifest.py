@@ -3,7 +3,7 @@ from PIL import Image
 out = sys.argv[1]
 data = {}
 for f in sorted(os.listdir(out)):
-    if not f.endswith((".webp", ".jpg")):
+    if not f.endswith((".webp", ".jpg", ".avif")):
         continue
     p = os.path.join(out, f)
     try:

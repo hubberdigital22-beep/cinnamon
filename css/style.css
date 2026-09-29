@@ -914,7 +914,8 @@ html.has-js .galeria__frame{ height:var(--galeria-media-h, auto); }
 /* sem JS (e no reduced-motion, abaixo) só o primeiro render aparece */
 .deperto__img:not(.is-active){ opacity:0; }
 .deperto--live .deperto__img{ opacity:1; }   /* o JS assume via inline */
-.deperto__legenda{
+.deperto__legenda,
+.tour__legenda{
   margin-top:1rem;
   font-size:.66rem;
   font-weight:500;
@@ -1211,6 +1212,288 @@ html.has-js .deperto__static{ display:none; }
   .servicos{ grid-template-columns:1fr; }
 }
 
+/* ---------- 15b · EXPERIÊNCIA 360° ----------
+   Palco full-bleed; o panorama é desenhado em WebGL por js/tour360.js.
+   Em fluxo o gesto vertical é da PÁGINA: touch-action:pan-y e a roda
+   continuam rolando o site — girar é arrastar. Na tela cheia
+   (.is-expanded) o palco assume o gesto inteiro, como no arquivo original.
+   Estados, todos postos pelo JS:
+     .is-ready     controles ligados         .is-webgl  canvas no lugar do plano
+     .is-live      há um quadro desenhado    .is-loading  cena a caminho
+     .is-touched   já houve o primeiro gesto .is-expanded tela cheia
+   Sem JS: só o panorama plano da primeira cena, o contador e o título. */
+.tour{ padding-top:0; } /* divide o respiro com #estrutura, como #arquitetura */
+.tour__lead{ margin-top:1.6rem; }
+
+.tour__stage{
+  position:relative;
+  height:min(84svh, 900px);
+  min-height:520px;
+  overflow:hidden;
+  background-color:var(--dark-3); /* placeholder dentro da paleta */
+  color:var(--cream);
+}
+.tour__poster,
+.tour__canvas{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+}
+.tour__poster{ object-fit:cover; }
+.tour__canvas{
+  display:none;
+  opacity:0;
+  cursor:grab;
+  touch-action:pan-y;
+  transition:opacity .45s var(--ease-out); /* = FADE em js/tour360.js */
+}
+.tour__canvas:active{ cursor:grabbing; }
+.tour__canvas:focus-visible{ outline-offset:-6px; }
+.tour__stage.is-webgl .tour__canvas{ display:block; }
+.tour__stage.is-webgl .tour__poster{ visibility:hidden; } /* a troca de cena passa pelo escuro, não pelo plano */
+.tour__stage.is-live .tour__canvas{ opacity:1; }
+
+/* véu neutro em cima e embaixo: é ele, e não sombra de texto, que
+   segura a leitura sobre o render */
+.tour__scrim{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(
+    to bottom,
+    rgba(23,24,22,.64) 0%,
+    rgba(23,24,22,0) 27%,
+    rgba(23,24,22,0) 52%,
+    rgba(23,24,22,.6) 80%,
+    rgba(23,24,22,.88) 100%
+  );
+}
+
+.tour__loading{
+  position:absolute;
+  inset:auto 0 0 0;
+  height:1px;
+  background:var(--tan);
+  opacity:0;
+  pointer-events:none;
+}
+.tour__stage.is-loading .tour__loading{
+  opacity:1;
+  animation:tour-loading 1.6s var(--ease-out) infinite;
+}
+@keyframes tour-loading{
+  from{ transform:translateX(-100%); }
+  to{ transform:translateX(100%); }
+}
+
+/* os contêineres não seguram o ponteiro: o arrasto atravessa até o canvas */
+.tour__top,
+.tour__hint,
+.tour__actions,
+.tour__rooms{ display:none; }
+.tour__stage.is-ready .tour__rooms{ display:flex; }
+.tour__stage.is-webgl .tour__hint{ display:block; }
+.tour__stage.is-webgl .tour__actions{ display:grid; }
+.tour__stage.is-expanded .tour__top{ display:flex; }
+
+.tour__top{
+  position:absolute;
+  inset:0 0 auto 0;
+  align-items:center;
+  gap:clamp(20px, 3vw, 44px);
+  padding:clamp(18px, 2.6vh, 28px) var(--margin);
+  pointer-events:none;
+}
+/* a marca empurra o resto para a direita — com ou sem o local, que some no celular */
+.tour__top .wordmark{ width:clamp(104px, 9vw, 132px); margin-right:auto; }
+.tour__place{ color:var(--cream); }
+.tour__close{
+  background:none;
+  border:0;
+  border-bottom:1px solid var(--tan-soft);
+  color:var(--cream);
+  font-family:inherit;
+  font-size:.68rem;
+  font-weight:500;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  padding:.35em 0;
+  cursor:pointer;
+  pointer-events:auto;
+  transition:color .4s var(--ease-out), border-color .4s var(--ease-out);
+}
+.tour__close:hover{ color:var(--tan); border-color:var(--tan); }
+
+.tour__hint{
+  position:absolute;
+  top:clamp(20px, 3.4vh, 36px);
+  left:var(--margin);
+  right:var(--margin);
+  font-size:.68rem;
+  font-weight:500;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  color:var(--cream);
+  pointer-events:none;
+  transition:opacity var(--dur-fast) var(--ease-out);
+}
+.tour__stage.is-expanded .tour__hint{ top:clamp(84px, 11vh, 108px); }
+.tour__stage.is-touched .tour__hint{ opacity:.3; }
+/* "role para aproximar" só é verdade na tela cheia e com roda */
+.tour__hint-zoom{ display:none; }
+@media (hover:hover) and (pointer:fine){
+  .tour__stage.is-expanded .tour__hint-zoom{ display:inline; }
+}
+
+.tour__actions{
+  position:absolute;
+  top:50%;
+  right:var(--margin);
+  gap:8px;
+  transform:translateY(-50%);
+}
+.tour__action{
+  display:grid;
+  place-items:center;
+  width:44px;
+  height:44px;
+  padding:0;
+  border:1px solid var(--cream-40);
+  background:rgba(23,24,22,.48);
+  color:var(--cream);
+  cursor:pointer;
+  transition:background-color .4s var(--ease-out), color .4s var(--ease-out), border-color .4s var(--ease-out);
+}
+/* só com ponteiro de verdade: no toque o :hover gruda no botão recém-tocado */
+@media (hover:hover){
+  .tour__action:hover{
+    background:var(--tan);
+    border-color:var(--tan);
+    color:var(--dark);
+  }
+  .tour__room:hover img{ transform:scale(1.08); opacity:.95; }
+}
+.tour__action svg{
+  width:20px;
+  height:20px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1;
+}
+.tour__icon-fechar,
+.tour__stage.is-expanded .tour__icon-abrir{ display:none; }
+.tour__stage.is-expanded .tour__icon-fechar{ display:block; }
+
+.tour__bottom{
+  position:absolute;
+  inset:auto 0 0 0;
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:clamp(20px, 3vw, 40px);
+  padding:0 var(--margin) clamp(22px, 3.6vh, 36px);
+  pointer-events:none;
+}
+.tour__info{ min-width:0; }
+.tour__title{ margin-top:.7rem; }
+
+.tour__rooms{
+  gap:8px;
+  max-width:min(760px, 62vw);
+  overflow-x:auto;
+  scrollbar-width:none;
+  pointer-events:auto;
+}
+.tour__rooms::-webkit-scrollbar{ display:none; }
+.tour__room{
+  position:relative;
+  flex:0 0 auto;
+  width:120px;
+  height:80px;
+  padding:0;
+  overflow:hidden;
+  border:1px solid var(--cream-40);
+  background:var(--dark-3);
+  color:var(--cream);
+  font:inherit;
+  text-align:left;
+  cursor:pointer;
+  transition:border-color .4s var(--ease-out);
+}
+.tour__room:focus-visible{ outline-offset:-4px; } /* a faixa rola: outline por fora seria cortado */
+.tour__room img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  opacity:.72;
+  transition:transform var(--dur-fast) var(--ease-out), opacity var(--dur-fast) var(--ease-out);
+}
+.tour__room[aria-current="true"]{ border:2px solid var(--tan); }
+.tour__room[aria-current="true"] img{ opacity:.9; }
+.tour__room span{
+  position:absolute;
+  inset:auto 0 0 0;
+  padding:18px 8px 7px;
+  font-size:.56rem;
+  font-weight:500;
+  letter-spacing:.14em;
+  line-height:1.35;
+  text-transform:uppercase;
+  background:linear-gradient(to top, rgba(23,24,22,.88), rgba(23,24,22,0));
+}
+
+.tour__error{
+  position:absolute;
+  top:50%;
+  left:50%;
+  max-width:min(350px, calc(100% - 2 * var(--margin)));
+  padding:24px;
+  border:1px solid var(--tan-soft);
+  background:rgba(23,24,22,.88);
+  color:var(--cream);
+  text-align:center;
+  transform:translate(-50%,-50%);
+}
+
+/* tela cheia. Com a Fullscreen API o palco vai para a top layer; onde ela
+   não existe para elementos (iPhone) a mesma classe o fixa sobre a página,
+   acima do lightbox (120). */
+.tour__stage.is-expanded{
+  position:fixed;
+  inset:0;
+  z-index:130;
+  width:100%;
+  height:100%;
+  min-height:0;
+}
+.tour__stage.is-expanded .tour__canvas{ touch-action:none; }
+
+@media (max-width:768px){
+  .tour__stage{ height:min(78svh, 720px); min-height:460px; }
+  /* título + faixa ocupam quase um terço do palco: o véu sobe junto */
+  .tour__scrim{
+    background:linear-gradient(
+      to bottom,
+      rgba(23,24,22,.64) 0%,
+      rgba(23,24,22,0) 24%,
+      rgba(23,24,22,0) 44%,
+      rgba(23,24,22,.66) 70%,
+      rgba(23,24,22,.9) 100%
+    );
+  }
+  .tour__bottom{ display:block; padding-bottom:18px; }
+  .tour__info{ margin-bottom:14px; }
+  /* a faixa sangra até as bordas: o último thumb cortado avisa que rola */
+  .tour__rooms{
+    max-width:none;
+    margin-inline:calc(var(--margin) * -1);
+    padding-inline:var(--margin);
+  }
+  .tour__room{ width:104px; height:70px; }
+  .tour__place{ display:none; }
+}
+
 /* ---------- 16 · SEÇÃO 08 — LOCALIZAÇÃO ---------- */
 .local{ padding-block:0; }
 
@@ -1393,6 +1676,9 @@ html.has-js .deperto__static{ display:none; }
   /* De perto: nada gruda e cada passo mostra o próprio recorte */
   .deperto__media{ position:static; }
   html.has-js .deperto__static{ display:block; }
+  /* Tour 360: o carregamento vira uma linha parada; inércia, zoom suave
+     e fade de cena são desligados em js/tour360.js */
+  .tour__stage.is-loading .tour__loading{ animation:none; }
 }
 
 /* ============================================================

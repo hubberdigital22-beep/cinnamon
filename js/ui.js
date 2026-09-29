@@ -256,7 +256,8 @@
         ['#galeria',     'O Studio · Em detalhe'],
         ['#potencial',   'O Potencial'],
         ['#estrutura',   '04 · Estrutura'],
-        ['#localizacao', '05 · Orla de Palmas'],
+        ['#tour',        '05 · 360°'],
+        ['#localizacao', '06 · Orla de Palmas'],
         ['#contato',     'Contato']
       ];
       SECTIONS.forEach(function (pair) {
@@ -322,7 +323,7 @@
       var setRingX = gsap.quickSetter(ring, 'x', 'px');
       var setRingY = gsap.quickSetter(ring, 'y', 'px');
 
-      var INTERACTIVE = 'a[href], button, .galeria__item, .planta__figura, .servico, img';
+      var INTERACTIVE = 'a[href], button, .galeria__item, .planta__figura, .servico, .tour__canvas, img';
 
       function onMove(e) {
         target.x = e.clientX;

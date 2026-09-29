@@ -21,6 +21,8 @@ PROMPT-CINNAMON-STUDIO-SITE.md   especificacao completa do site
 .claude/agents/                  um agente por fase, com modelo e esforco proprios
 .claude/skills/build-site/       o comando /build-site
 scripts/prepare-assets.sh        converte Assets/ -> img/ (WebP, 2 larguras)
+scripts/prepare-tour.py          panoramas do tour 360 -> img/pano-* (AVIF + JPEG original + thumb)
+js/tour360.js                    viewer 360 em WebGL, sem biblioteca (secao #tour)
 img/                             assets prontos + manifest.json
 Assets/                          originais — somente leitura, nunca abrir como imagem
 _to_delete/                      arquivos obsoletos, pode apagar pelo Finder
@@ -37,3 +39,14 @@ python3 -m http.server 8000
 ```
 ./scripts/prepare-assets.sh all      # ou: torre | studio | planta
 ```
+
+## Tour 360
+
+Os panoramas da secao `#tour` sao equirretangulares 2:1. Para regerar a partir do HTML do fornecedor, ou de uma pasta com `<slug>.jpg` soltos (ate 4096 px de largura; acima disso o script reduz):
+
+```
+python3 scripts/prepare-tour.py caminho/para/ABREU3DFX_CINNAMON_STUDIO_360.html
+python3 scripts/prepare-tour.py caminho/para/pasta-de-panoramas/
+```
+
+Cada ambiente e um `<button class="tour__room">` em `index.html` — incluir ou tirar um ambiente e incluir ou tirar o botao. Se a largura dos arquivos mudar, o sufixo (`-2048`) muda junto nos atributos `data-pano`, `data-pano-fallback` e no `<picture>` do palco.
