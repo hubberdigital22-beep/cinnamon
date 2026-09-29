@@ -485,6 +485,48 @@
   });
 
   /* ------------------------------------------------------------
+     ATALHOS — todo link para #tour (o "360°" do cabeçalho, o do
+     rodapé) leva o scroll ao PALCO, não ao topo da seção: o palco
+     para inteiro na tela, com o centro dele no centro da área livre
+     abaixo do header e sem o título por cima. Palco maior que a área
+     livre (janela muito baixa): o topo dele encosta no header.
+     O destino é um número, não um elemento: o Lenis desconta o
+     scroll-margin de quem recebe um elemento, e aqui a conta é exata.
+     Sem JS vale a âncora comum.
+     ------------------------------------------------------------ */
+  function posicaoDoPalco() {
+    var barra = document.querySelector('.site-header');
+    var topo = barra ? barra.getBoundingClientRect().bottom : 0;
+    var doc = document.documentElement;
+    var folga = Math.max(0, (doc.clientHeight - topo - stage.offsetHeight) / 2);
+    var y = window.pageYOffset + stage.getBoundingClientRect().top - topo - folga;
+    return Math.round(clamp(y, 0, doc.scrollHeight - doc.clientHeight));
+  }
+
+  function vaiAoPalco(e) {
+    e.preventDefault();
+    e.stopPropagation();   /* o lenis-setup.js trataria como âncora comum */
+    parte();               /* o panorama começa a baixar durante a viagem */
+    var lenis = window.CINNAMON && window.CINNAMON.lenis;
+    if (lenis) {
+      lenis.scrollTo(posicaoDoPalco(), {
+        /* a página pode ter mudado de altura no caminho (pin, fonte):
+           confere uma vez na chegada e corrige o que sobrou */
+        onComplete: function () {
+          var y = posicaoDoPalco();
+          if (Math.abs(y - window.pageYOffset) > 1) lenis.scrollTo(y, { immediate: true, force: true });
+        }
+      });
+    } else {
+      window.scrollTo({ top: posicaoDoPalco(), behavior: mqReduce.matches ? 'auto' : 'smooth' });
+    }
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll('a[href="#tour"]'), function (link) {
+    link.addEventListener('click', vaiAoPalco);
+  });
+
+  /* ------------------------------------------------------------
      PARTIDA — o contexto WebGL e o primeiro panorama só nascem
      quando a seção está a uma tela de distância.
      ------------------------------------------------------------ */

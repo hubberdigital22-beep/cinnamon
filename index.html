@@ -47,7 +47,7 @@
   <link rel="preload" as="image" href="img/ext-baixo-960.webp" media="(max-width: 768px)" fetchpriority="high">
   <link rel="preload" as="image" href="img/ext-baixo-1920.webp" media="(min-width: 768.02px)" fetchpriority="high">
 
-  <link rel="stylesheet" href="css/style.css?v=20260929a">
+  <link rel="stylesheet" href="css/style.css?v=20260929b">
 
   <!-- O hambúrguer NÃO pode depender de rede: js/menu.js é um <script defer>
        e roda depois do bundle do CDN, então em 4G frio o header ficava sem
@@ -185,10 +185,18 @@
     <a href="#hero" class="wordmark" aria-label="Cinnamon Studio — voltar ao início">
       <svg class="wordmark__art" viewBox="82.91 446.67 912.09 185.09" aria-hidden="true" focusable="false"><use href="#logo-cinnamon"/></svg>
     </a>
-    <!-- "Entre em contato" vive no rodapé do drawer: repetir aqui duplicava
-         o mesmo destino a dois cliques de distância um do outro -->
-    <button class="header-menu-btn" type="button" data-menu-toggle
-            aria-expanded="false" aria-controls="menu-overlay"><span class="menu-icon" aria-hidden="true"><span></span><span></span><span></span></span><span class="header-menu-btn__txt">Menu</span></button>
+    <div class="site-header__acoes">
+      <!-- atalho para #tour: âncora comum, então funciona sem JS; com JS o
+           tour360.js leva o scroll ao palco e o deixa centrado na tela -->
+      <a class="header-360" href="#tour" aria-label="Experiência 360°">
+        <svg class="header-360__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="11.5"/><ellipse cx="12" cy="12" rx="11.5" ry="4.6"/></svg>
+        <span class="header-360__txt"><span class="header-360__long">Experiência </span>360°</span>
+      </a>
+      <!-- "Entre em contato" vive no rodapé do drawer: repetir aqui duplicava
+           o mesmo destino a dois cliques de distância um do outro -->
+      <button class="header-menu-btn" type="button" data-menu-toggle
+              aria-expanded="false" aria-controls="menu-overlay"><span class="menu-icon" aria-hidden="true"><span></span><span></span><span></span></span><span class="header-menu-btn__txt">Menu</span></button>
+    </div>
   </header>
 
   <!-- menu global — drawer de 1/3 entrando pela direita. Gêmeo do markup
@@ -1155,7 +1163,7 @@
   <script defer src="js/hero.js?v=20260827h"></script>
   <script defer src="js/sections.js?v=20260929a"></script>
   <!-- vanilla, não depende do CDN: o tour abre mesmo se o GSAP falhar -->
-  <script defer src="js/tour360.js?v=20260929a"></script>
+  <script defer src="js/tour360.js?v=20260929b"></script>
 
 </body>
 </html>

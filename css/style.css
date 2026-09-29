@@ -342,6 +342,62 @@ a{ color:inherit; text-decoration:none; }
 
 .site-header .wordmark{ width:clamp(92px, 8.5vw, 118px); }
 
+/* grupo à direita: atalho do tour + botão de menu */
+.site-header__acoes{
+  display:flex;
+  align-items:center;
+  gap:clamp(14px, 2vw, 28px);
+}
+/* Atalho "Experiência 360°" — mesma língua do botão de menu (eyebrow em
+   caps, hairline da marca), com um glifo próprio: o círculo do motivo da
+   marca atravessado por uma órbita. Ancora #tour; o scroll é do
+   lenis-setup.js. Abaixo de 768px o rótulo encurta para "360°". */
+.header-360{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  min-height:44px; /* alvo de toque */
+  font-size:.68rem;
+  font-weight:500;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  white-space:nowrap;
+  color:var(--cream);
+  transition:color .4s var(--ease-out);
+}
+.header-360__icon{
+  width:24px;
+  height:24px;
+  flex-shrink:0;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1;
+}
+.header-360__icon ellipse{
+  transform-box:fill-box;
+  transform-origin:center;
+  transition:transform .4s var(--ease-out);
+}
+/* só com ponteiro de verdade: no toque o :hover gruda no link recém-tocado */
+@media (hover:hover){
+  .header-360:hover{ color:var(--tan); }
+  .header-360:hover .header-360__icon ellipse{ transform:scaleX(.7); }
+}
+.header-360__long{ display:none; }
+@media (min-width:768px){
+  .header-360__long{ display:inline; }
+}
+@media (max-width:767px){
+  .header-360{ font-size:.6rem; letter-spacing:.22em; }
+}
+/* hairline vertical entre os dois controles — só existe com o botão de menu */
+.site-header .header-menu-btn::before{
+  content:"";
+  width:1px;
+  height:18px;
+  background:var(--tan-soft);
+}
+
 /* O CTA "Entre em contato" saiu do header: ele vive no rodapé do drawer,
    e ter os dois deixava o mesmo destino repetido a um clique de distância.
    O header fica só com a marca à esquerda e o botão de menu à direita. */
