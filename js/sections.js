@@ -153,9 +153,17 @@
     var ASSETS = [window.matchMedia('(max-width: 768px)').matches
       ? 'img/ext-baixo-960.webp'
       : 'img/ext-baixo-1920.webp'];
-    var WAIT_FRAMES = preDesktop ? 24 : 12;
-    for (var fi = 1; fi <= WAIT_FRAMES; fi++) {
-      ASSETS.push(seqDir + 'f_' + ('00' + fi).slice(-3) + '.webp');
+    /* espera a primeira passada do hero.js — 1 a cada 8 frames do voo
+       inteiro: com ela na mão o scrub já responde do começo ao fim.
+       (Antes eram os 12/24 primeiros em sequência, que só cobriam a
+       abertura.) Sem o hero.js, a conta antiga. */
+    if (C.heroSeq && C.heroSeq.abertura) {
+      ASSETS = ASSETS.concat(C.heroSeq.abertura);
+    } else {
+      var WAIT_FRAMES = preDesktop ? 24 : 12;
+      for (var fi = 1; fi <= WAIT_FRAMES; fi++) {
+        ASSETS.push(seqDir + 'f_' + ('00' + fi).slice(-3) + '.webp');
+      }
     }
     var total = ASSETS.length;
     var loaded = 0;

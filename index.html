@@ -47,7 +47,7 @@
   <link rel="preload" as="image" href="img/ext-baixo-960.webp" media="(max-width: 768px)" fetchpriority="high">
   <link rel="preload" as="image" href="img/ext-baixo-1920.webp" media="(min-width: 768.02px)" fetchpriority="high">
 
-  <link rel="stylesheet" href="css/style.css?v=20260929b">
+  <link rel="stylesheet" href="css/style.css?v=20260929c">
 
   <!-- O hambúrguer NÃO pode depender de rede: js/menu.js é um <script defer>
        e roda depois do bundle do CDN, então em 4G frio o header ficava sem
@@ -968,6 +968,13 @@
                 aria-label="Vista panorâmica 360 graus" aria-describedby="tour-ajuda"></canvas>
         <div class="tour__scrim" aria-hidden="true"></div>
         <span class="tour__loading" aria-hidden="true"></span>
+        <!-- ensina o gesto: pulsa no centro do palco, some no primeiro
+             toque e não volta mais na sessão (js/tour360.js) -->
+        <div class="tour__drag" aria-hidden="true">
+          <svg class="tour__drag-seta" viewBox="0 0 24 24" focusable="false"><path d="M15 5l-7 7 7 7"/></svg>
+          <span class="tour__drag-anel"></span>
+          <svg class="tour__drag-seta" viewBox="0 0 24 24" focusable="false"><path d="M9 5l7 7-7 7"/></svg>
+        </div>
 
         <!-- barra da tela cheia: o cabeçalho do arquivo original -->
         <div class="tour__top">
@@ -1158,12 +1165,12 @@
        de 3) + módulos do site — criados nas fases 3–4 -->
   <script defer src="js/menu.js?v=20260827j"></script>
   <script defer src="https://cdn.jsdelivr.net/combine/npm/gsap@3.15.0/dist/gsap.min.js,npm/gsap@3.15.0/dist/ScrollTrigger.min.js,npm/lenis@1.3.26/dist/lenis.min.js"></script>
-  <script defer src="js/lenis-setup.js?v=20260827h"></script>
+  <script defer src="js/lenis-setup.js?v=20260929c"></script>
   <script defer src="js/ui.js?v=20260929a"></script>
-  <script defer src="js/hero.js?v=20260827h"></script>
-  <script defer src="js/sections.js?v=20260929a"></script>
+  <script defer src="js/hero.js?v=20260929c"></script>
+  <script defer src="js/sections.js?v=20260929c"></script>
   <!-- vanilla, não depende do CDN: o tour abre mesmo se o GSAP falhar -->
-  <script defer src="js/tour360.js?v=20260929b"></script>
+  <script defer src="js/tour360.js?v=20260929c"></script>
 
 </body>
 </html>

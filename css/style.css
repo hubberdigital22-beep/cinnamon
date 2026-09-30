@@ -878,6 +878,16 @@ html.has-js:not(.is-reduced) .hero-scene{ position:absolute; inset:0; min-height
   justify-content:center;
   padding-block:clamp(48px, 7vh, 84px);
   padding-top:calc(clamp(48px, 7vh, 84px) + 44px);
+  /* Com JS a faixa anda por transform e deixa de ser uma área de rolagem
+     própria: sem este corte os cards vazavam ~2000px para a direita do
+     DOCUMENTO. O body esconde a barra, mas o Chrome móvel conta o
+     transbordo para o zoom mínimo e estende o header fixo para a largura
+     toda — o botão de menu ia parar fora da tela até passar da galeria. */
+  overflow:hidden;
+}
+@supports (overflow:clip){
+  /* clip não cria área de rolagem: só corta */
+  .galeria{ overflow-x:clip; overflow-y:visible; }
 }
 
 .galeria__track{
@@ -1343,6 +1353,80 @@ html.has-js .deperto__static{ display:none; }
   to{ transform:translateX(100%); }
 }
 
+/* indicador de arraste — no centro do palco, o círculo do motivo da marca
+   entre duas setas em hairline, na mesma placa dos botões de ação. O ponto
+   desliza de um lado ao outro, o anel pulsa e as setas abrem: só transform
+   e opacity. Sai no primeiro gesto (.is-touched) e não volta na sessão. */
+.tour__drag{
+  position:absolute;
+  top:50%;
+  left:50%;
+  display:none;
+  align-items:center;
+  gap:14px;
+  padding:14px 20px;
+  border:1px solid var(--cream-40);
+  background:rgba(23,24,22,.48);
+  color:var(--cream);
+  pointer-events:none;
+  transform:translate(-50%,-50%);
+  transition:opacity var(--dur-fast) var(--ease-out), visibility 0s linear var(--dur-fast);
+}
+.tour__stage.is-webgl.is-live .tour__drag{ display:flex; }
+.tour__stage.is-touched .tour__drag{ opacity:0; visibility:hidden; }
+.tour__drag-anel{
+  position:relative;
+  width:56px;
+  height:56px;
+  border:1px solid var(--cream);
+  border-radius:50%; /* círculo — exceção permitida */
+}
+.tour__drag-anel::before,
+.tour__drag-anel::after{
+  content:"";
+  position:absolute;
+  border-radius:50%; /* círculo */
+}
+.tour__drag-anel::before{ /* o dedo */
+  top:50%;
+  left:50%;
+  width:6px;
+  height:6px;
+  margin:-3px 0 0 -3px;
+  background:var(--cream);
+  animation:tour-dedo 2.4s ease-in-out infinite;
+}
+.tour__drag-anel::after{ /* a onda do pulso */
+  inset:-1px;
+  border:1px solid var(--cream);
+  animation:tour-pulso 2.4s var(--ease-out) infinite;
+}
+.tour__drag-seta{
+  width:22px;
+  height:22px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1;
+  animation:tour-seta 2.4s ease-in-out infinite;
+}
+.tour__drag-seta:first-child{ --tour-lado:-1; }
+.tour__drag-seta:last-child{ --tour-lado:1; }
+.tour__stage.is-touched .tour__drag-anel::before,
+.tour__stage.is-touched .tour__drag-anel::after,
+.tour__stage.is-touched .tour__drag-seta{ animation:none; }
+@keyframes tour-dedo{
+  0%,100%{ transform:translateX(-13px); }
+  50%{ transform:translateX(13px); }
+}
+@keyframes tour-pulso{
+  from{ transform:scale(1); opacity:.85; }
+  to{ transform:scale(1.6); opacity:0; }
+}
+@keyframes tour-seta{
+  0%,100%{ transform:translateX(0); opacity:.5; }
+  50%{ transform:translateX(calc(var(--tour-lado) * 7px)); opacity:1; }
+}
+
 /* os contêineres não seguram o ponteiro: o arrasto atravessa até o canvas */
 .tour__top,
 .tour__hint,
@@ -1732,9 +1816,14 @@ html.has-js .deperto__static{ display:none; }
   /* De perto: nada gruda e cada passo mostra o próprio recorte */
   .deperto__media{ position:static; }
   html.has-js .deperto__static{ display:block; }
-  /* Tour 360: o carregamento vira uma linha parada; inércia, zoom suave
-     e fade de cena são desligados em js/tour360.js */
-  .tour__stage.is-loading .tour__loading{ animation:none; }
+  /* Tour 360: o carregamento vira uma linha parada e o indicador de
+     arraste fica estático; inércia, zoom suave e fade de cena são
+     desligados em js/tour360.js */
+  .tour__stage.is-loading .tour__loading,
+  .tour__drag-anel::before,
+  .tour__drag-anel::after,
+  .tour__drag-seta{ animation:none; }
+  .tour__drag-anel::after{ opacity:0; }
 }
 
 /* ============================================================

@@ -181,20 +181,53 @@
       drawFrame(target);
     }
 
-    /* carrega em duas ondas: os primeiros 24 (o preloader espera por eles)
-       e o resto em fila com concorrência limitada */
+    /* Carga do grosso para o fino: primeiro 1 a cada 8 frames do voo
+       INTEIRO, depois os intermediários (de 4 em 4, de 2 em 2, o resto).
+       Em ordem sequencial, quem rolava antes de a fila acabar via o scrub
+       parar no último frame baixado — no 4G fraco o vídeo ficava até 26
+       frames atrás do dedo. Assim o drawFrame sempre acha um vizinho a no
+       máximo 4 frames do pedido, e a imagem só ganha fluidez com o tempo.
+       Dentro de cada passada, sai primeiro o frame mais perto de onde o
+       scroll está. */
+    var niveis = (function () {
+      var visto = {}, out = [];
+      [8, 4, 2, 1].forEach(function (passo) {
+        var nivel = [];
+        for (var i = 0; i < FRAMES; i += passo) {
+          if (!visto[i]) { visto[i] = true; nivel.push(i); }
+        }
+        out.push(nivel);
+      });
+      return out;
+    })();
+    /* o preloader (sections.js) espera exatamente a primeira passada */
+    C.heroSeq = { dir: seqDir, abertura: niveis[0].map(frameSrc) };
+
     (function loadFrames() {
       /* mobile: 4 em voo (não 6) — a banda que sobra vai para as imagens
          das seções que o lazy nativo está buscando ao mesmo tempo */
-      var next = 0, INFLIGHT = isDesktop ? 6 : 4;
+      var INFLIGHT = isDesktop ? 6 : 4;
+      function proximo() {
+        for (var n = 0; n < niveis.length; n++) {
+          var nivel = niveis[n];
+          if (!nivel.length) continue;
+          var melhor = 0;
+          for (var k = 1; k < nivel.length; k++) {
+            if (Math.abs(nivel[k] - lastTarget) < Math.abs(nivel[melhor] - lastTarget)) melhor = k;
+          }
+          return { i: nivel.splice(melhor, 1)[0], nivel: n };
+        }
+        return null;
+      }
       function pump() {
-        while (INFLIGHT > 0 && next < FRAMES) {
-          (function (i) {
+        var item;
+        while (INFLIGHT > 0 && (item = proximo())) {
+          (function (i, nivel) {
             INFLIGHT--;
             var im = new Image();
             im.decoding = 'async';
-            /* cauda da sequência cede prioridade de rede ao que está na tela */
-            if ('fetchPriority' in im) im.fetchPriority = i < 32 ? 'auto' : 'low';
+            /* as passadas finas cedem prioridade de rede ao que está na tela */
+            if ('fetchPriority' in im) im.fetchPriority = nivel < 2 ? 'auto' : 'low';
             var done = function (ok) {
               if (ok && im.naturalWidth) { frames[i] = im; frameOk[i] = true;
                 if (Math.round(lastTarget) === i || curFrame < 0) drawFrame(lastTarget);
@@ -210,7 +243,7 @@
             };
             im.onerror = function () { done(false); };
             im.src = frameSrc(i);
-          })(next++);
+          })(item.i, item.nivel);
         }
       }
       pump();
@@ -271,9 +304,18 @@
       return introTl;
     }
     /* FASE 4: o preloader pode chamar CINNAMON.playHeroIntro() ao revelar
-       o hero ("já em movimento"). Até lá, roda no load. */
+       o hero ("já em movimento"). Até lá, roda no load.
+       Exceto quando o JS chegou tarde (rede de celular): a página já está
+       na tela há tempo, com o wordmark e o slogan visíveis. Esconder tudo
+       para animar a entrada fazia o conteúdo SUMIR na cara do usuário —
+       é a mesma régua de 700ms que dispensa o preloader em sections.js. */
     C.playHeroIntro = playHeroIntro;
-    playHeroIntro();
+    var jaNaTela = false;
+    if (window.performance && performance.getEntriesByType) {
+      var pintura = performance.getEntriesByType('paint')[0];
+      jaNaTela = !!pintura && performance.now() - pintura.startTime > 700;
+    }
+    if (!jaNaTela) playHeroIntro();
 
     /* aba que carrega em 2º plano: o rAF fica suspenso e a intro congela
        invisível no frame 0 — ao ficar visível com a página no topo, replay */
@@ -358,14 +400,20 @@
       }, 0.3);
     }
 
-    /* intro sai no início do voo. fromTo com immediateRender:false:
-       um .to() gravaria como "início" o valor do momento em que o scrub
-       cruza o ponto — se a intro ainda estivesse entrando, voltar ao topo
-       restauraria esse meio-termo e os textos não reapareceriam. */
-    if (introEls.length) {
-      tl.fromTo(introEls,
+    /* intro sai no início do voo — pelo CONTÊINER, não pelos filhos.
+       Entrada (playHeroIntro) e saída disputavam as mesmas propriedades
+       dos mesmos elementos, e quem perdia era a intro: a cada refresh o
+       ScrollTrigger renderiza a timeline de um pin até o fim e volta ao
+       zero, e na volta o GSAP devolve cada alvo ao estado que ele tinha
+       quando o tween foi criado. Os filhos tinham sido criados no primeiro
+       quadro da entrada, invisíveis; se o refresh caía depois de a entrada
+       terminar (o `load` chega tarde no 4G), o wordmark e o slogan ficavam
+       escondidos com a página parada no topo. O contêiner só é tocado
+       aqui, então o estado gravado é sempre o visível. */
+    if (intro) {
+      tl.fromTo(intro,
         { autoAlpha: 1, y: 0 },
-        { autoAlpha: 0, y: -44, duration: 0.9, stagger: 0.08, ease: 'power2.in', immediateRender: false },
+        { autoAlpha: 0, y: -44, duration: 1.1, ease: 'power2.in', immediateRender: false },
         1.2);
     }
     if (ringWrap) {
@@ -450,6 +498,7 @@
       document.removeEventListener('visibilitychange', onVisible);
       if (introTl) introTl.kill();
       if (C.playHeroIntro === playHeroIntro) C.playHeroIntro = null;
+      C.heroSeq = null;
     };
   }
 })();

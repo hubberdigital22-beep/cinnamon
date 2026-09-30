@@ -93,9 +93,19 @@
     var id = link.getAttribute('href').slice(1);
     if (!id) return;
     var target = document.getElementById(id);
-    if (!target || !window.CINNAMON.lenis) return; /* sem Lenis: nativo */
+    if (!target) return;
+    /* #hero é sempre o topo da página, com ou sem Lenis. No scroll nativo
+       (celular) a âncora mirava o hero ONDE ELE ESTAVA — e depois do pin
+       ele mora no fim do pin-spacer: tocar no logo parava no último quadro
+       do voo, a quase duas telas do topo. */
+    if (id === 'hero') {
+      ev.preventDefault();
+      if (window.CINNAMON.lenis) window.CINNAMON.lenis.scrollTo(0);
+      else window.scrollTo({ top: 0, behavior: mqReduce.matches ? 'auto' : 'smooth' });
+      return;
+    }
+    if (!window.CINNAMON.lenis) return; /* sem Lenis: nativo */
     ev.preventDefault();
-    if (id === 'hero') { window.CINNAMON.lenis.scrollTo(0); return; }
     /* o Lenis ignora scroll-margin-top do CSS: sem este desconto a
        âncora para debaixo do header fixo e come a primeira linha */
     var barra = document.querySelector('.site-header');
